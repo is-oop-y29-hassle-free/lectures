@@ -1,0 +1,894 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+@font-face { font-family: 'Golos Text'; src: url('fonts/GolosText-Regular.ttf') format('truetype'); font-weight: 400; font-display: swap; }
+@font-face { font-family: 'Golos Text'; src: url('fonts/GolosText-Medium.ttf') format('truetype'); font-weight: 500; font-display: swap; }
+@font-face { font-family: 'Golos Text'; src: url('fonts/GolosText-Bold.ttf') format('truetype'); font-weight: 700; font-display: swap; }
+@font-face { font-family: 'Golos Text'; src: url('fonts/GolosText-Black.ttf') format('truetype'); font-weight: 900; font-display: swap; }
+:root {
+  --font: 'Golos Text', 'Helvetica Neue', sans-serif;
+  --mono: 'JetBrains Mono', 'SF Mono', Consolas, monospace;
+  --bg: #0C0C0C; --panel: #151515; --line: rgba(255,255,255,.14);
+  --fg: #F1F1F1; --muted: #8C8C8C;
+  --accent: #D0FF14; --accent-soft: rgba(208,255,20,.07);
+  --warn: #F93F37; --warn-soft: rgba(249,63,55,.09);
+  --kw: #00CCFF; --ty: #D0FF14; --st: #FFCC33; --cm: #6C6C6C;
+  --t-title: 64px; --t-sub: 40px; --t-body: 32px; --t-small: 26px; --t-def: 38px; --t-code: 27px;
+  --pad-t: 88px; --pad-b: 64px; --pad-x: 96px;
+}
+body { margin: 0; background: #0C0C0C; }
+a { color: #D0FF14; text-decoration: none; }
+a:hover { color: #FFFFFF; }
+</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&amp;display=swap" rel="stylesheet">
+</helmet>
+<x-import component-from-global-scope="deck-stage" from="./deck-stage.js" width="1920" height="1080" hint-size="100%,100%" data-uneditable="">
+
+<section data-label="Титул" data-screen-label="01" data-speaker-notes="Представиться. Лекция 90 минут, десять блоков." style="box-sizing:border-box;padding:var(--pad-t) var(--pad-x) var(--pad-b);background:var(--bg);color:var(--fg);font-family:var(--font);display:flex;flex-direction:column" data-om-slide-id="1687c92b">
+  <img src="assets/logo-itmo-white.svg" alt="ИТМО" style="height:52px;width:auto;align-self:flex-start">
+  <div style="margin-top:auto;display:flex;flex-direction:column;gap:32px">
+    <div style="font-size:24px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent)">лекция 1</div>
+    <h1 style="margin:0;font-size:104px;font-weight:900;line-height:1.02;letter-spacing:-.03em;max-width:1400px">Введение в ООП и проектирование</h1>
+    <p style="margin:0;font-size:var(--t-sub);color:var(--muted);line-height:1.3">Дисциплина «Объектно-ориентированное программирование и проектирование»</p>
+  </div>
+  <div style="margin-top:auto;padding-top:36px;display:flex;justify-content:space-between;font-size:24px;color:var(--muted)"><span>ООП и проектирование · Лекция 1</span><span>0.1</span></div>
+</section>
+
+<section data-label="Две половины навыка" data-screen-label="02" data-speaker-notes="Два курса идут парой. Здесь ИИ запрещён — объяснить почему." style="box-sizing:border-box;padding:var(--pad-t) var(--pad-x) var(--pad-b);background:var(--bg);color:var(--fg);font-family:var(--font);display:flex;flex-direction:column" data-om-slide-id="d30524cc">
+  <h2 style="margin:0;font-size:var(--t-title);font-weight:800;letter-spacing:-.02em;line-height:1.05">Переход на компетентностную модель</h2>
+  <div style="margin-top:56px;display:grid;grid-template-columns:1fr 1fr;gap:40px">
+    <div style="border:1px solid var(--line);border-radius:28px;padding:44px 48px;display:flex;flex-direction:column;gap:24px">
+      <div style="font-size:var(--t-sub);font-weight:700;line-height:1.15">Технологии ИИ в разработке</div>
+      <div style="font-size:var(--t-body);color:var(--muted);line-height:1.35">Использование ИИ обязателено</div>
+    </div>
+    <div style="border:1px solid var(--accent);border-radius:28px;background:var(--accent-soft);padding:44px 48px;display:flex;flex-direction:column;gap:24px">
+      <div style="font-size:var(--t-sub);font-weight:700;line-height:1.15;color:var(--accent)">ООП и проектирование</div>
+      <div style="font-size:var(--t-body);line-height:1.35">ИИ запрещён. Учимся развивать свои компетенции классического разработчика.</div>
+    </div>
+  </div>
+  
+  <div style="margin-top:40px;font-size:var(--t-small);color:var(--muted);max-width:1100px">Первые недели будет медленнее и труднее, чем на C++. Так и должно быть.</div>
+  <div style="margin-top:auto;padding-top:36px;display:flex;justify-content:space-between;font-size:24px;color:var(--muted)"><span>ООП и проектирование · Лекция 1</span><span>0.2</span></div>
+</section>
+
+<section data-label="Что изменилось" data-screen-label="03" data-speaker-notes="Смена критерия оценки: не «работает», а «почему такая структура»." style="box-sizing:border-box;padding:var(--pad-t) var(--pad-x) var(--pad-b);background:var(--bg);color:var(--fg);font-family:var(--font);display:flex;flex-direction:column" data-om-slide-id="38d6f183">
+  <h2 style="margin:0;font-size:var(--t-title);font-weight:800;letter-spacing:-.02em;line-height:1.05">Что изменилось по сравнению с прошлым курсом</h2>
+  <div style="margin-top:64px;display:flex;flex-direction:column;gap:56px">
+    <div style="display:flex;flex-direction:column;gap:20px">
+      <div style="font-size:24px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)">было</div>
+      <div style="display:flex;align-items:center;gap:20px;flex-wrap:wrap">
+        <span style="border:1px solid var(--line);border-radius:999px;padding:16px 32px;font-size:var(--t-body)">задача</span><span style="color:var(--muted);font-size:var(--t-body)">→</span>
+        <span style="border:1px solid var(--line);border-radius:999px;padding:16px 32px;font-size:var(--t-body)">функция</span><span style="color:var(--muted);font-size:var(--t-body)">→</span>
+        <span style="border:1px solid var(--line);border-radius:999px;padding:16px 32px;font-size:var(--t-body)">работает</span><span style="color:var(--muted);font-size:var(--t-body)">→</span>
+        <span style="border:1px solid var(--line);border-radius:999px;padding:16px 32px;font-size:var(--t-body)">сдал</span>
+      </div>
+      <div style="font-size:var(--t-small);color:var(--muted)">оценивали, что программа делает</div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:20px">
+      <div style="font-size:24px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent)">стало</div>
+      <div style="display:flex;align-items:center;gap:18px;flex-wrap:wrap">
+        <span style="border:1px solid var(--accent);border-radius:999px;padding:16px 30px;font-size:var(--t-body)">задача</span><span style="color:var(--muted);font-size:var(--t-body)">→</span>
+        <span style="border:1px solid var(--accent);border-radius:999px;padding:16px 30px;font-size:var(--t-body)">какие сущности</span><span style="color:var(--muted);font-size:var(--t-body)">→</span>
+        <span style="border:1px solid var(--accent);border-radius:999px;padding:16px 30px;font-size:var(--t-body)">кто за что отвечает</span><span style="color:var(--muted);font-size:var(--t-body)">→</span>
+        <span style="border:1px solid var(--accent);border-radius:999px;padding:16px 30px;font-size:var(--t-body)">что нельзя сломать</span><span style="color:var(--muted);font-size:var(--t-body)">→</span>
+        <span style="border:1px solid var(--accent);border-radius:999px;padding:16px 30px;font-size:var(--t-body)">код</span>
+      </div>
+      <div style="font-size:var(--t-small);color:var(--accent)">оцениваем, почему решение именно такое<br></div>
+    </div>
+  </div>
+  <div style="margin-top:auto;padding-top:36px;display:flex;justify-content:space-between;font-size:24px;color:var(--muted)"><span>ООП и проектирование · Лекция 1</span><span>0.3</span></div>
+</section>
+
+<section data-label="Правило: только IDE" data-screen-label="04" data-speaker-notes="Главное правило курса. Сказать прямо и без смягчений." style="box-sizing:border-box;padding:var(--pad-t) var(--pad-x) var(--pad-b);background:var(--bg);color:var(--fg);font-family:var(--font);display:flex;flex-direction:column" data-om-slide-id="c35029cc">
+  <h2 style="margin:0;font-size:var(--t-title);font-weight:800;letter-spacing:-.02em;line-height:1.05">Правило курса: только IDE</h2>
+  <div style="margin-top:72px;border:1px solid var(--warn);border-left:10px solid var(--warn);border-radius:28px;background:var(--warn-soft);padding:56px 60px;display:flex;gap:36px;align-items:flex-start">
+    <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="#F93F37" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex:none;margin-top:8px"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+    <p style="margin:0;font-size:46px;font-weight:700;line-height:1.25;text-wrap:pretty">Для написания кода разрешена только IDE — условно как бумажка с ручкой, и больше ничего.</p>
+  </div>
+  <div style="margin-top:48px;display:flex;flex-direction:column;gap:22px;font-size:var(--t-body);color:var(--muted)">
+    <div>AI Assistant и ИИ-автодополнение в Rider выключены.</div>
+    <div>Rider подсказывает синтаксис, ошибки и рефакторинги — этого достаточно.</div>
+  </div>
+  <div style="margin-top:auto;padding-top:36px;display:flex;justify-content:space-between;font-size:24px;color:var(--muted)"><span>ООП и проектирование · Лекция 1</span><span>0.4</span></div>
+</section>
+
+<section data-label="Формулировка из силлабуса" data-screen-label="05" data-speaker-notes="Читать дословно. Санкция — бан без права исправления." style="box-sizing:border-box;padding:var(--pad-t) var(--pad-x) var(--pad-b);background:var(--bg);color:var(--fg);font-family:var(--font);display:flex;flex-direction:column" data-om-slide-id="36f8168f">
+  <h2 style="margin:0;font-size:var(--t-title);font-weight:800;letter-spacing:-.02em;line-height:1.05">Формулировка из силлабуса</h2>
+  <div style="margin-top:56px;border:1px solid var(--line);border-radius:20px;background:var(--panel);padding:44px 52px">
+    <div style="display:flex;align-items:center;gap:16px;color:var(--muted);font-family:var(--mono);font-size:24px;padding-bottom:28px;border-bottom:1px solid var(--line)">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#8C8C8C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
+      <span>syllabus.md, раздел «Не самостоятельное выполнение работ»</span>
+    </div>
+    <ul style="margin:32px 0 0;padding-left:32px;font-size:30px;line-height:1.45;display:flex;flex-direction:column;gap:24px">
+      <li>Использование не процедурных инструментов генерации кода (LLM, любой ML-based способ генерации кода, любой code completion не основанный на правилах intelli-sense или аналогичных инструментов)</li>
+      <li>Использование любых инструментов ML-based инструментов для проектирования реализаций работ</li>
+    </ul>
+  </div>
+  <div style="margin-top:44px;font-size:var(--t-sub);font-weight:700;color:var(--warn)">Санкция — бан без права исправления работы.</div>
+  <div style="margin-top:auto;padding-top:36px;display:flex;justify-content:space-between;font-size:24px;color:var(--muted)"><span>ООП и проектирование · Лекция 1</span><span>0.5</span></div>
+</section>
+
+<section data-label="Что можно и нельзя" data-screen-label="06" data-speaker-notes="Разграничить крайнюю необходимость и запрет. Сомневаетесь — нельзя." style="box-sizing:border-box;padding:var(--pad-t) var(--pad-x) var(--pad-b);background:var(--bg);color:var(--fg);font-family:var(--font);display:flex;flex-direction:column" data-om-slide-id="0aae9277">
+  <h2 style="margin:0;font-size:var(--t-title);font-weight:800;letter-spacing:-.02em;line-height:1.05">Что можно, что нельзя и почему</h2>
+  <div style="margin-top:56px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:32px">
+    <div style="border:1px solid var(--line);border-radius:28px;padding:36px 40px;display:flex;flex-direction:column;gap:24px">
+      <div style="font-size:34px;font-weight:700">Крайняя необходимость</div>
+      <div style="font-size:var(--t-small);line-height:1.4;color:var(--muted)">Консультация вне IDE и не про вашу лабораторную — понять концепцию из лекции или как в C# сделать то, что в C++ делали иначе.</div>
+      <div style="font-size:var(--t-small);line-height:1.4">Не «спросить, как правильно», а «понять, что вообще спрашивать».</div>
+    </div>
+    <div style="border:1px solid var(--warn);border-radius:28px;background:var(--warn-soft);padding:36px 40px;display:flex;flex-direction:column;gap:24px">
+      <div style="font-size:34px;font-weight:700;color:var(--warn)">Нельзя</div>
+      <div style="font-size:var(--t-small);line-height:1.4">Получить код или фрагмент и перенести — целиком, «по мотивам», переписав своими словами.</div>
+      <div style="font-size:var(--t-small);line-height:1.4">Отдать агенту задание и работать с его планом.</div>
+      <div style="font-size:var(--t-small);line-height:1.4">«Проверять» у агента решение перед защитой.</div>
+    </div>
+    <div style="border:1px solid var(--accent);border-radius:28px;background:var(--accent-soft);padding:36px 40px;display:flex;flex-direction:column;gap:24px">
+      <div style="font-size:34px;font-weight:700;color:var(--accent)">Почему так</div>
+      <div style="font-size:var(--t-small);line-height:1.4">Задача курса — набить руку на собственных ошибках. Применить подход по наитию, сдать, и на защите в разговоре с практиками выяснить, почему решение не подошло.</div>
+    </div>
+  </div>
+  <div style="margin-top:48px;font-size:var(--t-body);color:var(--warn)">Сомневаетесь, разрешено ли, — считайте, что нет.</div>
+  <div style="margin-top:auto;padding-top:36px;display:flex;justify-content:space-between;font-size:24px;color:var(--muted)"><span>ООП и проектирование · Лекция 1</span><span>0.6</span></div>
+</section>
+
+<section data-label="Проверка на защите" data-screen-label="07" data-speaker-notes="Три типа вопросов на защите. Чужой код не спасёт." style="box-sizing:border-box;padding:var(--pad-t) var(--pad-x) var(--pad-b);background:var(--bg);color:var(--fg);font-family:var(--font);display:flex;flex-direction:column" data-om-slide-id="094f8868">
+  <h2 style="margin:0;font-size:var(--t-title);font-weight:800;letter-spacing:-.02em;line-height:1.05">Как это проверяется на защите</h2>
+  <div style="margin-top:56px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:32px">
+    <div style="border:1px solid var(--line);border-radius:28px;padding:40px;display:flex;flex-direction:column;gap:28px">
+      <div style="font-size:34px;line-height:1.25;font-weight:500">«Добавь сейчас вот такое поведение»</div>
+      <div style="font-size:var(--t-small);color:var(--muted);line-height:1.4">Правка кода при преподавателе, 5–10 минут.</div>
+    </div>
+    <div style="border:1px solid var(--line);border-radius:28px;padding:40px;display:flex;flex-direction:column;gap:28px">
+      <div style="font-size:34px;line-height:1.25;font-weight:500">«Почему в качестве абстракции выделен именно такой интерфейс?»</div>
+      <div style="font-size:var(--t-small);color:var(--muted);line-height:1.4">Вопросы про решения, а не про синтаксис.</div>
+    </div>
+    <div style="border:1px solid var(--line);border-radius:28px;padding:40px;display:flex;flex-direction:column;gap:28px">
+      <div style="font-size:34px;line-height:1.25;font-weight:500">«Что сломается, если требование изменится вот так?»</div>
+      <div style="font-size:var(--t-small);color:var(--muted);line-height:1.4">Понимание собственной структуры.</div>
+    </div>
+  </div>
+  <div style="margin-top:52px;font-size:var(--t-sub);font-weight:700">Всё это нельзя сделать с чужим кодом.</div>
+  <div style="margin-top:auto;padding-top:36px;display:flex;justify-content:space-between;font-size:24px;color:var(--muted)"><span>ООП и проектирование · Лекция 1</span><span>0.7</span></div>
+</section>
+
+<section data-label="Как сдаётся работа" data-screen-label="08" data-speaker-notes="Регламент сдачи. Подчеркнуть: баллы в таблице — критерий." style="box-sizing:border-box;padding:var(--pad-t) var(--pad-x) var(--pad-b);background:var(--bg);color:var(--fg);font-family:var(--font);display:flex;flex-direction:column" data-om-slide-id="81a09ee5">
+  <h2 style="margin:0;font-size:var(--t-title);font-weight:800;letter-spacing:-.02em;line-height:1.05">Как сдаётся работа</h2>
+  <div style="margin-top:64px;display:flex;align-items:stretch;gap:16px">
+    <div style="flex:1;border:1px solid var(--line);border-radius:24px;padding:32px 28px;display:flex;flex-direction:column;gap:18px">
+      <div style="font-family:var(--mono);font-size:24px;color:var(--muted)">01</div>
+      <div style="font-size:30px;font-weight:700;line-height:1.2">Ветка → пул-реквест</div>
+      <div style="font-size:24px;color:var(--muted);line-height:1.35">Семантический нейминг веток, PR, коммитов.</div>
+    </div>
+    <div style="align-self:center;color:var(--muted);font-size:32px">→</div>
+    <div style="flex:1;border:1px solid var(--line);border-radius:24px;padding:32px 28px;display:flex;flex-direction:column;gap:18px">
+      <div style="font-family:var(--mono);font-size:24px;color:var(--muted)">02</div>
+      <div style="font-size:30px;font-weight:700;line-height:1.2">Ревью преподавателя</div>
+    </div>
+    <div style="align-self:center;color:var(--muted);font-size:32px">→</div>
+    <div style="flex:1;border:1px solid var(--line);border-radius:24px;padding:32px 28px;display:flex;flex-direction:column;gap:18px">
+      <div style="font-family:var(--mono);font-size:24px;color:var(--muted)">03</div>
+      <div style="font-size:30px;font-weight:700;line-height:1.2">Правки</div>
+      <div style="font-size:24px;color:var(--warn);line-height:1.35">Закрыть комментарий без изменения кода — штраф.</div>
+    </div>
+    <div style="align-self:center;color:var(--muted);font-size:32px">→</div>
+    <div style="flex:1;border:1px solid var(--line);border-radius:24px;padding:32px 28px;display:flex;flex-direction:column;gap:18px">
+      <div style="font-family:var(--mono);font-size:24px;color:var(--muted)">04</div>
+      <div style="font-size:30px;font-weight:700;line-height:1.2">Аппрув → мердж</div>
+      <div style="font-size:24px;color:var(--muted);line-height:1.35">Мердж без аппрува — нарушение регламента.</div>
+    </div>
+    <div style="align-self:center;color:var(--muted);font-size:32px">→</div>
+    <div style="flex:1;border:1px solid var(--accent);border-radius:24px;background:var(--accent-soft);padding:32px 28px;display:flex;flex-direction:column;gap:18px">
+      <div style="font-family:var(--mono);font-size:24px;color:var(--accent)">05</div>
+      <div style="font-size:30px;font-weight:700;line-height:1.2;color:var(--accent)">Очная защита</div>
+      <div style="font-size:24px;line-height:1.35">Работа выполнена, когда баллы появились в таблице.</div>
+    </div>
+  </div>
+  <div style="margin-top:56px;font-size:var(--t-body);color:var(--muted)">В PR — только эта лабораторная. Конфигурацию не трогать без аппрува.</div>
+  <div style="margin-top:auto;padding-top:36px;display:flex;justify-content:space-between;font-size:24px;color:var(--muted)"><span>ООП и проектирование · Лекция 1</span><span>0.8</span></div>
+</section>
+
+<section data-label="Пять лабораторных" data-screen-label="09" data-speaker-notes="Лабы независимы, но навык накопительный." style="box-sizing:border-box;padding:var(--pad-t) var(--pad-x) var(--pad-b);background:var(--bg);color:var(--fg);font-family:var(--font);display:flex;flex-direction:column" data-om-slide-id="cbe7f73f">
+  <h2 style="margin:0;font-size:var(--t-title);font-weight:800;letter-spacing:-.02em;line-height:1.05">Пять лабораторных</h2>
+  <div style="margin-top:80px;position:relative;display:flex;gap:24px;align-items:stretch">
+    <div style="flex:1;border:1px solid var(--line);border-radius:24px;padding:36px 30px;display:flex;flex-direction:column;gap:20px">
+      <div style="font-family:var(--mono);font-size:26px;color:var(--accent)">ЛР1</div>
+      <div style="font-size:32px;font-weight:700;line-height:1.2">Вводная: C#, классы, инкапсуляция</div>
+      <div style="font-size:24px;color:var(--muted);line-height:1.35">Перенести навык с C++ на C#; первая объектная декомпозиция.</div>
+    </div>
+    <div style="flex:1;border:1px solid var(--line);border-radius:24px;padding:36px 30px;display:flex;flex-direction:column;gap:20px">
+      <div style="font-family:var(--mono);font-size:26px;color:var(--muted)">ЛР2</div>
+      <div style="font-size:32px;font-weight:700;line-height:1.2">Структурные паттерны</div>
+      <div style="font-size:24px;color:var(--muted);line-height:1.35">Композиция вместо наследования.</div>
+    </div>
+    <div style="flex:1;border:1px solid var(--line);border-radius:24px;padding:36px 30px;display:flex;flex-direction:column;gap:20px">
+      <div style="font-family:var(--mono);font-size:26px;color:var(--muted)">ЛР3</div>
+      <div style="font-size:32px;font-weight:700;line-height:1.2">Порождающие паттерны</div>
+      <div style="font-size:24px;color:var(--muted);line-height:1.35">Кто и как создаёт объекты.</div>
+    </div>
+    <div style="flex:1;border:1px solid var(--line);border-radius:24px;padding:36px 30px;display:flex;flex-direction:column;gap:20px">
+      <div style="font-family:var(--mono);font-size:26px;color:var(--muted)">ЛР4</div>
+      <div style="font-size:32px;font-weight:700;line-height:1.2">Поведенческие паттерны</div>
+      <div style="font-size:24px;color:var(--muted);line-height:1.35">Как объекты взаимодействуют.</div>
+    </div>
+    <div style="flex:1;border:1px solid var(--line);border-radius:24px;padding:36px 30px;display:flex;flex-direction:column;gap:20px">
+      <div style="font-family:var(--mono);font-size:26px;color:var(--muted)">ЛР5</div>
+      <div style="font-size:32px;font-weight:700;line-height:1.2">Архитектура</div>
+      <div style="font-size:24px;color:var(--muted);line-height:1.35">Как пишется код в больших проектах.</div>
+    </div>
+  </div>
+  <div style="margin-top:auto;padding-top:36px;display:flex;justify-content:space-between;font-size:24px;color:var(--muted)"><span>ООП и проектирование · Лекция 1</span><span>0.9</span></div>
+</section>
+
+<section data-label="Оценивание" data-screen-label="10" data-speaker-notes="Распределение по лабам уточнить перед лекцией." style="box-sizing:border-box;padding:var(--pad-t) var(--pad-x) var(--pad-b);background:var(--bg);color:var(--fg);font-family:var(--font);display:flex;flex-direction:column" data-om-slide-id="082ac9d0">
+  <h2 style="margin:0;font-size:var(--t-title);font-weight:800;letter-spacing:-.02em;line-height:1.05">Оценивание: 100 баллов</h2>
+  <div style="margin-top:96px;display:flex;flex-direction:column;gap:20px">
+    <div style="display:flex;align-items:flex-end;gap:8px">
+      <div style="flex:80;display:flex;flex-direction:column;gap:14px">
+        <div style="font-size:var(--t-sub);font-weight:800;color:var(--accent)">80</div>
+        <div style="height:8px;border-left:1px solid var(--accent);border-right:1px solid var(--accent);border-top:1px solid var(--accent)"></div>
+      </div>
+      <div style="flex:20"></div>
+    </div>
+    <div style="display:flex;gap:8px;height:120px">
+      <div style="flex:16;background:var(--accent);color:#0C0C0C;border-radius:20px 6px 6px 20px;display:flex;align-items:center;justify-content:center;font-size:30px;font-weight:700">ЛР1</div>
+      <div style="flex:16;background:var(--accent);color:#0C0C0C;display:flex;align-items:center;justify-content:center;font-size:30px;font-weight:700">ЛР2</div>
+      <div style="flex:16;background:var(--accent);color:#0C0C0C;display:flex;align-items:center;justify-content:center;font-size:30px;font-weight:700">ЛР3</div>
+      <div style="flex:16;background:var(--accent);color:#0C0C0C;display:flex;align-items:center;justify-content:center;font-size:30px;font-weight:700">ЛР4</div>
+      <div style="flex:16;background:var(--accent);color:#0C0C0C;display:flex;align-items:center;justify-content:center;font-size:30px;font-weight:700">ЛР5</div>
+      <div style="flex:20;background:var(--panel);border:1px solid var(--line);border-radius:6px 20px 20px 6px;display:flex;align-items:center;justify-content:center;font-size:30px;font-weight:700;color:var(--fg)">Экзамен 20</div>
+    </div>
+    <div style="font-size:24px;color:var(--muted)">Распределение баллов между лабораторными уточняется. Сроки сдачи регулируют практики для каждой группы индивидуально.</div>
+  </div>
+  <div style="margin-top:56px;font-size:var(--t-body);color:var(--muted)">Сдаётся: репозиторий, защита с правкой кода вживую, вопросы по решениям.</div>
+  <div style="margin-top:auto;padding-top:36px;display:flex;justify-content:space-between;font-size:24px;color:var(--muted)"><span>ООП и проектирование · Лекция 1</span><span>0.10</span></div>
+</section>
+
+<section data-label="За что снимают баллы" data-screen-label="11" data-speaker-notes="Читать по карточкам. Очередь на защиту — объяснить." style="box-sizing:border-box;padding:var(--pad-t) var(--pad-x) var(--pad-b);background:var(--bg);color:var(--fg);font-family:var(--font);display:flex;flex-direction:column" data-om-slide-id="82aa516d">
+  <h2 style="margin:0;font-size:var(--t-title);font-weight:800;letter-spacing:-.02em;line-height:1.05">За что снимают баллы</h2>
+  <div style="margin-top:48px;display:grid;grid-template-columns:1fr 1fr;gap:28px">
+    <div style="border:1px solid var(--line);border-radius:24px;padding:32px 36px;display:flex;gap:20px;align-items:flex-start">
+      <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#F93F37" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex:none;margin-top:6px"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <div style="font-size:32px;font-weight:700">Дедлайны</div>
+        <div style="font-size:25px;color:var(--muted);line-height:1.35">Сроки объявляют практики. Каждая неделя после дедлайна — −20% от максимума. «Дедлайн в субботу, сдали в понедельник — уже −20%».</div>
+      </div>
+    </div>
+    <div style="border:1px solid var(--line);border-radius:24px;padding:32px 36px;display:flex;gap:20px;align-items:flex-start">
+      <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#F93F37" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex:none;margin-top:6px"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <div style="font-size:32px;font-weight:700">Неполное выполнение</div>
+        <div style="font-size:25px;color:var(--muted);line-height:1.35">PR «чтобы попасть в дедлайн» — либо минус баллы, либо на дорешивание с новым временем сдачи.</div>
+      </div>
+    </div>
+    <div style="border:1px solid var(--line);border-radius:24px;padding:32px 36px;display:flex;gap:20px;align-items:flex-start">
+      <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#F93F37" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex:none;margin-top:6px"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <div style="font-size:32px;font-weight:700">Грубые или систематические ошибки</div>
+        <div style="font-size:25px;color:var(--muted);line-height:1.35">Несоблюдение Do/Don't; повтор ошибки после ревью; закрытые без правок комментарии; много замечаний.</div>
+      </div>
+    </div>
+    <div style="border:1px solid var(--warn);border-radius:24px;background:var(--warn-soft);padding:32px 36px;display:flex;gap:20px;align-items:flex-start">
+      <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#F93F37" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex:none;margin-top:6px"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <div style="font-size:32px;font-weight:700;color:var(--warn)">Несамостоятельная работа</div>
+        <div style="font-size:25px;line-height:1.35">Плагиат, третье лицо, ML-генерация, ML-проектирование — бан без права исправления.</div>
+      </div>
+    </div>
+  </div>
+  <div style="margin-top:36px;font-size:25px;color:var(--muted)">Очередь на защиту: сначала текущая лаба → затем просроченные, залитые до дедлайна → после дедлайна → остальные.</div>
+  <div style="margin-top:auto;padding-top:28px;display:flex;justify-content:space-between;font-size:24px;color:var(--muted)"><span>ООП и проектирование · Лекция 1</span><span>0.11</span></div>
+</section>
+
+<section data-label="Инструменты" data-screen-label="12" data-speaker-notes="Один инструмент у всех. Rider — первый ревьюер." style="box-sizing:border-box;padding:var(--pad-t) var(--pad-x) var(--pad-b);background:var(--bg);color:var(--fg);font-family:var(--font);display:flex;flex-direction:column" data-om-slide-id="280e13fb">
+  <h2 style="margin:0;font-size:var(--t-title);font-weight:800;letter-spacing:-.02em;line-height:1.05">Инструменты</h2>
+  <div style="margin-top:96px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:32px">
+    <div style="border:1px solid var(--line);border-radius:28px;padding:56px 44px;font-size:46px;font-weight:800;line-height:1.15">Только Rider</div>
+    <div style="border:1px solid var(--warn);border-radius:28px;background:var(--warn-soft);padding:56px 44px;font-size:46px;font-weight:800;line-height:1.15;color:var(--warn)">AI Assistant выключен</div>
+    <div style="border:1px solid var(--accent);border-radius:28px;background:var(--accent-soft);padding:56px 44px;font-size:46px;font-weight:800;line-height:1.15;color:var(--accent)">.NET 10</div>
+  </div>
+  <div style="margin-top:64px;font-size:var(--t-body);color:var(--muted);max-width:1400px;line-height:1.35">Один инструмент — чтобы на защите все смотрели в одно и то же, а подсказки Rider стали первым ревьюером.</div>
+  <div style="margin-top:auto;padding-top:36px;display:flex;justify-content:space-between;font-size:24px;color:var(--muted)"><span>ООП и проектирование · Лекция 1</span><span>0.12</span></div>
+</section>
+
+<section data-label="План лекции" data-screen-label="13" data-speaker-notes="Ширина сегмента = минуты. Дальше идём по блокам." style="box-sizing:border-box;padding:var(--pad-t) var(--pad-x) var(--pad-b);background:var(--bg);color:var(--fg);font-family:var(--font);display:flex;flex-direction:column" data-om-slide-id="13f23d81">
+  <h2 style="margin:0;font-size:var(--t-title);font-weight:800;letter-spacing:-.02em;line-height:1.05">План лекции</h2>
+  <div style="margin-top:88px;display:flex;gap:6px;height:96px">
+    <div style="flex:10;background:var(--panel);border:1px solid var(--line);border-radius:16px 6px 6px 16px;display:flex;align-items:center;justify-content:center;font-size:26px;text-align:center;padding:0 8px">C++ → C#</div>
+    <div style="flex:9;background:var(--panel);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:26px;text-align:center;padding:0 8px">Зачем ООП</div>
+    <div style="flex:11;background:var(--panel);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:26px;text-align:center;padding:0 8px">Инкапсуляция и сокрытие</div>
+    <div style="flex:7;background:var(--panel);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:26px;text-align:center;padding:0 8px">Композиция</div>
+    <div style="flex:11;background:var(--panel);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:26px;text-align:center;padding:0 8px">Полиморфизм</div>
+    <div style="flex:7;background:var(--panel);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:26px;text-align:center;padding:0 8px">Наследование</div>
+    <div style="flex:7;background:var(--panel);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:26px;text-align:center;padding:0 8px">Проектирование</div>
+    <div style="flex:7;background:var(--panel);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:26px;text-align:center;padding:0 8px">Do/Don't</div>
+    <div style="flex:4;background:var(--accent-soft);border:1px solid var(--accent);border-radius:6px 16px 16px 6px;display:flex;align-items:center;justify-content:center;font-size:26px;text-align:center;padding:0 8px;color:var(--accent)">Итоги</div>
+  </div>
+  <div style="margin-top:24px;display:flex;gap:6px;font-size:24px;color:var(--muted)">
+    <div style="flex:10;text-align:center">10</div><div style="flex:9;text-align:center">9</div><div style="flex:11;text-align:center">11</div><div style="flex:7;text-align:center">7</div><div style="flex:11;text-align:center">11</div><div style="flex:7;text-align:center">7</div><div style="flex:7;text-align:center">7</div><div style="flex:7;text-align:center">7</div><div style="flex:4;text-align:center">4</div>
+  </div>
+  <div style="margin-top:56px;font-size:24px;color:var(--muted)">минуты</div>
+  <div style="margin-top:auto;padding-top:36px;display:flex;justify-content:space-between;font-size:24px;color:var(--muted)"><span>ООП и проектирование · Лекция 1</span><span>0.13</span></div>
+</section>
+
+<section data-label=".NET и C#" data-screen-label="14" data-speaker-notes="C# — язык, IL — промежуточный код, рантайм и BCL." style="box-sizing:border-box;padding:var(--pad-t) var(--pad-x) var(--pad-b);background:var(--bg);color:var(--fg);font-family:var(--font);display:flex;flex-direction:column" data-om-slide-id="15cb4d27">
+  <h2 style="margin:0;font-size:var(--t-title);font-weight:800;letter-spacing:-.02em;line-height:1.05">Что такое .NET и что такое C#</h2>
+  <div style="margin-top:72px;display:flex;gap:80px;align-items:center">
+    <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:20px">
+      <div style="width:100%;border:1px solid var(--accent);border-radius:24px;background:var(--accent-soft);padding:36px;text-align:center;font-size:38px;font-weight:700;color:var(--accent)">C# — язык</div>
+      <div style="color:var(--muted);font-size:36px">↓</div>
+      <div style="width:100%;border:1px solid var(--line);border-radius:24px;background:var(--panel);padding:36px;text-align:center;font-size:38px;font-weight:700">IL — промежуточный код</div>
+      <div style="color:var(--muted);font-size:36px">↓</div>
+      <div style="width:100%;border:1px solid var(--line);border-radius:24px;background:var(--panel);padding:36px;text-align:center;font-size:38px;font-weight:700">.NET рантайм + BCL</div>
+    </div>
+    <div style="flex:none;display:flex;flex-direction:column;gap:28px;font-size:var(--t-sub);color:var(--muted)">
+      <div>Windows</div>
+      <div>macOS</div>
+      <div>Linux</div>
+    </div>
+  </div>
+  <div style="margin-top:64px;font-size:var(--t-body)">Версия курса — .NET 10.</div>
+  <div style="margin-top:auto;padding-top:36px;display:flex;justify-content:space-between;font-size:24px;color:var(--muted)"><span>ООП и проектирование · Лекция 1</span><span>1.1</span></div>
+</section>
+
+<section data-label="Управляемая среда" data-screen-label="15" data-speaker-notes="Самый важный слайд блока. Сборщик мусора снимает ручную работу." style="box-sizing:border-box;padding:var(--pad-t) var(--pad-x) var(--pad-b);background:var(--bg);color:var(--fg);font-family:var(--font);display:flex;flex-direction:column" data-om-slide-id="8eea2b53">
+  <h2 style="margin:0;font-size:var(--t-title);font-weight:800;letter-spacing:-.02em;line-height:1.05">Главное отличие: среда управляемая</h2>
+  <div style="margin-top:56px;display:grid;grid-template-columns:1fr 1fr;gap:40px">
+    <div style="border:1px solid var(--line);border-radius:28px;padding:40px 44px;display:flex;flex-direction:column;gap:24px">
+      <div style="font-family:var(--mono);font-size:30px;color:var(--muted)">C++</div>
+      <div style="font-size:var(--t-body);line-height:1.35">Выделил — освободил.</div>
+      <div style="font-size:var(--t-body);line-height:1.35">Проверил указатель.</div>
+      <div style="font-size:var(--t-body);line-height:1.35">Не потерял объект.</div>
+    </div>
+    <div style="border:1px solid var(--accent);border-radius:28px;background:var(--accent-soft);padding:40px 44px;display:flex;flex-direction:column;gap:24px">
+      <div style="font-family:var(--mono);font-size:30px;color:var(--accent)">.NET</div>
+      <div style="font-size:var(--t-body);line-height:1.35"><span style="font-family:var(--mono);font-size:30px">new</span> — создали.</div>
+      <div style="font-size:var(--t-body);line-height:1.35">Сборщик мусора — освободил.</div>
+      <div style="font-size:var(--t-body);line-height:1.35">Ссылка на объект — не указатель.</div>
+      <div style="font-size:var(--t-small);color:var(--muted);line-height:1.35">Проверять, освобождать, арифметика — не нужно.</div>
+    </div>
+  </div>
+  <div style="margin-top:64px;font-size:46px;font-weight:800;line-height:1.2">В ООП всё — класс. Классы — ссылочные типы.</div>
+  <div style="margin-top:auto;padding-top:36px;display:flex;justify-content:space-between;font-size:24px;color:var(--muted)"><span>ООП и проектирование · Лекция 1</span><span>1.2</span></div>
+</section>
+
+<section data-label="Ссылки и значения" data-screen-label="16" data-speaker-notes="Разобрать схемы памяти: a и b — один объект, p и q — копии." style="box-sizing:border-box;padding:var(--pad-t) var(--pad-x) var(--pad-b);background:var(--bg);color:var(--fg);font-family:var(--font);display:flex;flex-direction:column" data-om-slide-id="5ad658d6">
+  
+  <h2 style="margin:0;font-size:var(--t-title);font-weight:800;letter-spacing:-.02em;line-height:1.05">Ссылки и значения</h2><div style="margin-top:28px;display:flex;flex-direction:column;gap:18px">
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <div style="font-size:24px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent)">ссылочный тип</div>
+      <pre style="margin:0;background:var(--panel);border:1px solid var(--line);border-radius:20px;padding:24px 30px;font-family:var(--mono);font-size:25px;line-height:1.45;white-space:pre;overflow:hidden"><code><span style="display:block"><span style="color:var(--kw)">var</span> a = <span style="color:var(--kw)">new</span> <span style="color:var(--ty)">Point</span>(1, 2);   <span style="color:var(--cm)">// Point — class, ссылочный тип</span></span><span style="display:block"><span style="color:var(--kw)">var</span> b = a;</span><span style="display:block">b.<span style="color:var(--ty)">MoveBy</span>(10, 0);           <span style="color:var(--cm)">// a.X тоже стал 11: a и b — один объект</span></span></code></pre>
+      <div style="font-size:24px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-top:6px">значимый тип</div>
+      <pre style="margin:0;background:var(--panel);border:1px solid var(--line);border-radius:20px;padding:24px 30px;font-family:var(--mono);font-size:25px;line-height:1.45;white-space:pre;overflow:hidden"><code><span style="display:block"><span style="color:var(--kw)">public record struct</span> <span style="color:var(--ty)">Coordinate</span>(<span style="color:var(--kw)">double</span> X, <span style="color:var(--kw)">double</span> Y);   <span style="color:var(--cm)">// struct — значимый тип</span></span><span style="display:block;height:.8em"></span><span style="display:block"><span style="color:var(--kw)">var</span> p = <span style="color:var(--kw)">new</span> <span style="color:var(--ty)">Coordinate</span>(1, 2);</span><span style="display:block"><span style="color:var(--kw)">var</span> q = p;</span><span style="display:block">q = q <span style="color:var(--kw)">with</span> { X = 11 };     <span style="color:var(--cm)">// p.X по-прежнему 1: q — копия</span></span></code></pre>
+    </div>
+    <div style="display:flex;flex-direction:row;gap:28px;align-items:center">
+      <div style="border:1px solid var(--line);border-radius:24px;padding:24px 28px;display:flex;align-items:center;gap:20px">
+        <div style="display:flex;flex-direction:column;gap:16px;font-family:var(--mono);font-size:26px">
+          <span>a</span><span>b</span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:16px;color:var(--accent);font-size:26px">
+          <span>→</span><span>→</span>
+        </div>
+        <div style="border:1px solid var(--accent);border-radius:16px;padding:22px 28px;font-family:var(--mono);font-size:26px;color:var(--accent);white-space:nowrap">Point(11, 2)</div>
+      </div>
+      <div style="border:1px solid var(--line);border-radius:24px;padding:28px 32px;display:flex;gap:24px;align-items:center">
+        <div style="display:flex;flex-direction:column;gap:14px;font-family:var(--mono);font-size:26px"><span>p</span><span>q</span></div>
+        <div style="display:flex;flex-direction:column;gap:14px">
+          <div style="border:1px solid var(--muted);border-radius:12px;padding:14px 22px;font-family:var(--mono);font-size:26px;color:var(--muted);white-space:nowrap">(1, 2)</div>
+          <div style="border:1px solid var(--muted);border-radius:12px;padding:14px 22px;font-family:var(--mono);font-size:26px;color:var(--muted);white-space:nowrap">(11, 2)</div>
+        </div>
+      </div>
+      <div style="display:flex;gap:18px;align-items:flex-start;border-left:3px solid var(--muted);padding-left:22px;color:var(--muted);font-size:24px;line-height:1.4;font-style:italic">
+        <span style="font-family:var(--mono);font-style:normal;color:var(--accent);white-space:nowrap;font-size:24px">C++ → C#</span>
+        <span>Первый случай — как передача по указателю, только без <span style="font-family:var(--mono);font-style:normal">*</span> и <span style="font-family:var(--mono);font-style:normal">-&gt;</span>; второй — как обычная структура на стеке. <span style="font-family:var(--mono);font-style:normal">record struct</span> — короткая запись неизменяемой структуры с двумя полями и конструктором; <span style="font-family:var(--mono);font-style:normal">with</span> — копия с изменённым полем.</span>
+      </div>
+    </div>
+  </div>
+  <div style="margin-top:32px;font-size:var(--t-small);color:var(--muted)">Сущности предметной области — классы. Маленькие неизменяемые значения (координата, деньги, идентификатор) — структуры.</div>
+  <div style="margin-top:auto;padding-top:24px;display:flex;justify-content:space-between;font-size:24px;color:var(--muted)"><span>ООП и проектирование · Лекция 1</span><span>1.3</span></div>
+</section>
+
+<section data-label="Карта различий" data-screen-label="17" data-speaker-notes="Не читать целиком — пройти по строкам, которые важны сейчас." style="box-sizing:border-box;padding:var(--pad-t) var(--pad-x) var(--pad-b);background:var(--bg);color:var(--fg);font-family:var(--font);display:flex;flex-direction:column" data-om-slide-id="a998f211">
+  <h2 style="margin:0;font-size:var(--t-title);font-weight:800;letter-spacing:-.02em;line-height:1.05">Карта различий для тех, кто писал на C++</h2>
+  <table style="margin-top:28px;width:100%;border-collapse:collapse;font-size:24px">
+    <thead>
+      <tr style="color:var(--muted);text-align:left">
+        <th style="padding:10px 20px;font-weight:500;border-bottom:1px solid var(--line);width:28%">Было в C++</th>
+        <th style="padding:10px 20px;font-weight:500;border-bottom:1px solid var(--line);width:30%">Стало в C#</th>
+        <th style="padding:10px 20px;font-weight:500;border-bottom:1px solid var(--line)">Комментарий</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td style="padding:8px 20px;font-family:var(--mono);border-bottom:1px solid var(--line)">.h + .cpp</td><td style="padding:8px 20px;font-family:var(--mono);color:var(--accent);border-bottom:1px solid var(--line)">один .cs</td><td style="padding:8px 20px;color:var(--muted);border-bottom:1px solid var(--line)">объявление и реализация вместе</td></tr>
+      <tr><td style="padding:8px 20px;font-family:var(--mono);border-bottom:1px solid var(--line)">#include</td><td style="padding:8px 20px;font-family:var(--mono);color:var(--accent);border-bottom:1px solid var(--line)">using</td><td style="padding:8px 20px;color:var(--muted);border-bottom:1px solid var(--line)">подключаем пространства имён, не файлы</td></tr>
+      <tr><td style="padding:8px 20px;font-family:var(--mono);border-bottom:1px solid var(--line)">main()</td><td style="padding:8px 20px;font-family:var(--mono);color:var(--accent);border-bottom:1px solid var(--line)">Program.cs</td><td style="padding:8px 20px;color:var(--muted);border-bottom:1px solid var(--line)">точка входа; можно писать команды сразу, без main</td></tr>
+      <tr><td style="padding:8px 20px;font-family:var(--mono);border-bottom:1px solid var(--line)">указатели, new/delete</td><td style="padding:8px 20px;font-family:var(--mono);color:var(--accent);border-bottom:1px solid var(--line)">ссылки, new без delete</td><td style="padding:8px 20px;color:var(--muted);border-bottom:1px solid var(--line)">см. предыдущий слайд</td></tr>
+      <tr><td style="padding:8px 20px;font-family:var(--mono);border-bottom:1px solid var(--line)">struct / class</td><td style="padding:8px 20px;font-family:var(--mono);color:var(--accent);border-bottom:1px solid var(--line)">class — ссылочный, struct — значимый</td><td style="padding:8px 20px;color:var(--muted);border-bottom:1px solid var(--line)">см. предыдущий слайд</td></tr>
+      <tr><td style="padding:8px 20px;font-family:var(--mono);border-bottom:1px solid var(--line)">std::string</td><td style="padding:8px 20px;font-family:var(--mono);color:var(--accent);border-bottom:1px solid var(--line)">string</td><td style="padding:8px 20px;color:var(--muted);border-bottom:1px solid var(--line)">неизменяемая</td></tr>
+      <tr><td style="padding:8px 20px;font-family:var(--mono);border-bottom:1px solid var(--line)">std::vector&lt;T&gt;</td><td style="padding:8px 20px;font-family:var(--mono);color:var(--accent);border-bottom:1px solid var(--line)">List&lt;T&gt;</td><td style="padding:8px 20px;color:var(--muted);border-bottom:1px solid var(--line)">и десятки других коллекций в BCL</td></tr>
+      <tr><td style="padding:8px 20px;font-family:var(--mono);border-bottom:1px solid var(--line)">std::cout &lt;&lt;</td><td style="padding:8px 20px;font-family:var(--mono);color:var(--accent);border-bottom:1px solid var(--line)">Console.WriteLine()</td><td style="padding:8px 20px;color:var(--muted);border-bottom:1px solid var(--line)"></td></tr>
+      <tr><td style="padding:8px 20px;border-bottom:1px solid var(--line)">геттеры/сеттеры</td><td style="padding:8px 20px;font-family:var(--mono);color:var(--accent);border-bottom:1px solid var(--line)">свойства { get; set; }</td><td style="padding:8px 20px;color:var(--muted);border-bottom:1px solid var(--line)">разберём в блоке 3</td></tr>
+      <tr><td style="padding:8px 20px;font-family:var(--mono);border-bottom:1px solid var(--line)">virtual</td><td style="padding:8px 20px;font-family:var(--mono);color:var(--accent);border-bottom:1px solid var(--line)">virtual + обязательный override</td><td style="padding:8px 20px;color:var(--muted);border-bottom:1px solid var(--line)">компилятор не даст переопределить молча</td></tr>
+      <tr><td style="padding:8px 20px;border-bottom:1px solid var(--line)">множественное наследование</td><td style="padding:8px 20px;color:var(--accent);border-bottom:1px solid var(--line)">нет; вместо него интерфейсы</td><td style="padding:8px 20px;color:var(--muted);border-bottom:1px solid var(--line)">одна база-класс, сколько угодно интерфейсов</td></tr>
+      <tr><td style="padding:8px 20px;font-family:var(--mono);border-bottom:1px solid var(--line)">auto</td><td style="padding:8px 20px;font-family:var(--mono);color:var(--accent);border-bottom:1px solid var(--line)">var</td><td style="padding:8px 20px;color:var(--muted);border-bottom:1px solid var(--line)"></td></tr>
+      <tr><td style="padding:8px 20px">нет</td><td style="padding:8px 20px;font-family:var(--mono);color:var(--accent)">null и nullable-типы</td><td style="padding:8px 20px;color:var(--muted)">компилятор предупреждает о возможном null</td></tr>
+    </tbody>
+  </table>
+  <div style="margin-top:auto;padding-top:20px;display:flex;justify-content:space-between;font-size:24px;color:var(--muted)"><span>ООП и проектирование · Лекция 1</span><span>1.4</span></div>
+</section>
+
+<section data-label="Проект в Rider" data-screen-label="18" data-speaker-notes="Вставить свой скриншот структуры решения." style="box-sizing:border-box;padding:var(--pad-t) var(--pad-x) var(--pad-b);background:var(--bg);color:var(--fg);font-family:var(--font);display:flex;flex-direction:column" data-om-slide-id="42b50ee6">
+  <h2 style="margin:0;font-size:var(--t-title);font-weight:800;letter-spacing:-.02em;line-height:1.05">Проект в Rider</h2>
+  <div style="margin-top:48px;display:grid;grid-template-columns:1.5fr 1fr;gap:44px;align-items:stretch;flex:1">
+    <div style="border:2px dashed var(--line);border-radius:24px;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:28px;text-align:center;padding:40px">Место под скриншот структуры решения<img src="./pasted-1788561194696-0-mtnj5mag-ccca.png" alt="pasted-1788561194696-0" width="492" height="540" style="max-width: 100%; height: 748px; display: block; position: absolute; left: 263px; top: 203px; z-index: 1; object-fit: cover; width: 682px; aspect-ratio: 619 / 679"></div>
+    <div style="display:flex;flex-direction:column;gap:24px;justify-content:center">
+      <div style="border:1px solid var(--line);border-radius:20px;padding:26px 30px"><span style="font-family:var(--mono);color:var(--accent);font-size:26px">.sln</span><span style="font-size:26px"> — решение</span></div>
+      <div style="border:1px solid var(--line);border-radius:20px;padding:26px 30px"><span style="font-family:var(--mono);color:var(--accent);font-size:26px">.csproj</span><span style="font-size:26px"> — проект</span></div>
+      <div style="border:1px solid var(--line);border-radius:20px;padding:26px 30px"><span style="font-family:var(--mono);color:var(--accent);font-size:26px">Program.cs</span><span style="font-size:26px"> — точка входа</span></div>
+      <div style="border:1px solid var(--line);border-radius:20px;padding:26px 30px"><span style="font-size:26px">класс — отдельный </span><span style="font-family:var(--mono);color:var(--accent);font-size:26px">.cs</span></div>
+      <div style="border:1px solid var(--accent);border-radius:20px;background:var(--accent-soft);padding:26px 30px;font-size:26px;line-height:1.35">Подсветка Rider: неиспользуемое, рефакторинг — ваш первый ревьюер.</div>
+    </div>
+  </div>
+  <div style="margin-top:auto;padding-top:36px;display:flex;justify-content:space-between;font-size:24px;color:var(--muted)"><span>ООП и проектирование · Лекция 1</span><span>1.5</span></div>
+</section>
+
+<section data-label="Парадигма" data-screen-label="19" data-speaker-notes="Определение читать дословно." style="box-sizing:border-box;padding:var(--pad-t) var(--pad-x) var(--pad-b);background:var(--bg);color:var(--fg);font-family:var(--font);display:flex;flex-direction:column" data-om-slide-id="5c54d886">
+  <h2 style="margin:0;font-size:var(--t-title);font-weight:800;letter-spacing:-.02em;line-height:1.05">Парадигма</h2>
+  <p style="margin:24px 0 0;font-size:var(--t-sub);color:var(--muted)">Не «стиль», а ответ на конкретную боль.</p>
+  <div style="margin-top:auto;margin-bottom:auto;border:1px solid var(--accent);border-left:10px solid var(--accent);border-radius:28px;background:var(--accent-soft);padding:56px 60px">
+    <div style="font-size:24px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);margin-bottom:28px">определение</div>
+    <p style="margin:0;font-size:var(--t-def);line-height:1.35;text-wrap:pretty">Парадигма программирования, по факту, это набор концепций и правил, нужных для решения определённого рода проблем, возникающих при разработке.</p>
+  </div>
+  <div style="margin-top:auto;padding-top:36px;display:flex;justify-content:space-between;font-size:24px;color:var(--muted)"><span>ООП и проектирование · Лекция 1</span><span>2.1</span></div>
+</section>
+
+<section data-label="Что вы уже знаете" data-screen-label="20" data-speaker-notes="Структурное и процедурное — обе парадигмы решают свои проблемы." style="box-sizing:border-box;padding:var(--pad-t) var(--pad-x) var(--pad-b);background:var(--bg);color:var(--fg);font-family:var(--font);display:flex;flex-direction:column" data-om-slide-id="834a97d5">
+  <h2 style="margin:0;font-size:var(--t-title);font-weight:800;letter-spacing:-.02em;line-height:1.05">Что вы уже знаете</h2>
+  <div style="margin-top:52px;display:flex;flex-direction:column;gap:32px">
+    <div style="border:1px solid var(--accent);border-left:10px solid var(--accent);border-radius:28px;background:var(--accent-soft);padding:40px 48px">
+      <div style="font-size:24px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);margin-bottom:20px">определение</div>
+      <p style="margin:0;font-size:34px;line-height:1.35;text-wrap:pretty">Структурное программирование – отказ от jump инструкций в коде (оператор <span style="font-family:var(--mono);font-size:31px">goto</span>) в пользу конструкций контроля потока выполнения (<span style="font-family:var(--mono);font-size:31px">if</span>, <span style="font-family:var(--mono);font-size:31px">for</span>, <span style="font-family:var(--mono);font-size:31px">while</span>, итд), направленный на структуризацию кода, для его лучшей читаемости и понимания, оттуда и название.</p>
+    </div>
+    <div style="border:1px solid var(--accent);border-left:10px solid var(--accent);border-radius:28px;background:var(--accent-soft);padding:40px 48px">
+      <div style="font-size:24px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);margin-bottom:20px">определение</div>
+      <p style="margin:0;font-size:34px;line-height:1.35;text-wrap:pretty">Процедурное программирование – разбиение программы на набор отдельных подпрограмм, связанных между собой, направленное на декомпозицию и переиспользование логики.</p>
+    </div>
+  </div>
+  <div style="margin-top:44px;font-size:var(--t-body)">Оба решают свои проблемы — и оставляют одну.</div>
+  <div style="margin-top:auto;padding-top:36px;display:flex;justify-content:space-between;font-size:24px;color:var(--muted)"><span>ООП и проектирование · Лекция 1</span><span>2.2</span></div>
+</section>
+
+<section data-label="Машина состояний" data-screen-label="21" data-speaker-notes="Правила живут в головах — пока людей один, а требований три." style="box-sizing:border-box;padding:var(--pad-t) var(--pad-x) var(--pad-b);background:var(--bg);color:var(--fg);font-family:var(--font);display:flex;flex-direction:column" data-om-slide-id="a69161a4">
+  <h2 style="margin:0;font-size:var(--t-title);font-weight:800;letter-spacing:-.02em;line-height:1.05">Программа — машина состояний</h2>
+  <div style="margin-top:72px;display:grid;grid-template-columns:1.4fr 1fr;gap:64px;align-items:center">
+    <div style="display:flex;flex-direction:column;align-items:center;gap:28px">
+      <div style="display:flex;gap:24px">
+        <span style="border:1px solid var(--line);border-radius:999px;padding:14px 28px;font-size:26px;color:var(--muted)">правило 1</span>
+        <span style="border:1px solid var(--line);border-radius:999px;padding:14px 28px;font-size:26px;color:var(--muted)">правило 2</span>
+        <span style="border:1px solid var(--line);border-radius:999px;padding:14px 28px;font-size:26px;color:var(--muted)">правило 3</span>
+      </div>
+      <div style="display:flex;gap:120px;color:var(--muted);font-size:32px"><span>↓</span><span>↓</span><span>↓</span></div>
+      <div style="border:1px solid var(--accent);border-radius:24px;background:var(--accent-soft);padding:44px 96px;font-size:42px;font-weight:700;color:var(--accent)">данные</div>
+      <div style="display:flex;gap:120px;color:var(--muted);font-size:32px"><span>↑</span><span>↑</span><span>↑</span></div>
+      <div style="display:flex;gap:24px">
+        <span style="border:1px solid var(--line);border-radius:999px;padding:14px 28px;font-size:26px;color:var(--muted)">правило 4</span>
+        <span style="border:1px solid var(--line);border-radius:999px;padding:14px 28px;font-size:26px;color:var(--muted)">правило 5</span>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:28px">
+      <div style="display:flex;gap:20px">
+        <svg width="72" height="72" viewBox="0 0 24 24" fill="none" stroke="#8C8C8C" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+        <svg width="72" height="72" viewBox="0 0 24 24" fill="none" stroke="#8C8C8C" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+      </div>
+      <div style="font-size:var(--t-body);line-height:1.35;color:var(--muted)">Правила живут в голове — пока людей один, а требований три.</div>
+    </div>
+  </div>
+  <div style="margin-top:auto;padding-top:36px;display:flex;justify-content:space-between;font-size:24px;color:var(--muted)"><span>ООП и проектирование · Лекция 1</span><span>2.3</span></div>
+</section>
+
+<section data-label="Инвариант данных" data-screen-label="22" data-speaker-notes="Ключевое понятие лекции. Дальше всё вокруг него." style="box-sizing:border-box;padding:var(--pad-t) var(--pad-x) var(--pad-b);background:var(--bg);color:var(--fg);font-family:var(--font);display:flex;flex-direction:column" data-om-slide-id="64a9f339">
+  <h2 style="margin:0;font-size:var(--t-title);font-weight:800;letter-spacing:-.02em;line-height:1.05">Инвариант данных</h2>
+  <p style="margin:24px 0 0;font-size:var(--t-sub);color:var(--muted)">Ключевое понятие лекции.</p>
+  <div style="margin-top:auto;margin-bottom:auto;border:1px solid var(--accent);border-left:10px solid var(--accent);border-radius:28px;background:var(--accent-soft);padding:56px 60px">
+    <div style="font-size:24px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);margin-bottom:28px">определение</div>
+    <p style="margin:0;font-size:var(--t-def);line-height:1.35;text-wrap:pretty">Инвариант данных – набор корректных состояний данных, определяемый набором бизнес-требований к этим данным.</p>
+  </div>
+  <div style="margin-top:auto;padding-top:36px;display:flex;justify-content:space-between;font-size:24px;color:var(--muted)"><span>ООП и проектирование · Лекция 1</span><span>2.4</span></div>
+</section>
+
+<section data-label="Где живёт правило" data-screen-label="23" data-speaker-notes="Спросить зал: где написали бы проверку? А если функций семь?" style="box-sizing:border-box;padding:var(--pad-t) var(--pad-x) var(--pad-b);background:var(--bg);color:var(--fg);font-family:var(--font);display:flex;flex-direction:column" data-om-slide-id="e3c855ba">
+  <h2 style="margin:0;font-size:var(--t-title);font-weight:800;letter-spacing:-.02em;line-height:1.05">Где живёт правило?</h2>
+  <div style="margin-top:56px;display:grid;grid-template-columns:1.45fr 1fr;gap:40px;align-items:start">
+    <pre style="margin:0;background:var(--panel);border:1px solid var(--line);border-radius:20px;padding:36px 36px;font-family:var(--mono);font-size:24px;line-height:1.455;overflow:hidden"><code><span style="display:block"><span style="color:var(--kw)">struct</span> <span style="color:var(--ty)">Account</span> { <span style="color:var(--kw)">double</span> balance; };</span><span style="display:block;height:.8em"></span><span style="display:block"><span style="color:var(--kw)">void</span> <span style="color:var(--ty)">withdraw</span>(<span style="color:var(--kw)">struct</span> <span style="color:var(--ty)">Account</span>* a, <span style="color:var(--kw)">double</span> amount) {</span><span style="display:block">    a-&gt;balance -= amount;</span><span style="display:block">}</span></code></pre>
+    <div style="display:flex;flex-direction:column;gap:28px;font-size:30px;line-height:1.35">
+      <div>Правило «баланс не отрицательный» нигде не живёт.</div>
+      <div>Любая функция в любом файле: <span style="font-family:var(--mono);font-size:27px;color:var(--warn)">a-&gt;balance = -100</span>.</div>
+      <div>Данные и логика — отдельно.</div>
+    </div>
+  </div>
+  <div style="margin-top:auto;font-size:42px;font-weight:700;line-height:1.25;color:var(--accent)">Где вы написали бы проверку? А если функций, меняющих баланс, семь?</div>
+  <div style="margin-top:48px;padding-top:0;display:flex;justify-content:space-between;font-size:24px;color:var(--muted)"><span>ООП и проектирование · Лекция 1</span><span>2.5</span></div>
+</section>
+
+<section data-label="Инкапсуляция" data-screen-label="24" data-speaker-notes="Данные и поведение вместе — но доступ ещё открыт." style="box-sizing:border-box;padding:var(--pad-t) var(--pad-x) var(--pad-b);background:var(--bg);color:var(--fg);font-family:var(--font);display:flex;flex-direction:column" data-om-slide-id="b2ef74ea">
+  <h2 style="margin:0;font-size:var(--t-title);font-weight:800;letter-spacing:-.02em;line-height:1.05">Инкапсуляция</h2>
+  <div style="margin-top:36px;border:1px solid var(--accent);border-left:10px solid var(--accent);border-radius:28px;background:var(--accent-soft);padding:36px 44px">
+    <div style="font-size:24px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);margin-bottom:18px">определение</div>
+    <p style="margin:0;font-size:36px;line-height:1.3;text-wrap:pretty">Инкапсуляция — её суть заключается в объединении данных и поведений, оперирующих этими данными.</p>
+  </div>
+  <div style="margin-top:36px;display:flex;flex-direction:column;gap:28px">
+    <pre style="margin:0;background:var(--panel);border:1px solid var(--line);border-radius:20px;padding:32px 36px;font-family:var(--mono);font-size:24px;line-height:1.45;overflow:hidden"><code><span style="display:block"><span style="color:var(--kw)">public class</span> <span style="color:var(--ty)">Point</span></span><span style="display:block">{</span><span style="display:block">    <span style="color:var(--kw)">public int</span> _x;</span><span style="display:block">    <span style="color:var(--kw)">public int</span> _y;</span><span style="display:block;height:.8em"></span><span style="display:block">    <span style="color:var(--kw)">public void</span> <span style="color:var(--ty)">MoveBy</span>(<span style="color:var(--kw)">int</span> deltaX, <span style="color:var(--kw)">int</span> deltaY) { _x += deltaX; _y += deltaY; }</span><span style="display:block">}</span></code></pre>
+    <div style="display:flex;gap:18px;align-items:flex-start;border-left:3px solid var(--muted);padding-left:22px;color:var(--muted);font-size:25px;line-height:1.4;font-style:italic">
+      <span style="font-family:var(--mono);font-style:normal;color:var(--accent);white-space:nowrap;font-size:24px">C++ → C#</span>
+      <span><span style="font-family:var(--mono);font-style:normal">public</span> перед классом — видимость типа; тела методов пишутся прямо в классе; <span style="font-family:var(--mono);font-style:normal">_x</span> — принятое в C# именование приватных полей (здесь они пока публичные — намеренно).</span>
+    </div>
+  </div>
+  <div style="margin-top:36px;font-size:var(--t-body)">Ничто не мешает написать <span style="font-family:var(--mono);font-size:29px;color:var(--warn)">point._x = 999</span> мимо <span style="font-family:var(--mono);font-size:29px">MoveBy</span>.</div>
+  <div style="margin-top:auto;padding-top:28px;display:flex;justify-content:space-between;font-size:24px;color:var(--muted)"><span>ООП и проектирование · Лекция 1</span><span>3.1</span></div>
+</section>
+
+<section data-label="Сокрытие" data-screen-label="25" data-speaker-notes="Свойства — главный инструмент сокрытия в C#." style="box-sizing:border-box;padding:var(--pad-t) var(--pad-x) var(--pad-b);background:var(--bg);color:var(--fg);font-family:var(--font);display:flex;flex-direction:column" data-om-slide-id="6817647e">
+  <div style="display:flex;align-items:center;gap:24px">
+    <svg width="46" height="46" viewBox="0 0 24 24" fill="none" stroke="#D0FF14" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+    <h2 style="margin:0;font-size:var(--t-title);font-weight:800;letter-spacing:-.02em;line-height:1.05">Сокрытие</h2>
+  </div>
+  <div style="margin-top:36px;border:1px solid var(--accent);border-left:10px solid var(--accent);border-radius:28px;background:var(--accent-soft);padding:36px 44px">
+    <div style="font-size:24px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);margin-bottom:18px">определение</div>
+    <p style="margin:0;font-size:36px;line-height:1.3;text-wrap:pretty">Сокрытие подразумевает ограничение доступа к каким-либо данным или поведениям.</p>
+  </div>
+  <div style="margin-top:36px;display:flex;flex-direction:column;gap:28px">
+    <pre style="margin:0;background:var(--panel);border:1px solid var(--line);border-radius:20px;padding:32px 0;font-family:var(--mono);font-size:24px;line-height:1.45;overflow:hidden"><code><span style="display:block;padding:0 36px"><span style="color:var(--kw)">public class</span> <span style="color:var(--ty)">Point</span></span><span style="display:block;padding:0 36px">{</span><span style="display:block;padding:0 36px;background:rgba(208,255,20,.12)">    <span style="color:var(--kw)">public int</span> X { <span style="color:var(--kw)">get</span>; <span style="color:var(--kw)">private set</span>; }</span><span style="display:block;padding:0 36px;background:rgba(208,255,20,.12)">    <span style="color:var(--kw)">public int</span> Y { <span style="color:var(--kw)">get</span>; <span style="color:var(--kw)">private set</span>; }</span><span style="display:block;padding:0 36px;height:.8em"></span><span style="display:block;padding:0 36px">    <span style="color:var(--kw)">public void</span> <span style="color:var(--ty)">MoveBy</span>(<span style="color:var(--kw)">int</span> deltaX, <span style="color:var(--kw)">int</span> deltaY) { X += deltaX; Y += deltaY; }</span><span style="display:block;padding:0 36px">}</span></code></pre>
+    <div style="display:flex;gap:18px;align-items:flex-start;border-left:3px solid var(--muted);padding-left:22px;color:var(--muted);font-size:25px;line-height:1.4;font-style:italic">
+      <span style="font-family:var(--mono);font-style:normal;color:var(--accent);white-space:nowrap;font-size:24px">C++ → C#</span>
+      <span><span style="font-family:var(--mono);font-style:normal">{ get; private set; }</span> — свойство: снаружи выглядит как поле (<span style="font-family:var(--mono);font-style:normal">point.X</span>), внутри — пара методов. Читать могут все, писать — только сам класс. Это замена паре <span style="font-family:var(--mono);font-style:normal">getX()</span> / <span style="font-family:var(--mono);font-style:normal">setX()</span> и главный инструмент сокрытия в C#.</span>
+    </div>
+  </div>
+  <div style="margin-top:auto;padding-top:28px;display:flex;justify-content:space-between;font-size:24px;color:var(--muted)"><span>ООП и проектирование · Лекция 1</span><span>3.2</span></div>
+</section>
+
+<section data-label="Друг без друга не работают" data-screen-label="26" data-speaker-notes="Инкапсуляция и сокрытие по отдельности бесполезны." style="box-sizing:border-box;padding:var(--pad-t) var(--pad-x) var(--pad-b);background:var(--bg);color:var(--fg);font-family:var(--font);display:flex;flex-direction:column" data-om-slide-id="d077797e">
+  <h2 style="margin:0;font-size:var(--t-title);font-weight:800;letter-spacing:-.02em;line-height:1.05">Друг без друга не работают</h2>
+  <div style="margin-top:56px;display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start">
+    <div style="display:flex;flex-direction:column;gap:24px;opacity:.72">
+      <div style="font-size:32px;font-weight:700">Инкапсуляция без сокрытия</div>
+      <pre style="margin:0;background:var(--panel);border:1px solid var(--line);border-radius:20px;padding:30px 34px;font-family:var(--mono);font-size:26px;line-height:1.5;overflow:hidden"><code><span style="display:block"><span style="color:var(--kw)">public class</span> <span style="color:var(--ty)">Point</span></span><span style="display:block">{</span><span style="display:block">    <span style="color:var(--kw)">public int</span> _x;</span><span style="display:block">    <span style="color:var(--kw)">public int</span> _y;</span><span style="display:block;height:.8em"></span><span style="display:block">    <span style="color:var(--kw)">public void</span> <span style="color:var(--ty)">MoveBy</span>(<span style="color:var(--kw)">int</span> dX, <span style="color:var(--kw)">int</span> dY)</span><span style="display:block">    { _x += dX; _y += dY; }</span><span style="display:block">}</span></code></pre>
+      <div style="font-size:26px;color:var(--muted)">Данные можно менять мимо методов.</div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:24px;opacity:.72">
+      <div style="font-size:32px;font-weight:700">Сокрытие без инкапсуляции</div>
+      <pre style="margin:0;background:var(--panel);border:1px solid var(--line);border-radius:20px;padding:30px 34px;font-family:var(--mono);font-size:26px;line-height:1.5;overflow:hidden"><code><span style="display:block"><span style="color:var(--kw)">public class</span> <span style="color:var(--ty)">Point</span></span><span style="display:block">{</span><span style="display:block">    <span style="color:var(--kw)">private int</span> _x;</span><span style="display:block">    <span style="color:var(--kw)">private int</span> _y;</span><span style="display:block">}</span></code></pre>
+      <div style="font-size:26px;color:var(--muted)">Данные есть, сделать с ними ничего нельзя.</div>
+    </div>
+  </div>
+  <div style="margin-top:56px;font-size:46px;font-weight:800;color:var(--accent)">Вместе — абстракция.</div>
+  <div style="margin-top:auto;padding-top:28px;display:flex;justify-content:space-between;font-size:24px;color:var(--muted)"><span>ООП и проектирование · Лекция 1</span><span>3.3</span></div>
+</section>
+
+<section data-label="Абстракция" data-screen-label="27" data-speaker-notes="Длинное определение — читать дословно, медленно." style="box-sizing:border-box;padding:var(--pad-t) var(--pad-x) var(--pad-b);background:var(--bg);color:var(--fg);font-family:var(--font);display:flex;flex-direction:column" data-om-slide-id="254763eb">
+  <h2 style="margin:0;font-size:var(--t-title);font-weight:800;letter-spacing:-.02em;line-height:1.05">Абстракция</h2>
+  <div style="margin-top:36px;border:1px solid var(--accent);border-left:10px solid var(--accent);border-radius:28px;background:var(--accent-soft);padding:44px 52px">
+    <div style="font-size:24px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);margin-bottom:22px">определение</div>
+    <p style="margin:0;font-size:35px;line-height:1.35;text-wrap:pretty">Абстракция представляет собой чёрный ящик для её разработчика-потребителя, в том смысле, что её реализация для него недоступна, скрыта, он не обязательно знает какие именно данные используются для достижения поведений, предоставляемых абстракцией, так же, не может повлиять на эти данные напрямую, лишь через предоставленные поведения, отражающие определённые бизнес правила.</p>
+  </div>
+  <div style="margin-top:36px;display:flex;flex-direction:column;gap:28px">
+    <pre style="margin:0;background:var(--panel);border:1px solid var(--line);border-radius:20px;padding:28px 34px;font-family:var(--mono);font-size:26px;line-height:1.5;overflow:hidden"><code><span style="color:var(--kw)">public double</span> DistanceFromStart =&gt; <span style="color:var(--ty)">Math</span>.<span style="color:var(--ty)">Sqrt</span>(X * X + Y * Y);</code></pre>
+    <div style="display:flex;gap:18px;align-items:flex-start;border-left:3px solid var(--muted);padding-left:22px;color:var(--muted);font-size:25px;line-height:1.4;font-style:italic">
+      <span style="font-family:var(--mono);font-style:normal;color:var(--accent);white-space:nowrap;font-size:24px">C++ → C#</span>
+      <span><span style="font-family:var(--mono);font-style:normal">=&gt;</span> — метод/свойство из одного выражения; снаружи неотличимо от хранимого свойства. Потребителю всё равно — и в этом смысл.</span>
+    </div>
+  </div>
+  <div style="margin-top:auto;padding-top:28px;display:flex;justify-content:space-between;font-size:24px;color:var(--muted)"><span>ООП и проектирование · Лекция 1</span><span>3.4</span></div>
+</section>
+
+<section data-label="Account" data-screen-label="28" data-speaker-notes="Решение проблемы со слайда 23. Исключение не бросаем." style="box-sizing:border-box;padding:var(--pad-t) var(--pad-x) var(--pad-b);background:var(--bg);color:var(--fg);font-family:var(--font);display:flex;flex-direction:column" data-om-slide-id="8031dafd">
+  <h2 style="margin:0;font-size:var(--t-title);font-weight:800;letter-spacing:-.02em;line-height:1.05">Account: правило живёт в одном месте</h2>
+  <div style="margin-top:48px;display:flex;flex-direction:column;gap:28px">
+    <pre style="margin:0;background:var(--panel);border:1px solid var(--line);border-radius:20px;padding:32px 0;font-family:var(--mono);font-size:24px;line-height:1.45;overflow:hidden"><code><span style="display:block;padding:0 36px"><span style="color:var(--kw)">public class</span> <span style="color:var(--ty)">Account</span></span><span style="display:block;padding:0 36px">{</span><span style="display:block;padding:0 36px">    <span style="color:var(--kw)">public</span> <span style="color:var(--ty)">Account</span>(<span style="color:var(--kw)">double</span> initialBalance) { Balance = initialBalance; }</span><span style="display:block;padding:0 36px;height:.8em"></span><span style="display:block;padding:0 36px;background:rgba(208,255,20,.12)">    <span style="color:var(--kw)">public double</span> Balance { <span style="color:var(--kw)">get</span>; <span style="color:var(--kw)">private set</span>; }</span><span style="display:block;padding:0 36px;height:.8em"></span><span style="display:block;padding:0 36px">    <span style="color:var(--kw)">public bool</span> <span style="color:var(--ty)">Withdraw</span>(<span style="color:var(--kw)">double</span> amount)</span><span style="display:block;padding:0 36px">    {</span><span style="display:block;padding:0 36px;background:rgba(208,255,20,.12)">        <span style="color:var(--kw)">if</span> (amount &gt; Balance) <span style="color:var(--kw)">return false</span>;</span><span style="display:block;padding:0 36px;height:.8em"></span><span style="display:block;padding:0 36px">        Balance -= amount;</span><span style="display:block;padding:0 36px">        <span style="color:var(--kw)">return true</span>;</span><span style="display:block;padding:0 36px">    }</span><span style="display:block;padding:0 36px">}</span></code></pre>
+    <div style="display:flex;flex-direction:row;gap:44px;font-size:28px;line-height:1.35">
+      <div>Правило в одном месте — обойти нельзя.</div>
+      <div>Исключение не бросаем: это ошибка бизнес-логики, а не программиста (Don't 22).</div>
+      <div style="color:var(--accent)">Это и есть решение проблемы со слайда 23.</div>
+    </div>
+  </div>
+  <div style="margin-top:auto;padding-top:28px;display:flex;justify-content:space-between;font-size:24px;color:var(--muted)"><span>ООП и проектирование · Лекция 1</span><span>3.5</span></div>
+</section>
+
+<section data-label="Типы и композиция" data-screen-label="29" data-speaker-notes="Point из двух int — уже композиция." style="box-sizing:border-box;padding:var(--pad-t) var(--pad-x) var(--pad-b);background:var(--bg);color:var(--fg);font-family:var(--font);display:flex;flex-direction:column" data-om-slide-id="53fd3d5a">
+  <h2 style="margin:0;font-size:var(--t-title);font-weight:800;letter-spacing:-.02em;line-height:1.05">Типы и композиция</h2>
+  <p style="margin:24px 0 0;font-size:34px;color:var(--muted)"><span style="font-family:var(--mono);font-size:31px">Point</span> мы уже собрали из двух <span style="font-family:var(--mono);font-size:31px">int</span> — это композиция.</p>
+  <div style="margin-top:auto;margin-bottom:auto;border:1px solid var(--accent);border-left:10px solid var(--accent);border-radius:28px;background:var(--accent-soft);padding:52px 60px">
+    <div style="font-size:24px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);margin-bottom:26px">определение</div>
+    <p style="margin:0;font-size:var(--t-def);line-height:1.35;text-wrap:pretty">Композиция — создание одних типов, на основе других, используя хранение их данных, как непосредственную часть описываемого объекта (композитный – состоящий из нескольких частей).</p>
+  </div>
+  <div style="font-size:var(--t-body)">Два вида — по тому, откуда берутся значения.</div>
+  <div style="margin-top:44px;display:flex;justify-content:space-between;font-size:24px;color:var(--muted)"><span>ООП и проектирование · Лекция 1</span><span>4.1</span></div>
+</section>
+
+<section data-label="Агрегация" data-screen-label="30" data-speaker-notes="Значения приходят извне, время жизни не привязано." style="box-sizing:border-box;padding:var(--pad-t) var(--pad-x) var(--pad-b);background:var(--bg);color:var(--fg);font-family:var(--font);display:flex;flex-direction:column" data-om-slide-id="055afd17">
+  <h2 style="margin:0;font-size:var(--t-title);font-weight:800;letter-spacing:-.02em;line-height:1.05">Агрегация</h2>
+  <div style="margin-top:36px;border:1px solid var(--accent);border-left:10px solid var(--accent);border-radius:28px;background:var(--accent-soft);padding:40px 48px">
+    <div style="font-size:24px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);margin-bottom:20px">определение</div>
+    <p style="margin:0;font-size:36px;line-height:1.32;text-wrap:pretty">При агрегирующей композиции, значения получаются извне, их время жизни никак не привязано к объекту, частью которого они являются.</p>
+  </div>
+  <div style="margin-top:48px;display:flex;flex-direction:column;gap:28px">
+    <pre style="margin:0;background:var(--panel);border:1px solid var(--line);border-radius:20px;padding:32px 36px;font-family:var(--mono);font-size:24px;line-height:1.45;overflow:hidden"><code><span style="display:block"><span style="color:var(--kw)">public</span> <span style="color:var(--ty)">Point</span>(<span style="color:var(--kw)">int</span> x, <span style="color:var(--kw)">int</span> y) { X = x; Y = y; }</span><span style="display:block;height:.8em"></span><span style="display:block"><span style="color:var(--kw)">var</span> point = <span style="color:var(--kw)">new</span> <span style="color:var(--ty)">Point</span>(420, 69);</span></code></pre>
+    <div style="display:flex;gap:18px;align-items:flex-start;border-left:3px solid var(--muted);padding-left:22px;color:var(--muted);font-size:25px;line-height:1.4;font-style:italic">
+      <span style="font-family:var(--mono);font-style:normal;color:var(--accent);white-space:nowrap;font-size:24px">C++ → C#</span>
+      <span>Конструктор без списка инициализации, присваиваем в теле; <span style="font-family:var(--mono);font-style:normal">var</span> = <span style="font-family:var(--mono);font-style:normal">auto</span>.</span>
+    </div>
+  </div>
+  <div style="margin-top:auto;padding-top:36px;display:flex;justify-content:space-between;font-size:24px;color:var(--muted)"><span>ООП и проектирование · Лекция 1</span><span>4.2</span></div>
+</section>
+
+<section data-label="Ассоциация" data-screen-label="31" data-speaker-notes="Значение создаётся внутри — владение и ответственность." style="box-sizing:border-box;padding:var(--pad-t) var(--pad-x) var(--pad-b);background:var(--bg);color:var(--fg);font-family:var(--font);display:flex;flex-direction:column" data-om-slide-id="f2c1a20d">
+  <h2 style="margin:0;font-size:var(--t-title);font-weight:800;letter-spacing:-.02em;line-height:1.05">Ассоциация</h2>
+  <div style="margin-top:28px;border:1px solid var(--accent);border-left:10px solid var(--accent);border-radius:28px;background:var(--accent-soft);padding:26px 44px">
+    <div style="font-size:24px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);margin-bottom:14px">определение</div>
+    <p style="margin:0;font-size:31px;line-height:1.3;text-wrap:pretty">При ассоциативной композиции значения создаются непосредственно при инициализации объекта, соответственно, время жизни таких объектов привязано к объекту, частью которого они являются.</p>
+  </div>
+  <div style="margin-top:28px;display:grid;grid-template-columns:1.7fr 1fr;gap:36px;align-items:start">
+    <pre style="margin:0;background:var(--panel);border:1px solid var(--line);border-radius:20px;padding:20px 0;font-family:var(--mono);font-size:24px;line-height:1.32;overflow:hidden"><code><span style="display:block;padding:0 34px"><span style="color:var(--kw)">public class</span> <span style="color:var(--ty)">ImmutablePoint</span></span><span style="display:block;padding:0 34px">{</span><span style="display:block;padding:0 34px">    <span style="color:var(--kw)">public</span> <span style="color:var(--ty)">ImmutablePoint</span>(<span style="color:var(--kw)">int</span> x, <span style="color:var(--kw)">int</span> y)</span><span style="display:block;padding:0 34px">    {</span><span style="display:block;padding:0 34px">        X = x;</span><span style="display:block;padding:0 34px">        Y = y;</span><span style="display:block;padding:0 34px;background:rgba(208,255,20,.12)">        DistanceFromStart = <span style="color:var(--ty)">Math</span>.<span style="color:var(--ty)">Sqrt</span>(x * x + y * y);</span><span style="display:block;padding:0 34px">    }</span><span style="display:block;padding:0 34px;height:.8em"></span><span style="display:block;padding:0 34px">    <span style="color:var(--kw)">public int</span> X { <span style="color:var(--kw)">get</span>; }</span><span style="display:block;padding:0 34px">    <span style="color:var(--kw)">public int</span> Y { <span style="color:var(--kw)">get</span>; }</span><span style="display:block;padding:0 34px">    <span style="color:var(--kw)">public double</span> DistanceFromStart { <span style="color:var(--kw)">get</span>; }</span><span style="display:block;padding:0 34px">}</span></code></pre>
+    <div style="display:flex;gap:18px;align-items:flex-start;border-left:3px solid var(--muted);padding-left:22px;color:var(--muted);font-size:25px;line-height:1.4;font-style:italic">
+      <span style="font-family:var(--mono);font-style:normal;color:var(--accent);white-space:nowrap;font-size:24px">C++ → C#</span>
+      <span><span style="font-family:var(--mono);font-style:normal">{ get; }</span> без <span style="font-family:var(--mono);font-style:normal">set</span> — присвоить можно только в конструкторе; получаем неизменяемый объект без <span style="font-family:var(--mono);font-style:normal">const</span> на каждом поле.</span>
+    </div>
+  </div>
+  <div style="margin-top:20px;font-size:27px;color:var(--muted);line-height:1.3">Выбор между агрегацией и ассоциацией — уже проектное решение: кто владеет значением и отвечает за его корректность?</div>
+  <div style="margin-top:auto;padding-top:20px;display:flex;justify-content:space-between;font-size:24px;color:var(--muted)"><span>ООП и проектирование · Лекция 1</span><span>4.3</span></div>
+</section>
+
+<section data-label="Полиморфизм подтипов" data-screen-label="32" data-speaker-notes="Потребитель знает только абстракцию." style="box-sizing:border-box;padding:var(--pad-t) var(--pad-x) var(--pad-b);background:var(--bg);color:var(--fg);font-family:var(--font);display:flex;flex-direction:column" data-om-slide-id="fbfbe678">
+  <h2 style="margin:0;font-size:var(--t-title);font-weight:800;letter-spacing:-.02em;line-height:1.05">Полиморфизм подтипов</h2>
+  <p style="margin:24px 0 0;font-size:32px;color:var(--muted);line-height:1.35;max-width:1500px">Одна абстракция, несколько реализаций; код, работающий с абстракцией, не знает, какая реализация ему досталась.</p>
+  <div style="margin-top:44px;display:grid;grid-template-columns:1.1fr 1fr;gap:56px;align-items:center">
+    <div style="border:1px solid var(--accent);border-left:10px solid var(--accent);border-radius:28px;background:var(--accent-soft);padding:40px 48px">
+      <div style="font-size:24px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);margin-bottom:20px">определение</div>
+      <p style="margin:0;font-size:36px;line-height:1.32;text-wrap:pretty">Полиморфизм — его суть заключается в отделении поведения абстракции от его реализаций.</p>
+    </div>
+    <div style="display:flex;gap:28px;align-items:center">
+      <div style="display:flex;flex-direction:column;align-items:center;gap:14px">
+        <div style="border:1px solid var(--line);border-radius:18px;padding:22px 26px;font-size:26px;color:var(--muted);text-align:center">код-потребитель</div>
+        <div style="color:var(--muted);font-size:28px">→</div>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:16px">
+        <div style="border:1px solid var(--accent);border-radius:18px;padding:22px 34px;font-size:28px;color:var(--accent)">абстракция</div>
+        <div style="color:var(--muted);font-size:28px">↓</div>
+        <div style="display:flex;gap:18px">
+          <div style="border:1px solid var(--line);border-radius:18px;padding:20px 24px;font-size:25px">реализация 1</div>
+          <div style="border:1px solid var(--line);border-radius:18px;padding:20px 24px;font-size:25px">реализация 2</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div style="margin-top:auto;padding-top:36px;display:flex;justify-content:space-between;font-size:24px;color:var(--muted)"><span>ООП и проектирование · Лекция 1</span><span>5.1</span></div>
+</section>
+
+<section data-label="Интерфейс" data-screen-label="33" data-speaker-notes="Пример учебный. Префикс I — соглашение." style="box-sizing:border-box;padding:var(--pad-t) var(--pad-x) var(--pad-b);background:var(--bg);color:var(--fg);font-family:var(--font);display:flex;flex-direction:column" data-om-slide-id="f4c06c01">
+  <h2 style="margin:0;font-size:var(--t-title);font-weight:800;letter-spacing:-.02em;line-height:1.05">Интерфейс</h2>
+  <div style="margin-top:48px;display:flex;flex-direction:column;gap:28px">
+    <pre style="margin:0;background:var(--panel);border:1px solid var(--line);border-radius:20px;padding:32px 36px;font-family:var(--mono);font-size:24px;line-height:1.45;overflow:hidden"><code><span style="display:block"><span style="color:var(--kw)">public interface</span> <span style="color:var(--ty)">IPoint</span></span><span style="display:block">{</span><span style="display:block">    <span style="color:var(--kw)">int</span> X { <span style="color:var(--kw)">get</span>; }</span><span style="display:block">    <span style="color:var(--kw)">int</span> Y { <span style="color:var(--kw)">get</span>; }</span><span style="display:block">    <span style="color:var(--kw)">double</span> DistanceFromStart { <span style="color:var(--kw)">get</span>; }</span><span style="display:block">}</span><span style="display:block;height:.8em"></span><span style="display:block"><span style="color:var(--kw)">public class</span> <span style="color:var(--ty)">Point</span> : <span style="color:var(--ty)">IPoint</span> { <span style="color:var(--cm)">/* как выше, + MoveBy */</span> }</span><span style="display:block"><span style="color:var(--kw)">public class</span> <span style="color:var(--ty)">ImmutablePoint</span> : <span style="color:var(--ty)">IPoint</span> { <span style="color:var(--cm)">/* как выше */</span> }</span></code></pre>
+    <div style="display:flex;gap:18px;align-items:flex-start;border-left:3px solid var(--muted);padding-left:22px;color:var(--muted);font-size:25px;line-height:1.4;font-style:italic">
+      <span style="font-family:var(--mono);font-style:normal;color:var(--accent);white-space:nowrap;font-size:24px">C++ → C#</span>
+      <span><span style="font-family:var(--mono);font-style:normal">interface</span> — как класс из одних чисто виртуальных методов, но отдельная конструкция; <span style="font-family:var(--mono);font-style:normal">: IPoint</span> — «реализует»; реализовать можно сколько угодно интерфейсов. Префикс <span style="font-family:var(--mono);font-style:normal">I</span> — соглашение.</span>
+    </div>
+  </div>
+  <div style="margin-top:44px;font-size:var(--t-small);color:var(--muted)">Пример учебный: в реальности для модели вроде точки абстракцию не выделяют.</div>
+  <div style="margin-top:auto;padding-top:28px;display:flex;justify-content:space-between;font-size:24px;color:var(--muted)"><span>ООП и проектирование · Лекция 1</span><span>5.2</span></div>
+</section>
+
+<section data-label="Два вида наследования" data-screen-label="34" data-speaker-notes="Реализация интерфейсов и наследование классов — разные вещи." style="box-sizing:border-box;padding:var(--pad-t) var(--pad-x) var(--pad-b);background:var(--bg);color:var(--fg);font-family:var(--font);display:flex;flex-direction:column" data-om-slide-id="fbb8ff0b">
+  <h2 style="margin:0;font-size:var(--t-title);font-weight:800;letter-spacing:-.02em;line-height:1.05">Два вида наследования</h2>
+  <div style="margin-top:56px;display:grid;grid-template-columns:1fr 1fr;gap:40px">
+    <div style="border:1px solid var(--accent);border-left:10px solid var(--accent);border-radius:28px;background:var(--accent-soft);padding:40px 44px">
+      <div style="font-size:24px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);margin-bottom:20px">определение · реализация</div>
+      <p style="margin:0;font-size:32px;line-height:1.35;text-wrap:pretty">Реализация (наследование поведений) – используются интерфейсы, в C# реализовывать интерфейсы могут как классы, так и структуры. Говорят, что тип реализует интерфейс (класс <span style="font-family:var(--mono);font-size:29px">Point</span> реализует интерфейс <span style="font-family:var(--mono);font-size:29px">IPoint</span>).</p>
+    </div>
+    <div style="border:1px solid var(--accent);border-left:10px solid var(--accent);border-radius:28px;background:var(--accent-soft);padding:40px 44px">
+      <div style="font-size:24px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);margin-bottom:20px">определение · наследование</div>
+      <p style="margin:0;font-size:32px;line-height:1.35;text-wrap:pretty">Наследование (наследование реализаций) – используются классы, в C# одна структура не может быть унаследована от другой, либо от класса. Говорят, что класс является наследником другого класса, либо же его подклассом (класс <span style="font-family:var(--mono);font-size:29px">Cat</span> является наследником класса <span style="font-family:var(--mono);font-size:29px">Animal</span>).</p>
+    </div>
+  </div>
+  <div style="margin-top:auto;padding-top:36px;display:flex;justify-content:space-between;font-size:24px;color:var(--muted)"><span>ООП и проектирование · Лекция 1</span><span>5.3</span></div>
+</section>
+
+<section data-label="Наследование реализации" data-screen-label="35" data-speaker-notes="override обязателен — компилятор не даст спрятать метод молча." style="box-sizing:border-box;padding:var(--pad-t) var(--pad-x) var(--pad-b);background:var(--bg);color:var(--fg);font-family:var(--font);display:flex;flex-direction:column" data-om-slide-id="96b59afa">
+  <h2 style="margin:0;font-size:var(--t-title);font-weight:800;letter-spacing:-.02em;line-height:1.05">Наследование реализации</h2>
+  <div style="margin-top:44px;display:flex;flex-direction:column;gap:28px">
+    <pre style="margin:0;background:var(--panel);border:1px solid var(--line);border-radius:20px;padding:30px 0;font-family:var(--mono);font-size:26px;line-height:1.5;overflow:hidden"><code><span style="display:block;padding:0 34px"><span style="color:var(--kw)">public class</span> <span style="color:var(--ty)">Animal</span></span><span style="display:block;padding:0 34px">{</span><span style="display:block;padding:0 34px">    <span style="color:var(--kw)">public</span> <span style="color:var(--ty)">Animal</span>(<span style="color:var(--kw)">string</span> name) { Name = name; }</span><span style="display:block;padding:0 34px">    <span style="color:var(--kw)">public string</span> Name { <span style="color:var(--kw)">get</span>; }</span><span style="display:block;padding:0 34px;background:rgba(208,255,20,.12)">    <span style="color:var(--kw)">public virtual void</span> <span style="color:var(--ty)">Voice</span>() =&gt; <span style="color:var(--ty)">Console</span>.<span style="color:var(--ty)">WriteLine</span>(<span style="color:var(--st)">"I am an animal!"</span>);</span><span style="display:block;padding:0 34px">}</span><span style="display:block;padding:0 34px;height:.8em"></span><span style="display:block;padding:0 34px"><span style="color:var(--kw)">public class</span> <span style="color:var(--ty)">Cat</span> : <span style="color:var(--ty)">Animal</span></span><span style="display:block;padding:0 34px">{</span><span style="display:block;padding:0 34px;background:rgba(208,255,20,.12)">    <span style="color:var(--kw)">public</span> <span style="color:var(--ty)">Cat</span>(<span style="color:var(--kw)">string</span> name) : <span style="color:var(--kw)">base</span>(name) { }</span><span style="display:block;padding:0 34px;background:rgba(208,255,20,.12)">    <span style="color:var(--kw)">public override void</span> <span style="color:var(--ty)">Voice</span>() =&gt; <span style="color:var(--ty)">Console</span>.<span style="color:var(--ty)">WriteLine</span>(<span style="color:var(--st)">"Meow!"</span>);</span><span style="display:block;padding:0 34px">}</span></code></pre>
+    <div style="display:flex;gap:18px;align-items:flex-start;border-left:3px solid var(--muted);padding-left:22px;color:var(--muted);font-size:25px;line-height:1.4;font-style:italic">
+      <span style="font-family:var(--mono);font-style:normal;color:var(--accent);white-space:nowrap;font-size:24px">C++ → C#</span>
+      <span><span style="font-family:var(--mono);font-style:normal">virtual</span> знаком; <span style="font-family:var(--mono);font-style:normal">override</span> обязателен — без него компилятор скажет, что вы прячете метод, а не переопределяете; <span style="font-family:var(--mono);font-style:normal">: base(name)</span> — вызов конструктора родителя, как в списке инициализации. <span style="font-family:var(--mono);font-style:normal">abstract</span> — класс/метод без реализации, как чисто виртуальный.</span>
+    </div>
+  </div>
+  <div style="margin-top:auto;padding-top:28px;display:flex;justify-content:space-between;font-size:24px;color:var(--muted)"><span>ООП и проектирование · Лекция 1</span><span>5.4</span></div>
+</section>
+
+<section data-label="Объект" data-screen-label="36" data-speaker-notes="Теперь определение объекта собирается из уже введённых понятий." style="box-sizing:border-box;padding:var(--pad-t) var(--pad-x) var(--pad-b);background:var(--bg);color:var(--fg);font-family:var(--font);display:flex;flex-direction:column" data-om-slide-id="b520bf9c">
+  <h2 style="margin:0;font-size:var(--t-title);font-weight:800;letter-spacing:-.02em;line-height:1.05">Объект</h2>
+  <p style="margin:24px 0 0;font-size:var(--t-sub);color:var(--muted)">Теперь можно сформулировать.</p>
+  <div style="margin-top:auto;margin-bottom:auto;border:1px solid var(--accent);border-left:10px solid var(--accent);border-radius:28px;background:var(--accent-soft);padding:56px 60px">
+    <div style="font-size:24px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);margin-bottom:28px">определение</div>
+    <p style="margin:0;font-size:var(--t-def);line-height:1.35;text-wrap:pretty">Объект, является набором атрибутов и поведений, реализация и данные которого сокрыта от конечного пользователя объекта. Фактически, объект является абстракцией, представляющий какой-то объект моделируемой предметной области.</p>
+  </div>
+  <div style="margin-top:auto;padding-top:36px;display:flex;justify-content:space-between;font-size:24px;color:var(--muted)"><span>ООП и проектирование · Лекция 1</span><span>5.5</span></div>
+</section>
+
+<section data-label="Наследование — механизм полиморфизма" data-screen-label="37" data-speaker-notes="Главный тезис блока 6." style="box-sizing:border-box;padding:var(--pad-t) var(--pad-x) var(--pad-b);background:var(--bg);color:var(--fg);font-family:var(--font);display:flex;flex-direction:column;justify-content:center" data-om-slide-id="c3a18ec8">
+  <h2 style="margin:0;font-size:76px;font-weight:900;letter-spacing:-.025em;line-height:1.1;max-width:1560px">Наследование — не способ переиспользовать код, а механизм полиморфизма</h2>
+  <p style="margin:48px 0 0;font-size:var(--t-sub);color:var(--muted);line-height:1.3">Самая частая ошибка проектирования — перепутать одно с другим.</p>
+  <div style="margin-top:auto;padding-top:36px;display:flex;justify-content:space-between;font-size:24px;color:var(--muted)"><span>ООП и проектирование · Лекция 1</span><span>6.1</span></div>
+</section>
+
+<section data-label="Антипример" data-screen-label="38" data-speaker-notes="Спросить зал: дилер — это колода? Дать паузу." style="box-sizing:border-box;padding:var(--pad-t) var(--pad-x) var(--pad-b);background:var(--bg);color:var(--fg);font-family:var(--font);display:flex;flex-direction:column" data-om-slide-id="83fa9f90">
+  <h2 style="margin:0;font-size:var(--t-title);font-weight:800;letter-spacing:-.02em;line-height:1.05">Антипример из реальной лабораторной</h2>
+  <div style="margin-top:36px;display:flex;flex-direction:column;gap:28px">
+    <pre style="margin:0;background:var(--panel);border:1px solid var(--line);border-radius:20px;padding:28px 0;font-family:var(--mono);font-size:25px;line-height:1.5;overflow:hidden"><code><span style="display:block;padding:0 32px"><span style="color:var(--kw)">public class</span> <span style="color:var(--ty)">Deck</span></span><span style="display:block;padding:0 32px">{</span><span style="display:block;padding:0 32px">    <span style="color:var(--kw)">public</span> <span style="color:var(--ty)">Deck</span>(<span style="color:var(--ty)">IReadOnlyCollection</span>&lt;<span style="color:var(--ty)">Card</span>&gt; cards) { Cards = cards; }</span><span style="display:block;padding:0 32px">    <span style="color:var(--kw)">public</span> <span style="color:var(--ty)">IReadOnlyCollection</span>&lt;<span style="color:var(--ty)">Card</span>&gt; Cards { <span style="color:var(--kw)">get</span>; }</span><span style="display:block;padding:0 32px">    <span style="color:var(--kw)">public void</span> <span style="color:var(--ty)">Shuffle</span>() { <span style="color:var(--cm)">/* ... */</span> }</span><span style="display:block;padding:0 32px">}</span><span style="display:block;padding:0 32px;height:.8em"></span><span style="display:block;padding:0 32px;background:rgba(249,63,55,.16)"><span style="color:var(--kw)">public class</span> <span style="color:var(--ty)">Dealer</span> : <span style="color:var(--ty)">Deck</span></span><span style="display:block;padding:0 32px">{</span><span style="display:block;padding:0 32px">    <span style="color:var(--kw)">public</span> <span style="color:var(--ty)">Dealer</span>(<span style="color:var(--ty)">IReadOnlyCollection</span>&lt;<span style="color:var(--ty)">Card</span>&gt; cards) : <span style="color:var(--kw)">base</span>(cards) { }</span><span style="display:block;padding:0 32px">    <span style="color:var(--kw)">public void</span> <span style="color:var(--ty)">StartGame</span>() { <span style="color:var(--cm)">/* ... */</span> <span style="color:var(--ty)">Shuffle</span>(); <span style="color:var(--cm)">/* ... */</span> }</span><span style="display:block;padding:0 32px">}</span></code></pre>
+    <div style="display:flex;gap:18px;align-items:flex-start;border-left:3px solid var(--muted);padding-left:22px;color:var(--muted);font-size:25px;line-height:1.4;font-style:italic">
+      <span style="font-family:var(--mono);font-style:normal;color:var(--accent);white-space:nowrap;font-size:24px">C++ → C#</span>
+      <span><span style="font-family:var(--mono);font-style:normal">IReadOnlyCollection&lt;Card&gt;</span> — коллекция только для чтения, обобщённый тип как шаблон.</span>
+    </div>
+  </div>
+  <div style="margin-top:auto;font-size:56px;font-weight:800;color:var(--warn)">Дилер — это колода?</div>
+  <div style="margin-top:44px;display:flex;justify-content:space-between;font-size:24px;color:var(--muted)"><span>ООП и проектирование · Лекция 1</span><span>6.2</span></div>
+</section>
+
+<section data-label="is a / has a" data-screen-label="39" data-speaker-notes="Сомневаешься — композиция. Это тема ЛР2." style="box-sizing:border-box;padding:var(--pad-t) var(--pad-x) var(--pad-b);background:var(--bg);color:var(--fg);font-family:var(--font);display:flex;flex-direction:column" data-om-slide-id="34897efd">
+  <h2 style="margin:0;font-size:var(--t-title);font-weight:800;letter-spacing:-.02em;line-height:1.05"><span style="font-style:italic">is a</span> / <span style="font-style:italic">has a</span></h2>
+  <div style="margin-top:48px;display:grid;grid-template-columns:1fr 1.2fr;gap:44px;align-items:start">
+    <div style="border:1px solid var(--line);border-radius:28px;padding:40px 44px;display:flex;flex-direction:column;gap:26px;opacity:.75">
+      <div style="font-size:34px;font-weight:700;text-decoration:line-through">Наследование = «является» (<span style="font-style:italic">is a</span>)</div>
+      <div style="font-family:var(--mono);font-size:28px;color:var(--warn)">Dealer : Deck</div>
+      <div style="font-size:28px;color:var(--muted);line-height:1.35">«Дилер <span style="font-style:italic">является</span> колодой?» — нет.</div>
+    </div>
+    <div style="border:1px solid var(--accent);border-radius:28px;background:var(--accent-soft);padding:40px 44px;display:flex;flex-direction:column;gap:26px">
+      <div style="font-size:34px;font-weight:700;color:var(--accent)">Композиция = «имеет» (<span style="font-style:italic">has a</span>)</div>
+      <pre style="margin:0;background:var(--panel);border:1px solid var(--line);border-radius:20px;padding:26px 30px;font-family:var(--mono);font-size:25px;line-height:1.5;overflow:hidden"><code><span style="display:block"><span style="color:var(--kw)">public class</span> <span style="color:var(--ty)">Dealer</span></span><span style="display:block">{</span><span style="display:block">    <span style="color:var(--kw)">public</span> <span style="color:var(--ty)">Dealer</span>(<span style="color:var(--ty)">Deck</span> deck) { _deck = deck; }</span><span style="display:block">    <span style="color:var(--kw)">private readonly</span> <span style="color:var(--ty)">Deck</span> _deck;</span><span style="display:block">    <span style="color:var(--kw)">public void</span> <span style="color:var(--ty)">StartGame</span>() { <span style="color:var(--cm)">/* ... */</span> _deck.<span style="color:var(--ty)">Shuffle</span>(); <span style="color:var(--cm)">/* ... */</span> }</span><span style="display:block">}</span></code></pre>
+    </div>
+  </div>
+  <div style="margin-top:44px;font-size:var(--t-body)">Сомневаешься — выбирай композицию.</div>
+  <div style="margin-top:auto;padding-top:28px;display:flex;justify-content:space-between;font-size:24px;color:var(--muted)"><span>ООП и проектирование · Лекция 1</span><span>6.3</span></div>
+</section>
+
+<section data-label="Правильное применение" data-screen-label="40" data-speaker-notes="Наследник является родителем с особым поведением." style="box-sizing:border-box;padding:var(--pad-t) var(--pad-x) var(--pad-b);background:var(--bg);color:var(--fg);font-family:var(--font);display:flex;flex-direction:column" data-om-slide-id="90619bb2">
+  <h2 style="margin:0;font-size:var(--t-title);font-weight:800;letter-spacing:-.02em;line-height:1.05">Правильное применение</h2>
+  <div style="margin-top:40px;display:flex;flex-direction:column;gap:28px">
+    <pre style="margin:0;background:var(--panel);border:1px solid var(--line);border-radius:20px;padding:28px 34px;font-family:var(--mono);font-size:25px;line-height:1.5;overflow:hidden"><code><span style="display:block"><span style="color:var(--kw)">public abstract class</span> <span style="color:var(--ty)">Car</span></span><span style="display:block">{</span><span style="display:block">    <span style="color:var(--kw)">public abstract void</span> <span style="color:var(--ty)">MoveTo</span>(<span style="color:var(--ty)">Coordinate</span> coordinate);</span><span style="display:block">}</span><span style="display:block;height:.8em"></span><span style="display:block"><span style="color:var(--kw)">public class</span> <span style="color:var(--ty)">Truck</span> : <span style="color:var(--ty)">Car</span></span><span style="display:block">{</span><span style="display:block">    <span style="color:var(--kw)">public override void</span> <span style="color:var(--ty)">MoveTo</span>(<span style="color:var(--ty)">Coordinate</span> coordinate) =&gt; <span style="color:var(--ty)">Console</span>.<span style="color:var(--ty)">WriteLine</span>(<span style="color:var(--st)">$"Moving slowly to {coordinate}"</span>);</span><span style="display:block">}</span><span style="display:block;height:.8em"></span><span style="display:block"><span style="color:var(--kw)">public class</span> <span style="color:var(--ty)">SportCar</span> : <span style="color:var(--ty)">Car</span></span><span style="display:block">{</span><span style="display:block">    <span style="color:var(--kw)">public override void</span> <span style="color:var(--ty)">MoveTo</span>(<span style="color:var(--ty)">Coordinate</span> coordinate) =&gt; <span style="color:var(--ty)">Console</span>.<span style="color:var(--ty)">WriteLine</span>(<span style="color:var(--st)">$"Rapidly moving to {coordinate}"</span>);</span><span style="display:block">}</span></code></pre>
+    <div style="display:flex;gap:18px;align-items:flex-start;border-left:3px solid var(--muted);padding-left:22px;color:var(--muted);font-size:25px;line-height:1.4;font-style:italic">
+      <span style="font-family:var(--mono);font-style:normal;color:var(--accent);white-space:nowrap;font-size:24px">C++ → C#</span>
+      <span><span style="font-family:var(--mono);font-style:normal">$"..."</span> — интерполяция строк. <span style="font-family:var(--mono);font-style:normal">Coordinate</span> — та же <span style="font-family:var(--mono);font-style:normal">record struct</span> со слайда 16.</span>
+    </div>
+  </div>
+  <div style="margin-top:40px;font-size:var(--t-body);line-height:1.35">Наследник <span style="font-style:italic">является</span> родителем с особым поведением — упор на изменение поведения.</div>
+  <div style="margin-top:auto;padding-top:28px;display:flex;justify-content:space-between;font-size:24px;color:var(--muted)"><span>ООП и проектирование · Лекция 1</span><span>6.4</span></div>
+</section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<section data-label="Понятия одним экраном" data-screen-label="48" data-speaker-notes="Пробежать глазами: что помните, что нет." style="box-sizing:border-box;padding:var(--pad-t) var(--pad-x) var(--pad-b);background:var(--bg);color:var(--fg);font-family:var(--font);display:flex;flex-direction:column" data-om-slide-id="5f553dbb">
+  <h2 style="margin:0;font-size:var(--t-title);font-weight:800;letter-spacing:-.02em;line-height:1.05">Ключевые понятия сегодняшней лекции</h2>
+  <div style="margin-top:64px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:28px">
+    <div style="border:1px solid var(--line);border-radius:24px;padding:36px 40px;font-size:34px;font-weight:700">Парадигма</div>
+    <div style="border: 1px solid var(--accent); border-radius: 24px; padding: 36px 40px; font-size: 34px; font-weight: 700; background-color: #FFFFFF00; border-color: FFFFFF24">Инвариант данных</div>
+    <div style="border:1px solid var(--line);border-radius:24px;padding:36px 40px;font-size:34px;font-weight:700">Инкапсуляция</div>
+    <div style="border:1px solid var(--line);border-radius:24px;padding:36px 40px;font-size:34px;font-weight:700">Сокрытие</div>
+    <div style="border:1px solid var(--line);border-radius:24px;padding:36px 40px;font-size:34px;font-weight:700">Абстракция</div>
+    <div style="border:1px solid var(--line);border-radius:24px;padding:36px 40px;font-size:34px;font-weight:700">Композиция (агрегация / ассоциация)</div>
+    <div style="border:1px solid var(--line);border-radius:24px;padding:36px 40px;font-size:34px;font-weight:700">Полиморфизм подтипов</div>
+    <div style="border:1px solid var(--line);border-radius:24px;padding:36px 40px;font-size:34px;font-weight:700">Наследование поведения vs реализации</div>
+    <div style="border:1px solid var(--line);border-radius:24px;padding:36px 40px;font-size:34px;font-weight:700">Объект</div>
+    <div style="border:1px solid var(--line);border-radius:24px;padding:36px 40px;font-size:34px;font-weight:700;font-style:italic">is a vs has a</div>
+    <div style="border:1px solid var(--line);border-radius:24px;padding:36px 40px;font-size:34px;font-weight:700">Ссылочный тип vs значимый</div>
+  </div>
+  <div style="margin-top:auto;padding-top:36px;display:flex;justify-content:space-between;font-size:24px;color:var(--muted)"><span>ООП и проектирование · Лекция 1</span><span>9.1</span></div>
+</section>
+
+<section data-label="Вывод лекции" data-screen-label="49" data-speaker-notes="Читать дословно. Это ответ на вопрос «зачем ООП»." style="box-sizing:border-box;padding:var(--pad-t) var(--pad-x) var(--pad-b);background:var(--bg);color:var(--fg);font-family:var(--font);display:flex;flex-direction:column" data-om-slide-id="2d628ceb">
+  <h2 style="margin:0;font-size:var(--t-title);font-weight:800;letter-spacing:-.02em;line-height:1.05">Вывод лекции</h2>
+  <div style="margin-top:auto;margin-bottom:auto;border:1px solid var(--accent);border-left:10px solid var(--accent);border-radius:28px;background:var(--accent-soft);padding:56px 60px">
+    <div style="font-size:24px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);margin-bottom:28px">определение</div>
+    <p style="margin:0;font-size:38px;line-height:1.35;text-wrap:pretty">Парадигма ООП представляет собой концепцию объединения данных и логики, их обрабатывающей. Модификация и доступ к этим данным ограничены для пользователей объектов, принуждая к использованию соответствующих поведений, таким образом облегчая соблюдение инварианта данных, путём локализации мест их модификации, принуждения соблюдение бизнес-правил, описывающих этот инвариант.</p>
+  </div>
+  <div style="margin-top:auto;padding-top:36px;display:flex;justify-content:space-between;font-size:24px;color:var(--muted)"><span>ООП и проектирование · Лекция 1</span><span>9.2</span></div>
+</section>
+
+
+
+<section data-label="Вопросы" data-screen-label="51" data-speaker-notes="Вопросы. Дальше — практика." style="box-sizing:border-box;padding:var(--pad-t) var(--pad-x) var(--pad-b);background:var(--bg);color:var(--fg);font-family:var(--font);display:flex;flex-direction:column;justify-content:center" data-om-slide-id="dbd142da">
+  <h2 style="margin:0;font-size:120px;font-weight:900;letter-spacing:-.03em;line-height:1">Вопросы</h2>
+  <div style="margin-top:auto;padding-top:36px;display:flex;justify-content:space-between;font-size:24px;color:var(--muted)"><span>ООП и проектирование · Лекция 1</span><span>9.4</span></div>
+</section><section data-label="do-donts.md" data-screen-label="44" data-speaker-notes="Документ — чек-лист перед PR." style="box-sizing:border-box;padding:var(--pad-t) var(--pad-x) var(--pad-b);background:var(--bg);color:var(--fg);font-family:var(--font);display:flex;flex-direction:column" data-om-slide-id="a132be6d">
+  <div style="display:flex;align-items:center;gap:24px">
+    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#F1F1F1" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
+    <h2 style="margin:0;font-size:var(--t-title);font-weight:800;letter-spacing:-.02em;line-height:1.05;font-family:var(--mono)">do-donts.md</h2>
+  </div>
+  <p style="margin:28px 0 0;font-size:28px;color:var(--muted)">В репозитории курса.</p>
+  <div style="margin-top:64px;display:flex;flex-direction:column;gap:28px;font-size:var(--t-body);line-height:1.35">
+    <div>~50 правил, половину пока не поймёте — там LINQ, generics, тесты.</div>
+    <div>Перед каждой лабораторной — перечитывать.</div>
+    <div>Перед PR — проходить как чек-лист.</div>
+  </div>
+  <div style="margin-top:64px;font-size:42px;font-weight:700;color:var(--warn);line-height:1.25">Просто какой-то код писать не получится. Несоблюдение стоит баллов.</div>
+  <div style="margin-top:auto;padding-top:36px;display:flex;justify-content:space-between;font-size:24px;color:var(--muted)"><span>ООП и проектирование · Лекция 1</span><span>8.1</span></div>
+</section><section data-label="Семь правил" data-screen-label="45" data-speaker-notes="Связать правила с уже разобранными понятиями." style="box-sizing:border-box;padding:var(--pad-t) var(--pad-x) var(--pad-b);background:var(--bg);color:var(--fg);font-family:var(--font);display:flex;flex-direction:column" data-om-slide-id="4503f296">
+  <h2 style="margin:0;font-size:var(--t-title);font-weight:800;letter-spacing:-.02em;line-height:1.05">Семь правил, которые вы уже понимаете</h2>
+  <table style="margin-top:44px;width:100%;border-collapse:collapse;font-size:25px">
+    <thead>
+      <tr style="color:var(--muted);text-align:left">
+        <th style="padding:16px 20px;font-weight:500;border-bottom:1px solid var(--line);width:62%">Правило из Do/Don't</th>
+        <th style="padding:16px 20px;font-weight:500;border-bottom:1px solid var(--line)">Откуда это в лекции</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td style="padding:18px 20px;border-bottom:1px solid var(--line);line-height:1.35">Поддерживать инвариант типа: никакое изменение не должно делать экземпляр невалидным (Do 11)</td><td style="padding:18px 20px;border-bottom:1px solid var(--line);color:var(--accent)">Инвариант · Account</td></tr>
+      <tr><td style="padding:18px 20px;border-bottom:1px solid var(--line);line-height:1.35">Минимизировать доступ к данным; нельзя менять тип извне (Do 4). Не использовать публичные поля и приватные свойства (Don't 20)</td><td style="padding:18px 20px;border-bottom:1px solid var(--line);color:var(--accent)">Сокрытие · <span style="font-family:var(--mono);font-size:24px">{ get; private set; }</span></td></tr>
+      <tr><td style="padding:18px 20px;border-bottom:1px solid var(--line);line-height:1.35">Свойства вместо геттер/сеттер методов (Do 15)</td><td style="padding:18px 20px;border-bottom:1px solid var(--line);color:var(--accent)">Сокрытие</td></tr>
+      <tr><td style="padding:18px 20px;border-bottom:1px solid var(--line);line-height:1.35">Конструктор создаёт полностью инициализированный объект; валидация аргументов в конструкторе; иммутабельность (Do 3, 9, 10)</td><td style="padding:18px 20px;border-bottom:1px solid var(--line);color:var(--accent)">Агрегация · ImmutablePoint</td></tr>
+      <tr><td style="padding:18px 20px;border-bottom:1px solid var(--line);line-height:1.35">Не использовать наследование для переиспользования логики; наследник <span style="font-style:italic">является</span> базовым (Don't 11)</td><td style="padding:18px 20px;border-bottom:1px solid var(--line);color:var(--accent);font-family:var(--mono);font-size:24px">Dealer : Deck</td></tr>
+      <tr><td style="padding:18px 20px;border-bottom:1px solid var(--line);line-height:1.35">Не бросать исключения при ошибках бизнес-логики (Don't 22)</td><td style="padding:18px 20px;border-bottom:1px solid var(--line);color:var(--accent)">Withdraw возвращает результат</td></tr>
+      <tr><td style="padding:18px 20px;line-height:1.35">Не ограничивать доменные значения примитивами вроде <span style="font-family:var(--mono);font-size:24px">uint</span>/<span style="font-family:var(--mono);font-size:24px">byte</span> — заводить свой тип с валидацией (Don't 23)</td><td style="padding:18px 20px;color:var(--accent)">struct как значение · правило живёт в типе, а не в uint</td></tr>
+    </tbody>
+  </table>
+  <div style="margin-top:auto;padding-top:24px;display:flex;justify-content:space-between;font-size:24px;color:var(--muted)"><span>ООП и проектирование · Лекция 1</span><span>8.2</span></div>
+</section><section data-label="Три правила про форму" data-screen-label="46" data-speaker-notes="Нейминг, магические числа, мёртвый код." style="box-sizing:border-box;padding:var(--pad-t) var(--pad-x) var(--pad-b);background:var(--bg);color:var(--fg);font-family:var(--font);display:flex;flex-direction:column" data-om-slide-id="ea07d509">
+  <h2 style="margin:0;font-size:var(--t-title);font-weight:800;letter-spacing:-.02em;line-height:1.05">Три правила про форму</h2>
+  <div style="margin-top:52px;display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:32px;align-items:start">
+    <div style="border:1px solid var(--line);border-radius:24px;padding:36px 40px;display:flex;flex-direction:column;gap:24px">
+      <div style="font-size:34px;font-weight:700">Нейминг</div>
+      <div style="font-size:26px;color:var(--muted);line-height:1.35">Английские общепринятые термины, без сокращений, транслитерации и машинного перевода; <span style="font-family:var(--mono);font-size:25px">Http</span>, не <span style="font-family:var(--mono);font-size:25px">HTTP</span>.</div>
+      <pre style="margin:0;background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:24px 28px;font-family:var(--mono);font-size:24px;line-height:1.5;overflow:hidden;opacity:.7"><code><span style="display:block"><span style="color:var(--kw)">public class</span> <span style="color:var(--ty)">Thread</span></span><span style="display:block">{</span><span style="display:block">    <span style="color:var(--kw)">public void</span> <span style="color:var(--ty)">Join</span>(<span style="color:var(--ty)">Student</span> student) { }</span><span style="display:block">}</span></code></pre>
+      <div style="font-size:24px;color:var(--muted);line-height:1.35">Читается как работа с потоками ОС.</div>
+    </div>
+    <div style="border:1px solid var(--line);border-radius:24px;padding:36px 40px;display:flex;flex-direction:column;gap:24px">
+      <div style="font-size:34px;font-weight:700">Никаких магических чисел</div>
+      <div style="font-size:26px;color:var(--muted);line-height:1.35">Именованные константы (Don't 2).</div>
+    </div>
+    <div style="border:1px solid var(--line);border-radius:24px;padding:36px 40px;display:flex;flex-direction:column;gap:24px">
+      <div style="font-size:34px;font-weight:700">Никакого мёртвого кода</div>
+      <div style="font-size:26px;color:var(--muted);line-height:1.35">И комментариев к очевидному (Don't 9, 10).</div>
+    </div>
+  </div>
+  <div style="margin-top:auto;padding-top:36px;display:flex;justify-content:space-between;font-size:24px;color:var(--muted)"><span>ООП и проектирование · Лекция 1</span><span>8.3</span></div>
+</section><section data-label="DRY · KISS · YAGNI" data-screen-label="47" data-speaker-notes="YAGNI — самое частое нарушение в лабах." style="box-sizing:border-box;padding:var(--pad-t) var(--pad-x) var(--pad-b);background:var(--bg);color:var(--fg);font-family:var(--font);display:flex;flex-direction:column" data-om-slide-id="db75643c">
+  <h2 style="margin:0;font-size:var(--t-title);font-weight:800;letter-spacing:-.02em;line-height:1.05">DRY · KISS · YAGNI</h2>
+  <div style="margin-top:88px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:32px">
+    <div style="border:1px solid var(--line);border-radius:28px;padding:44px;display:flex;flex-direction:column;gap:24px">
+      <div style="font-size:46px;font-weight:800">DRY</div>
+      <div style="font-size:28px;color:var(--muted);line-height:1.35">Не копируй — вынеси в метод.</div>
+    </div>
+    <div style="border:1px solid var(--line);border-radius:28px;padding:44px;display:flex;flex-direction:column;gap:24px">
+      <div style="font-size:46px;font-weight:800">KISS</div>
+      <div style="font-size:28px;color:var(--muted);line-height:1.35">Атомарные методы, не переусложнять.</div>
+    </div>
+    <div style="border:1px solid var(--accent);border-radius:28px;background:var(--accent-soft);padding:44px;display:flex;flex-direction:column;gap:24px">
+      <div style="font-size:46px;font-weight:800;color:var(--accent)">YAGNI</div>
+      <div style="font-size:28px;line-height:1.35">Проектируйте ту предметную область, которая описана в задаче, а не ту, что может понадобиться.</div>
+    </div>
+  </div>
+  
+  <div style="margin-top:auto;padding-top:36px;display:flex;justify-content:space-between;font-size:24px;color:var(--muted)"><span>ООП и проектирование · Лекция 1</span><span>8.4</span></div>
+</section>
+
+</x-import>
+</x-dc>
+</body>
+</html>
