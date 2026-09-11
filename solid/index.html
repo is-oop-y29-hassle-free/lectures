@@ -1,0 +1,978 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+@font-face{font-family:'Golos Text';src:url('fonts/GolosText-Regular.ttf') format('truetype');font-weight:400;font-display:block}
+@font-face{font-family:'Golos Text';src:url('fonts/GolosText-Medium.ttf') format('truetype');font-weight:500;font-display:block}
+@font-face{font-family:'Golos Text';src:url('fonts/GolosText-SemiBold.ttf') format('truetype');font-weight:600;font-display:block}
+@font-face{font-family:'Golos Text';src:url('fonts/GolosText-Bold.ttf') format('truetype');font-weight:700;font-display:block}
+@font-face{font-family:'Golos Text';src:url('fonts/GolosText-Black.ttf') format('truetype');font-weight:900;font-display:block}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:#ffffff;font-family:'Golos Text',sans-serif}
+:root{--acc:#0A3D91;--accs:#F1F5FC;--warn:#A81D12;--warns:#FCEFED;--ink:#111111;--ink2:#2E2E2E;--line:#D8D8D4;--codebg:#F5F5F3;--mono:'Cascadia Mono','JetBrains Mono',Consolas,'DejaVu Sans Mono',monospace;--t1:58px;--t2:34px;--t3:29px;--t4:27px;--t5:22px}
+a{color:var(--acc)}
+a:hover{color:#062A66}
+pre b{color:#6B21A8;font-weight:400}
+pre em{color:#0F6E5A;font-style:normal}
+pre s{color:#8A3B12;text-decoration:none}
+pre u{color:#5C5C5C;text-decoration:none;font-style:italic}
+</style>
+</helmet>
+<x-import component-from-global-scope="deck-stage" from="./deck-stage.js" width="1920" height="1080" hint-size="100%,100%" data-uneditable="">
+
+<section data-label="Титул" data-screen-label="01" data-speaker-notes="Лекция 90 минут. Второй курс, C# на уровне первой лекции и начала ЛР1." style="background:#fff;padding:70px 88px 52px;display:flex;flex-direction:column;color:var(--ink);font-family:'Golos Text',sans-serif" data-om-slide-id="52dd2364">
+<div style="font-size:var(--t4);font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--ink2)">Дисциплина «ООП и проектирование»</div>
+<div style="flex:1;display:flex;flex-direction:column;justify-content:center">
+<div style="font-size:26px;font-weight:600;letter-spacing:.2em;color:var(--acc)">ЛЕКЦИЯ 2</div>
+<h1 style="margin:18px 0 0;font-size:92px;font-weight:900;line-height:1.02;letter-spacing:-.03em;max-width:1500px">SOLID: пять принципов проектирования типов</h1>
+<div style="display:flex;gap:34px;margin-top:56px;font-size:46px;font-weight:800;letter-spacing:.08em;color:var(--acc)"><span>S</span><span>O</span><span>L</span><span>I</span><span>D</span></div>
+</div>
+<div style="margin-top:auto;padding-top:28px;display:flex;justify-content:space-between;align-items:flex-end;font-size:var(--t5);color:var(--ink2)">
+<div style="display:flex;gap:11px;font-weight:700;letter-spacing:.06em;color:#6E6E6E"><span>S</span><span>O</span><span>L</span><span>I</span><span>D</span></div>
+<span>0.1</span>
+</div>
+</section>
+
+<section data-label="Опора с прошлой лекции" data-screen-label="02" data-speaker-notes="Быстрый прогон: без этих трёх вещей SOLID превращается в заклинание." style="background:#fff;padding:70px 88px 52px;display:flex;flex-direction:column;color:var(--ink);font-family:'Golos Text',sans-serif" data-om-slide-id="481ce5bf">
+<h1 style="margin:0;font-size:var(--t1);font-weight:800;line-height:1.06;letter-spacing:-.02em;max-width:1620px">На что опираемся с прошлой лекции</h1>
+<p style="margin:24px 0 0;font-size:var(--t2);font-weight:500;line-height:1.28;color:var(--acc);max-width:1560px">Три вещи, без которых SOLID не читается.</p>
+<div style="display:flex;gap:80px;margin-top:48px;flex:1;min-height:0;align-items:flex-start">
+<ul style="margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:34px;max-width:980px">
+<li style="display:flex;gap:20px;font-size:var(--t3);line-height:1.32"><span style="flex:none;width:13px;height:13px;margin-top:12px;background:var(--acc)"></span><span><strong style="font-weight:700">Инвариант данных</strong> — правило живёт в типе</span></li>
+<li style="display:flex;gap:20px;font-size:var(--t3);line-height:1.32"><span style="flex:none;width:13px;height:13px;margin-top:12px;background:var(--acc)"></span><span><strong style="font-weight:700">Абстракция</strong> — чёрный ящик: инкапсуляция + сокрытие</span></li>
+<li style="display:flex;gap:20px;font-size:var(--t3);line-height:1.32"><span style="flex:none;width:13px;height:13px;margin-top:12px;background:var(--acc)"></span><span><strong style="font-weight:700">Наследование</strong> — <em style="font-style:italic">is a</em>, не переиспользование</span></li>
+</ul>
+<div style="flex:none;width:260px;height:260px;border-radius:78px;border:2px solid var(--line);display:flex;align-items:center;justify-content:center;color:var(--acc)">
+<svg width="120" height="120" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+</div>
+</div>
+<div style="margin-top:auto;padding-top:28px;display:flex;justify-content:space-between;align-items:flex-end;font-size:var(--t5);color:var(--ink2)">
+<div style="display:flex;gap:11px;font-weight:700;letter-spacing:.06em;color:#6E6E6E"><span>S</span><span>O</span><span>L</span><span>I</span><span>D</span></div>
+<span>0.2</span>
+</div>
+</section>
+
+<section data-label="Зачем правила" data-screen-label="03" data-speaker-notes="Концепции — словарь, правила — грамматика. Do/Don't про форму, SOLID про структуру." style="background:#fff;padding:70px 88px 52px;display:flex;flex-direction:column;color:var(--ink);font-family:'Golos Text',sans-serif" data-om-slide-id="9678fea8">
+<h1 style="margin:0;font-size:var(--t1);font-weight:800;line-height:1.06;letter-spacing:-.02em;max-width:1620px">Зачем правила поверх концепций</h1>
+<p style="margin:24px 0 0;font-size:var(--t2);font-weight:500;line-height:1.28;color:var(--acc);max-width:1560px">Концепции говорят, что можно; правила — как делать, чтобы код был поддерживаемым, понятным и стандартизированным.</p>
+<div style="display:flex;gap:80px;margin-top:48px;flex:1;min-height:0;align-items:flex-start">
+<ul style="margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:34px;max-width:700px">
+<li style="display:flex;gap:20px;font-size:var(--t3);line-height:1.32"><span style="flex:none;width:13px;height:13px;margin-top:12px;background:var(--acc)"></span><span><strong style="font-weight:700">Do/Don't</strong> — правила про форму</span></li>
+<li style="display:flex;gap:20px;font-size:var(--t3);line-height:1.32"><span style="flex:none;width:13px;height:13px;margin-top:12px;background:var(--acc)"></span><span><strong style="font-weight:700">SOLID</strong> — правила про структуру типов</span></li>
+</ul>
+<div style="flex:1;display:flex;flex-direction:column;gap:22px;max-width:760px">
+<div style="border:1px solid var(--line);border-radius:24px;padding:28px 32px;font-size:var(--t4);line-height:1.3"><span style="font-weight:700">Форма</span><br>имена, размер метода, комментарии</div>
+<div style="border:2px solid var(--acc);border-radius:24px;padding:28px 32px;font-size:var(--t4);line-height:1.3;background:var(--accs)"><span style="font-weight:700;color:var(--acc)">Структура типов</span><br>кто за что отвечает и от кого зависит</div>
+</div>
+</div>
+<div style="margin-top:auto;padding-top:28px;display:flex;justify-content:space-between;align-items:flex-end;font-size:var(--t5);color:var(--ink2)">
+<div style="display:flex;gap:11px;font-weight:700;letter-spacing:.06em;color:#6E6E6E"><span>S</span><span>O</span><span>L</span><span>I</span><span>D</span></div>
+<span>0.3</span>
+</div>
+</section>
+
+<section data-label="SOLID — определение" data-screen-label="04" data-speaker-notes="Определение читаем дословно. Затем пять букв с расшифровкой." style="background:#fff;padding:70px 88px 52px;display:flex;flex-direction:column;color:var(--ink);font-family:'Golos Text',sans-serif" data-om-slide-id="6b9c919e">
+<h1 style="margin:0;font-size:var(--t1);font-weight:800;line-height:1.06;letter-spacing:-.02em;max-width:1620px">SOLID</h1>
+<div style="width:100%;max-width:1600px;margin-top:34px;border:2px solid var(--acc);border-left:14px solid var(--acc);border-radius:18px;background:var(--accs);padding:34px 44px;font-size:36px;font-weight:500;line-height:1.34">SOLID это набор из пяти принципов, накладывающий ограничения и описывающий правила проектирования типов.</div>
+<div style="display:flex;flex-direction:column;gap:30px;margin-top:56px">
+<div style="display:flex;align-items:baseline;gap:28px;font-size:var(--t3)"><span style="width:54px;font-size:54px;font-weight:900;color:var(--acc);line-height:1">S</span><span style="font-weight:700;width:340px">Single responsibility</span><span style="color:var(--ink2)">единственная ответственность</span></div>
+<div style="display:flex;align-items:baseline;gap:28px;font-size:var(--t3)"><span style="width:54px;font-size:54px;font-weight:900;color:var(--acc);line-height:1">O</span><span style="font-weight:700;width:340px">Open-closed</span><span style="color:var(--ink2)">открыт для расширения, закрыт для изменения</span></div>
+<div style="display:flex;align-items:baseline;gap:28px;font-size:var(--t3)"><span style="width:54px;font-size:54px;font-weight:900;color:var(--acc);line-height:1">L</span><span style="font-weight:700;width:340px">Liskov substitution</span><span style="color:var(--ink2)">подстановка Лисков</span></div>
+<div style="display:flex;align-items:baseline;gap:28px;font-size:var(--t3)"><span style="width:54px;font-size:54px;font-weight:900;color:var(--acc);line-height:1">I</span><span style="font-weight:700;width:340px">Interface segregation</span><span style="color:var(--ink2)">разделение интерфейсов</span></div>
+<div style="display:flex;align-items:baseline;gap:28px;font-size:var(--t3)"><span style="width:54px;font-size:54px;font-weight:900;color:var(--acc);line-height:1">D</span><span style="font-weight:700;width:340px">Dependency inversion</span><span style="color:var(--ink2)">инверсия зависимостей</span></div>
+</div>
+<div style="margin-top:auto;padding-top:28px;display:flex;justify-content:space-between;align-items:flex-end;font-size:var(--t5);color:var(--ink2)">
+<div style="display:flex;gap:11px;font-weight:700;letter-spacing:.06em;color:#6E6E6E"><span>S</span><span>O</span><span>L</span><span>I</span><span>D</span></div>
+<span>0.4</span>
+</div>
+</section>
+
+
+
+<section data-label="Разделитель S" data-screen-label="06" data-speaker-notes="Блок S: 18 минут." style="background:#fff;padding:70px 88px 52px;display:flex;flex-direction:column;color:var(--ink);font-family:'Golos Text',sans-serif" data-om-slide-id="238f961b">
+<div style="flex:1;display:flex;flex-direction:column;justify-content:center">
+<div style="display:flex;align-items:center;gap:72px">
+<span style="font-size:330px;font-weight:900;color:var(--acc);line-height:.78;letter-spacing:-.04em">S</span>
+<div>
+<div style="font-size:66px;font-weight:800;line-height:1.05">Single responsibility</div>
+<div style="font-size:var(--t2);color:var(--ink2);margin-top:18px">Принцип единственной ответственности</div>
+</div>
+</div>
+<div style="display:flex;gap:30px;margin-top:80px;font-size:42px;font-weight:800;letter-spacing:.06em;color:#6E6E6E"><span style="color:var(--acc)">S</span><span>O</span><span>L</span><span>I</span><span>D</span></div>
+</div>
+<div style="margin-top:auto;padding-top:28px;display:flex;justify-content:space-between;align-items:flex-end;font-size:var(--t5);color:var(--ink2)">
+<div style="display:flex;gap:11px;font-weight:700;letter-spacing:.06em;color:#6E6E6E"><span style="color:var(--acc)">S</span><span>O</span><span>L</span><span>I</span><span>D</span></div>
+<span>1.1</span>
+</div>
+</section>
+
+<section data-label="SRP — определение" data-screen-label="07" data-speaker-notes="Обе формулировки дословно. Вторая — рабочий критерий." style="background:#fff;padding:70px 88px 52px;display:flex;flex-direction:column;color:var(--ink);font-family:'Golos Text',sans-serif" data-om-slide-id="3e7d6fbf">
+<h1 style="margin:0;font-size:var(--t1);font-weight:800;line-height:1.06;letter-spacing:-.02em;max-width:1620px">Единственная ответственность</h1>
+<div style="display:flex;flex-direction:column;gap:30px;margin-top:40px;max-width:1620px">
+<div style="width:100%;border:2px solid var(--acc);border-left:14px solid var(--acc);border-radius:18px;background:var(--accs);padding:34px 44px;font-size:34px;font-weight:500;line-height:1.34">Принцип единственной ответственности направлен на локализацию логики, описываемой типом, минимизации области его ответственности в моделируемой системе.</div>
+<div style="width:100%;border:2px solid var(--acc);border-left:14px solid var(--acc);border-radius:18px;background:var(--accs);padding:34px 44px;font-size:34px;font-weight:500;line-height:1.34">Основным правилом, используемым для определения соблюдения данного принципа, является наличие у типа единственной причины для изменения.</div>
+</div>
+<div style="margin-top:auto;padding-top:28px;display:flex;justify-content:space-between;align-items:flex-end;font-size:var(--t5);color:var(--ink2)">
+<div style="display:flex;gap:11px;font-weight:700;letter-spacing:.06em;color:#6E6E6E"><span style="color:var(--acc)">S</span><span>O</span><span>L</span><span>I</span><span>D</span></div>
+<span>1.2</span>
+</div>
+</section>
+
+<section data-label="Чем SRP не является" data-screen-label="08" data-speaker-notes="Частая ошибка: понять SRP как «один метод на класс»." style="background:#fff;padding:70px 88px 52px;display:flex;flex-direction:column;color:var(--ink);font-family:'Golos Text',sans-serif" data-om-slide-id="c28a574f">
+<h1 style="margin:0;font-size:var(--t1);font-weight:800;line-height:1.06;letter-spacing:-.02em;max-width:1620px">Чем SRP не является</h1>
+<p style="margin:24px 0 0;font-size:var(--t2);font-weight:500;line-height:1.28;color:var(--acc);max-width:1560px">Единственная ответственность ≠ одно поле или один метод.</p>
+<div style="display:flex;gap:80px;margin-top:48px;flex:1;min-height:0;align-items:flex-start">
+<ul style="margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:34px;max-width:900px">
+<li style="display:flex;gap:20px;font-size:var(--t3);line-height:1.32"><span style="flex:none;width:13px;height:13px;margin-top:12px;background:var(--acc)"></span><span>Тип может иметь набор данных и поведений</span></li>
+<li style="display:flex;gap:20px;font-size:var(--t3);line-height:1.32"><span style="flex:none;width:13px;height:13px;margin-top:12px;background:var(--acc)"></span><span>Они должны быть логически согласованы с точки зрения бизнес-процессов</span></li>
+<li style="display:flex;gap:20px;font-size:var(--t3);line-height:1.32"><span style="flex:none;width:13px;height:13px;margin-top:12px;background:var(--warn)"></span><span>Больше одной логической группы — декомпозировать</span></li>
+</ul>
+<div style="flex:none;width:520px;border:1px solid var(--line);border-radius:26px;padding:30px;display:flex;flex-direction:column;gap:16px">
+<div style="font-size:var(--t5);font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--ink2)">Один тип</div>
+<div style="display:flex;gap:16px">
+<div style="flex:1;border:2px solid var(--acc);border-radius:18px;background:var(--accs);padding:20px;font-size:var(--t4);line-height:1.25;color:var(--acc);font-weight:600">данные</div>
+<div style="flex:1;border:2px solid var(--acc);border-radius:18px;background:var(--accs);padding:20px;font-size:var(--t4);line-height:1.25;color:var(--acc);font-weight:600">поведение</div>
+</div>
+<div style="font-size:var(--t5);line-height:1.3;color:var(--ink2)">одна логическая группа — это норма</div>
+</div>
+</div>
+<div style="margin-top:auto;padding-top:28px;display:flex;justify-content:space-between;align-items:flex-end;font-size:var(--t5);color:var(--ink2)">
+<div style="display:flex;gap:11px;font-weight:700;letter-spacing:.06em;color:#6E6E6E"><span style="color:var(--acc)">S</span><span>O</span><span>L</span><span>I</span><span>D</span></div>
+<span>1.3</span>
+</div>
+</section>
+
+<section data-label="Единственная причина" data-screen-label="09" data-speaker-notes="Дословно. Ключевое слово — «только одного»." style="background:#fff;padding:70px 88px 52px;display:flex;flex-direction:column;color:var(--ink);font-family:'Golos Text',sans-serif" data-om-slide-id="18b93d0d">
+<h1 style="margin:0;font-size:var(--t1);font-weight:800;line-height:1.06;letter-spacing:-.02em;max-width:1620px">Единственная причина для изменения</h1>
+<div style="width:100%;max-width:1620px;margin-top:44px;border:2px solid var(--acc);border-left:14px solid var(--acc);border-radius:18px;background:var(--accs);padding:40px 48px;font-size:38px;font-weight:500;line-height:1.36">Под понятием “единственной причины для изменения” подразумевается, что модификацией типа должны служить изменения только одного бизнес требования, никак не нескольких.</div>
+<div style="margin-top:auto;padding-top:28px;display:flex;justify-content:space-between;align-items:flex-end;font-size:var(--t5);color:var(--ink2)">
+<div style="display:flex;gap:11px;font-weight:700;letter-spacing:.06em;color:#6E6E6E"><span style="color:var(--acc)">S</span><span>O</span><span>L</span><span>I</span><span>D</span></div>
+<span>1.4</span>
+</div>
+</section>
+
+<section data-label="Требование и правило" data-screen-label="10" data-speaker-notes="Требование — крупная сущность, правила — его части. Меняются правила — причина изменения та же." style="background:#fff;padding:70px 88px 52px;display:flex;flex-direction:column;color:var(--ink);font-family:'Golos Text',sans-serif" data-om-slide-id="fad1ae0e">
+<h1 style="margin:0;font-size:var(--t1);font-weight:800;line-height:1.06;letter-spacing:-.02em;max-width:1620px">Требование и правило</h1>
+<div style="display:flex;gap:56px;margin-top:36px;flex:1;min-height:0;align-items:flex-start">
+<div style="flex:1;border:2px solid var(--acc);border-left:14px solid var(--acc);border-radius:18px;background:var(--accs);padding:38px 44px;font-size:34px;font-weight:500;line-height:1.34">бизнес требования, это более комплексная сущность, например, бизнес требованием является то, что результат выполнения какой-либо операции должен быть выгружен в Excel таблицу, бизнес правила же, скорее являются составными частями бизнес требований, например, бизнес правилами являются условия, что отчёт должен содержать шапку, а колонки иметь определённые заголовки, порядок и ширину.</div>
+<div style="flex:none;width:600px">
+<div style="border:1px solid var(--line);border-radius:26px;padding:28px">
+<div style="font-size:var(--t4);font-weight:700;margin-bottom:20px">Требование: выгрузка в Excel</div>
+<div style="display:flex;flex-direction:column;gap:12px">
+<div style="border:1px solid var(--line);border-radius:14px;padding:16px 20px;font-size:var(--t5);background:#fff">шапка</div>
+<div style="border:1px solid var(--line);border-radius:14px;padding:16px 20px;font-size:var(--t5);background:#fff">заголовки колонок</div>
+<div style="border:1px solid var(--line);border-radius:14px;padding:16px 20px;font-size:var(--t5);background:#fff">ширина</div>
+</div>
+</div>
+<div style="margin-top:22px;font-size:var(--t4);line-height:1.3;color:var(--acc);font-weight:600">правила меняются — причина та же</div>
+</div>
+</div>
+<div style="margin-top:auto;padding-top:28px;display:flex;justify-content:space-between;align-items:flex-end;font-size:var(--t5);color:var(--ink2)">
+<div style="display:flex;gap:11px;font-weight:700;letter-spacing:.06em;color:#6E6E6E"><span style="color:var(--acc)">S</span><span>O</span><span>L</span><span>I</span><span>D</span></div>
+<span>1.5</span>
+</div>
+</section>
+
+<section data-label="Нарушение SRP" data-screen-label="11" data-speaker-notes="Два метода — два требования. Спросить зал: что открываете, когда заказчик поменял ширину колонок?" style="background:#fff;padding:70px 88px 52px;display:flex;flex-direction:column;color:var(--ink);font-family:'Golos Text',sans-serif" data-om-slide-id="717fa1bb">
+<h1 style="margin:0;font-size:var(--t1);font-weight:800;line-height:1.06;letter-spacing:-.02em;max-width:1620px">Нарушение: две причины для изменения</h1>
+<p style="margin:22px 0 0;font-size:var(--t2);font-weight:500;line-height:1.28;color:var(--acc);max-width:1560px"><span style="font-family:var(--mono);font-size:31px">ReportGenerator</span> отвечает за Excel и за PDF — два требования.</p>
+<div style="display:flex;gap:52px;margin-top:34px;flex:1;min-height:0">
+<pre style="flex:none;width:1040px;margin:0;background:var(--codebg);border:1px solid var(--line);border-radius:20px;padding:26px 30px;font-family:var(--mono);font-size:25px;line-height:1.42;white-space:pre;color:#1A1A1A;overflow:hidden"><div><b>public record</b> <em>OperationResult</em>(...);</div><div> </div><div><b>public class</b> <em>ReportGenerator</em></div><div>{</div><div style="margin:0 -30px;padding:0 26px;border-left:4px solid var(--warn);background:var(--warns)">    <b>public void</b> GenerateExcelReport(<em>OperationResult</em> result)</div><div>    {</div><div>        ...</div><div>    }</div><div> </div><div style="margin:0 -30px;padding:0 26px;border-left:4px solid var(--warn);background:var(--warns)">    <b>public void</b> GeneratePdfReport(<em>OperationResult</em> result)</div><div>    {</div><div>        ...</div><div>    }</div><div>}</div></pre>
+<div style="flex:1;display:flex;flex-direction:column">
+<div style="font-size:var(--t5);font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--ink2)">На что смотреть</div>
+<ul style="margin:22px 0 0;padding:0;list-style:none;display:flex;flex-direction:column;gap:24px">
+<li style="display:flex;gap:16px;font-size:var(--t4);line-height:1.3"><span style="flex:none;width:11px;height:11px;margin-top:11px;background:var(--warn)"></span><span>Заказчик поменял ширину колонок в Excel</span></li>
+<li style="display:flex;gap:16px;font-size:var(--t4);line-height:1.3"><span style="flex:none;width:11px;height:11px;margin-top:11px;background:var(--warn)"></span><span>Какой файл открываете?</span></li>
+<li style="display:flex;gap:16px;font-size:var(--t4);line-height:1.3"><span style="flex:none;width:11px;height:11px;margin-top:11px;background:var(--warn)"></span><span>Тесты PDF перезапускаете?</span></li>
+</ul>
+<sc-if value="{{ showCppNotes }}" hint-placeholder-val="{{ true }}">
+<div style="margin-top:auto;border-top:1px solid var(--line);padding-top:20px;display:flex;gap:14px;color:var(--ink2)">
+<svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="flex:none;margin-top:4px"><path d="M5 12h14"></path><path d="m13 6 6 6-6 6"></path></svg>
+<div style="font-size:var(--t5);line-height:1.34;font-style:italic"><span style="font-weight:700;font-style:normal">Для C++-человека:</span> <span style="font-family:var(--mono);font-style:normal">record</span> — тип, который автоматически получает конструктор, свойства, сравнение по значению и <span style="font-family:var(--mono);font-style:normal">ToString</span>; <span style="font-family:var(--mono);font-style:normal">(...)</span> — поля здесь намеренно опущены.</div>
+</div>
+</sc-if>
+</div>
+</div>
+<div style="margin-top:auto;padding-top:24px;display:flex;justify-content:space-between;align-items:flex-end;font-size:var(--t5);color:var(--ink2)">
+<div style="display:flex;gap:11px;font-weight:700;letter-spacing:.06em;color:#6E6E6E"><span style="color:var(--acc)">S</span><span>O</span><span>L</span><span>I</span><span>D</span></div>
+<span>1.6</span>
+</div>
+</section>
+
+<section data-label="Исправление SRP" data-screen-label="12" data-speaker-notes="Одна абстракция, две реализации. У каждой — одна причина для изменения." style="background:#fff;padding:70px 88px 52px;display:flex;flex-direction:column;color:var(--ink);font-family:'Golos Text',sans-serif" data-om-slide-id="e1e27c87">
+<h1 style="margin:0;font-size:var(--t1);font-weight:800;line-height:1.06;letter-spacing:-.02em;max-width:1620px">Исправление: абстракция и два типа</h1>
+<p style="margin:22px 0 0;font-size:var(--t2);font-weight:500;line-height:1.28;color:var(--acc);max-width:1560px">Одна абстракция генератора, две реализации — по одной причине для изменения у каждой.</p>
+<div style="display:flex;gap:52px;margin-top:34px;flex:1;min-height:0">
+<pre style="flex:none;width:1040px;margin:0;background:var(--codebg);border:1px solid var(--line);border-radius:20px;padding:24px 30px;font-family:var(--mono);font-size:23px;line-height:1.38;white-space:pre;color:#1A1A1A;overflow:hidden"><div><b>public record</b> <em>OperationResult</em>(...);</div><div> </div><div style="margin:0 -30px;padding:0 26px;border-left:4px solid var(--acc);background:var(--accs)"><b>public interface</b> <em>IReportGenerator</em></div><div>{</div><div>    <b>void</b> GenerateReport(<em>OperationResult</em> result);</div><div>}</div><div> </div><div><b>public class</b> <em>ExcelReportGenerator</em> : <em>IReportGenerator</em></div><div>{</div><div>    <b>public void</b> GenerateReport(<em>OperationResult</em> result)</div><div>    {</div><div>        ...</div><div>    }</div><div>}</div><div> </div><div><b>public class</b> <em>PdfReportGenerator</em> : <em>IReportGenerator</em></div><div>{</div><div>    <b>public void</b> GenerateReport(<em>OperationResult</em> result)</div><div>    {</div><div>        ...</div><div>    }</div><div>}</div></pre>
+<div style="flex:1;display:flex;flex-direction:column">
+<div style="font-size:var(--t5);font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--ink2)">На что смотреть</div>
+<ul style="margin:22px 0 0;padding:0;list-style:none;display:flex;flex-direction:column;gap:24px">
+<li style="display:flex;gap:16px;font-size:var(--t4);line-height:1.3"><span style="flex:none;width:11px;height:11px;margin-top:11px;background:var(--acc)"></span><span>Меняется Excel — открываем только <span style="font-family:var(--mono);font-size:23px">ExcelReportGenerator</span></span></li>
+<li style="display:flex;gap:16px;font-size:var(--t4);line-height:1.3"><span style="flex:none;width:11px;height:11px;margin-top:11px;background:var(--acc)"></span><span>PDF не тронут, его тесты не запускаем</span></li>
+</ul>
+<div style="margin-top:auto;display:flex;gap:16px;align-items:center;color:var(--acc)">
+<svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="flex:none"><circle cx="12" cy="12" r="9"></circle><path d="m8.5 12.5 2.5 2.5 4.5-5"></path></svg>
+<span style="font-size:var(--t5);font-weight:600">одна причина для изменения у каждого типа</span>
+</div>
+</div>
+</div>
+<div style="margin-top:auto;padding-top:24px;display:flex;justify-content:space-between;align-items:flex-end;font-size:var(--t5);color:var(--ink2)">
+<div style="display:flex;gap:11px;font-weight:700;letter-spacing:.06em;color:#6E6E6E"><span style="color:var(--acc)">S</span><span>O</span><span>L</span><span>I</span><span>D</span></div>
+<span>1.7</span>
+</div>
+</section>
+
+<section data-label="Чем подкупает нарушение" data-screen-label="13" data-speaker-notes="Признаём честно: в первом варианте есть за что его любить." style="background:#fff;padding:70px 88px 52px;display:flex;flex-direction:column;color:var(--ink);font-family:'Golos Text',sans-serif" data-om-slide-id="67d9d488">
+<h1 style="margin:0;font-size:var(--t1);font-weight:800;line-height:1.06;letter-spacing:-.02em;max-width:1620px">Чем подкупает нарушение</h1>
+<p style="margin:24px 0 0;font-size:var(--t2);font-weight:500;line-height:1.28;color:var(--acc);max-width:1560px">Правила не появляются на пустом месте — сначала признаем, что в первом варианте удобно.</p>
+<div style="display:flex;gap:40px;margin-top:56px;flex:1;min-height:0;align-items:flex-start">
+<div style="flex:1;max-width:760px;border-left:4px solid var(--acc);padding-left:28px">
+<div style="font-size:36px;font-weight:800">Простота</div>
+<div style="margin-top:14px;font-size:var(--t3);line-height:1.34">не нужно абстракций; в месте использования <span style="font-family:var(--mono);font-size:27px">if</span> по строке и вызов метода</div>
+</div>
+<div style="flex:1;max-width:760px;border-left:4px solid var(--acc);padding-left:28px">
+<div style="font-size:36px;font-weight:800">Переиспользование</div>
+<div style="margin-top:14px;font-size:var(--t3);line-height:1.34">форматирование чисел, разметка, логгирование общие для обоих форматов</div>
+</div>
+</div>
+<div style="margin-top:auto;padding-top:28px;display:flex;justify-content:space-between;align-items:flex-end;font-size:var(--t5);color:var(--ink2)">
+<div style="display:flex;gap:11px;font-weight:700;letter-spacing:.06em;color:#6E6E6E"><span style="color:var(--acc)">S</span><span>O</span><span>L</span><span>I</span><span>D</span></div>
+<span>1.8</span>
+</div>
+</section>
+
+<section data-label="Ловушка 1" data-screen-label="14" data-speaker-notes="Связанность требований тянет за собой связанность зависимостей и тестов." style="background:#fff;padding:70px 88px 52px;display:flex;flex-direction:column;color:var(--ink);font-family:'Golos Text',sans-serif" data-om-slide-id="0594c443">
+<h1 style="margin:0;font-size:var(--t1);font-weight:800;line-height:1.06;letter-spacing:-.02em;max-width:1620px">Ловушка первая: связанность требований</h1>
+<p style="margin:24px 0 0;font-size:var(--t2);font-weight:500;line-height:1.28;color:var(--acc);max-width:1560px">Объединяя реализации, объединяем и их зависимости.</p>
+<div style="display:flex;gap:80px;margin-top:48px;flex:1;min-height:0;align-items:flex-start">
+<ul style="margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:32px;max-width:1080px">
+<li style="display:flex;gap:20px;font-size:var(--t3);line-height:1.32"><span style="flex:none;width:13px;height:13px;margin-top:12px;background:var(--warn)"></span><span><strong style="font-weight:700">Лёгкое:</strong> лишние <span style="font-family:var(--mono);font-size:27px">using</span>, IntelliSense подсказывает не то</span></li>
+<li style="display:flex;gap:20px;font-size:var(--t3);line-height:1.32"><span style="flex:none;width:13px;height:13px;margin-top:12px;background:var(--warn)"></span><span><strong style="font-weight:700">Тяжёлое:</strong> одной реализации нужна одна зависимость, другой — другая</span></li>
+<li style="display:flex;gap:20px;font-size:var(--t3);line-height:1.32"><span style="flex:none;width:13px;height:13px;margin-top:12px;background:var(--warn)"></span><span><strong style="font-weight:700">Тесты:</strong> чтобы проверить Excel, инициализируем всё, что нужно PDF, — заглушки, и лишняя зависимость не даст ошибку компиляции</span></li>
+</ul>
+<div style="flex:none;width:240px;height:240px;border-radius:72px;border:2px solid var(--line);display:flex;align-items:center;justify-content:center;color:var(--warn)">
+<svg width="110" height="110" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+</div>
+</div>
+<div style="margin-top:auto;padding-top:28px;display:flex;justify-content:space-between;align-items:flex-end;font-size:var(--t5);color:var(--ink2)">
+<div style="display:flex;gap:11px;font-weight:700;letter-spacing:.06em;color:#6E6E6E"><span style="color:var(--acc)">S</span><span>O</span><span>L</span><span>I</span><span>D</span></div>
+<span>1.9</span>
+</div>
+</section>
+
+<section data-label="Ловушка 2" data-screen-label="15" data-speaker-notes="Общий код — общая точка отказа. Проверяют то, что меняли." style="background:#fff;padding:70px 88px 52px;display:flex;flex-direction:column;color:var(--ink);font-family:'Golos Text',sans-serif" data-om-slide-id="fd39f330">
+<h1 style="margin:0;font-size:var(--t1);font-weight:800;line-height:1.06;letter-spacing:-.02em;max-width:1620px">Ловушка вторая: кастомизация</h1>
+<p style="margin:24px 0 0;font-size:var(--t2);font-weight:500;line-height:1.28;color:var(--acc);max-width:1560px">Общий код — общая точка отказа.</p>
+<div style="display:flex;gap:80px;margin-top:48px;flex:1;min-height:0;align-items:flex-start">
+<ul style="margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:32px;max-width:1080px">
+<li style="display:flex;gap:20px;font-size:var(--t3);line-height:1.32"><span style="flex:none;width:13px;height:13px;margin-top:12px;background:var(--warn)"></span><span>Изменили под новые требования Excel — сломали PDF</span></li>
+<li style="display:flex;gap:20px;font-size:var(--t3);line-height:1.32"><span style="flex:none;width:13px;height:13px;margin-top:12px;background:var(--warn)"></span><span>Повезёт, если у PDF тесты на все кейсы</span></li>
+<li style="display:flex;gap:20px;font-size:var(--t3);line-height:1.32"><span style="flex:none;width:13px;height:13px;margin-top:12px;background:var(--warn)"></span><span>Проверяют то, что меняли, — решение уезжает в продакшен</span></li>
+</ul>
+<div style="flex:none;width:240px;height:240px;border-radius:72px;border:2px solid var(--line);display:flex;align-items:center;justify-content:center;color:var(--warn)">
+<svg width="110" height="110" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+</div>
+</div>
+<div style="margin-top:auto;padding-top:28px;display:flex;justify-content:space-between;align-items:flex-end;font-size:var(--t5);color:var(--ink2)">
+<div style="display:flex;gap:11px;font-weight:700;letter-spacing:.06em;color:#6E6E6E"><span style="color:var(--acc)">S</span><span>O</span><span>L</span><span>I</span><span>D</span></div>
+<span>1.10</span>
+</div>
+</section>
+
+<section data-label="SRP: как найти у себя" data-screen-label="16" data-speaker-notes="Три вопроса к своему коду. Самое частое нарушение в ЛР1 — вывод в консоль из домена." style="background:#fff;padding:70px 88px 52px;display:flex;flex-direction:column;color:var(--ink);font-family:'Golos Text',sans-serif" data-om-slide-id="183c50e0">
+<h1 style="margin:0;font-size:var(--t1);font-weight:800;line-height:1.06;letter-spacing:-.02em;max-width:1620px">Кумулятивный эффект и «как найти у себя»</h1>
+<p style="margin:24px 0 0;font-size:var(--t2);font-weight:500;line-height:1.28;color:var(--acc);max-width:1560px">По отдельности не страшно; на растущей кодовой базе — коллективная борьба с написанным кодом.</p>
+<div style="display:flex;gap:70px;margin-top:44px;flex:1;min-height:0;align-items:flex-start">
+<ul style="margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:30px;max-width:1080px">
+<li style="display:flex;gap:20px;font-size:var(--t3);line-height:1.32"><span style="flex:none;width:13px;height:13px;margin-top:12px;background:var(--acc)"></span><span>Сколько разных требований заставят открыть этот файл?</span></li>
+<li style="display:flex;gap:20px;font-size:var(--t3);line-height:1.32"><span style="flex:none;width:13px;height:13px;margin-top:12px;background:var(--acc)"></span><span>Есть ли методы, не трогающие одни и те же поля?</span></li>
+<li style="display:flex;gap:20px;font-size:var(--t3);line-height:1.32"><span style="flex:none;width:13px;height:13px;margin-top:12px;background:var(--acc)"></span><span>Назову ли класс одним существительным без «и», Manager, Helper, Utils?</span></li>
+</ul>
+<div style="flex:none;width:200px;height:200px;border-radius:60px;border:2px solid var(--line);display:flex;align-items:center;justify-content:center;color:var(--acc)">
+<svg width="96" height="96" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="m8.5 12.5 2.5 2.5 4.5-5"></path></svg>
+</div>
+</div>
+<div style="border-top:1px solid var(--line);padding-top:22px;font-size:var(--t4);line-height:1.35"><span style="font-weight:700;color:var(--acc)">Do 12</span> — разделять бизнес-логику и UI, логику и валидацию · <span style="font-weight:700;color:var(--warn)">Don't 3</span> — не работать с вводом-выводом в бизнес-логике<div style="margin-top:10px;font-size:var(--t5);color:var(--ink2)">самое частое нарушение в ЛР1 — <span style="font-family:var(--mono)">Console.WriteLine</span> внутри класса предметной области</div></div>
+<div style="margin-top:auto;padding-top:22px;display:flex;justify-content:space-between;align-items:flex-end;font-size:var(--t5);color:var(--ink2)">
+<div style="display:flex;gap:11px;font-weight:700;letter-spacing:.06em;color:#6E6E6E"><span style="color:var(--acc)">S</span><span>O</span><span>L</span><span>I</span><span>D</span></div>
+<span>1.11</span>
+</div>
+</section>
+
+<section data-label="Разделитель O" data-screen-label="17" data-speaker-notes="Блок O: 18 минут. Предупредить, что принцип самый скользкий." style="background:#fff;padding:70px 88px 52px;display:flex;flex-direction:column;color:var(--ink);font-family:'Golos Text',sans-serif" data-om-slide-id="b12505b7">
+<div style="flex:1;display:flex;flex-direction:column;justify-content:center">
+<div style="display:flex;align-items:center;gap:72px">
+<span style="font-size:330px;font-weight:900;color:var(--acc);line-height:.78;letter-spacing:-.04em">O</span>
+<div>
+<div style="font-size:66px;font-weight:800;line-height:1.05">Open-closed</div>
+<div style="font-size:var(--t2);color:var(--ink2);margin-top:18px">Самый сложный для понимания принцип SOLID</div>
+</div>
+</div>
+<div style="display:flex;gap:30px;margin-top:80px;font-size:42px;font-weight:800;letter-spacing:.06em;color:#6E6E6E"><span>S</span><span style="color:var(--acc)">O</span><span>L</span><span>I</span><span>D</span></div>
+</div>
+<div style="margin-top:auto;padding-top:28px;display:flex;justify-content:space-between;align-items:flex-end;font-size:var(--t5);color:var(--ink2)">
+<div style="display:flex;gap:11px;font-weight:700;letter-spacing:.06em;color:#6E6E6E"><span>S</span><span style="color:var(--acc)">O</span><span>L</span><span>I</span><span>D</span></div>
+<span>2.1</span>
+</div>
+</section>
+
+<section data-label="OCP — формулировка" data-screen-label="18" data-speaker-notes="Задать вопрос в зал и выдержать паузу. Не отвечать сразу." style="background:#fff;padding:70px 88px 52px;display:flex;flex-direction:column;color:var(--ink);font-family:'Golos Text',sans-serif" data-om-slide-id="faf00072">
+<h1 style="margin:0;font-size:var(--t1);font-weight:800;line-height:1.06;letter-spacing:-.02em;max-width:1620px">Открыт для расширения, закрыт для изменения</h1>
+<div style="width:100%;max-width:1620px;margin-top:44px;border:2px solid var(--acc);border-left:14px solid var(--acc);border-radius:18px;background:var(--accs);padding:40px 48px;font-size:40px;font-weight:500;line-height:1.34">Тип должен быть открыт для расширения и закрыт для изменения.</div>
+<p style="margin:40px 0 0;font-size:var(--t2);font-style:italic;line-height:1.3;color:var(--ink2)">Как расширить логику типа, не изменяя его?</p>
+<div style="margin-top:auto;padding-top:28px;display:flex;justify-content:space-between;align-items:flex-end;font-size:var(--t5);color:var(--ink2)">
+<div style="display:flex;gap:11px;font-weight:700;letter-spacing:.06em;color:#6E6E6E"><span>S</span><span style="color:var(--acc)">O</span><span>L</span><span>I</span><span>D</span></div>
+<span>2.2</span>
+</div>
+</section>
+
+<section data-label="Ответ" data-screen-label="19" data-speaker-notes="Ответ на вопрос предыдущего слайда." style="background:#fff;padding:70px 88px 52px;display:flex;flex-direction:column;color:var(--ink);font-family:'Golos Text',sans-serif" data-om-slide-id="a8fd3387">
+<h1 style="margin:0;font-size:var(--t1);font-weight:800;line-height:1.06;letter-spacing:-.02em;max-width:1620px">Ответ</h1>
+<div style="width:100%;max-width:1620px;margin-top:44px;border:2px solid var(--acc);border-left:14px solid var(--acc);border-radius:18px;background:var(--accs);padding:44px 48px;font-size:44px;font-weight:500;line-height:1.32">На самом деле, ответ достаточно прост – абстракции и полиморфизм.</div>
+<div style="margin-top:auto;padding-top:28px;display:flex;justify-content:space-between;align-items:flex-end;font-size:var(--t5);color:var(--ink2)">
+<div style="display:flex;gap:11px;font-weight:700;letter-spacing:.06em;color:#6E6E6E"><span>S</span><span style="color:var(--acc)">O</span><span>L</span><span>I</span><span>D</span></div>
+<span>2.3</span>
+</div>
+</section>
+
+<section data-label="Когда OCP не нужен" data-screen-label="20" data-speaker-notes="Про анализ требований: абстракция — это вложение, оно должно окупиться." style="background:#fff;padding:70px 88px 52px;display:flex;flex-direction:column;color:var(--ink);font-family:'Golos Text',sans-serif" data-om-slide-id="a697e7c6">
+<h1 style="margin:0;font-size:var(--t1);font-weight:800;line-height:1.06;letter-spacing:-.02em;max-width:1620px">Когда OCP не нужен</h1>
+<div style="width:100%;max-width:1620px;margin-top:32px;border:2px solid var(--acc);border-left:14px solid var(--acc);border-radius:18px;background:var(--accs);padding:32px 44px;font-size:34px;font-weight:500;line-height:1.34">Именно этим разработчик и отличается от программиста, разработчик должен уметь анализировать требования к системе, которые получает от бизнеса.</div>
+<ul style="margin:36px 0 0;padding:0;list-style:none;display:flex;flex-direction:column;gap:24px;max-width:1300px">
+<li style="display:flex;gap:20px;font-size:var(--t3);line-height:1.32"><span style="flex:none;width:13px;height:13px;margin-top:12px;background:var(--acc)"></span><span>Иногда тип — это просто тип</span></li>
+<li style="display:flex;gap:20px;font-size:var(--t3);line-height:1.32"><span style="flex:none;width:13px;height:13px;margin-top:12px;background:var(--acc)"></span><span>Абстракции окупаются, если требования нестабильны и другое поведение понадобится в обозримом будущем</span></li>
+<li style="display:flex;gap:20px;font-size:var(--t3);line-height:1.32"><span style="flex:none;width:13px;height:13px;margin-top:12px;background:var(--acc)"></span><span>Рефакторинг всегда несёт риск сломать и тянет за собой тесты</span></li>
+</ul>
+<div style="margin-top:32px;border-top:1px solid var(--line);padding-top:20px;font-size:var(--t4);line-height:1.35"><span style="font-weight:700;color:var(--acc)">YAGNI (Do 21)</span> — «не делай заранее». <span style="font-weight:700;color:var(--acc)">OCP</span> — «а если делать, то так»</div>
+<div style="margin-top:auto;padding-top:22px;display:flex;justify-content:space-between;align-items:flex-end;font-size:var(--t5);color:var(--ink2)">
+<div style="display:flex;gap:11px;font-weight:700;letter-spacing:.06em;color:#6E6E6E"><span>S</span><span style="color:var(--acc)">O</span><span>L</span><span>I</span><span>D</span></div>
+<span>2.4</span>
+</div>
+</section>
+
+<section data-label="Нарушение OCP" data-screen-label="21" data-speaker-notes="Добавить умножение: правим и enum, и класс. На простой логике не страшно — на сложной начинаются проблемы SRP." style="background:#fff;padding:70px 88px 52px;display:flex;flex-direction:column;color:var(--ink);font-family:'Golos Text',sans-serif" data-om-slide-id="0d27f9c0">
+<h1 style="margin:0;font-size:var(--t1);font-weight:800;line-height:1.06;letter-spacing:-.02em;max-width:1620px">Нарушение: новая операция — правка <span style="font-family:var(--mono);font-size:52px">Evaluate</span></h1>
+<p style="margin:22px 0 0;font-size:var(--t2);font-weight:500;line-height:1.28;color:var(--acc);max-width:1560px">Чтобы добавить умножение, придётся открыть и <span style="font-family:var(--mono);font-size:31px">enum</span>, и класс.</p>
+<div style="display:flex;gap:52px;margin-top:32px;flex:1;min-height:0">
+<pre style="flex:none;width:1040px;margin:0;background:var(--codebg);border:1px solid var(--line);border-radius:20px;padding:24px 30px;font-family:var(--mono);font-size:22px;line-height:1.38;white-space:pre-wrap;color:#1A1A1A"><div><b>public enum</b> <em>BinaryOperation</em></div><div>{</div><div>    Summation,</div><div>    Subtraction,</div><div>}</div><div> </div><div><b>public class</b> <em>BinaryOperand</em></div><div>{</div><div>    <b>private readonly int</b> _left;</div><div>    <b>private readonly int</b> _right;</div><div> </div><div>    <u>// ...</u></div><div> </div><div>    <b>public int</b> Evaluate(<em>BinaryOperation</em> operation)</div><div>    {</div><div style="margin:0 -30px;padding:0 26px;border-left:4px solid var(--warn);background:var(--warns)">        <b>return</b> operation <b>switch</b> </div><div style="margin:0 -30px;padding:0 26px;border-left:4px solid var(--warn);background:var(--warns)">        {</div><div style="margin:0 -30px;padding:0 26px;border-left:4px solid var(--warn);background:var(--warns)">            <em>BinaryOperation</em>.Summation =&gt; _left + _right,</div><div style="margin:0 -30px;padding:0 26px;border-left:4px solid var(--warn);background:var(--warns)">            <em>BinaryOperation</em>.Subtraction =&gt; _left - _right,</div><div style="margin:0 -30px;padding:0 26px;border-left:4px solid var(--warn);background:var(--warns)">        };</div><div>    }</div><div>}</div></pre>
+<div style="flex:1;display:flex;flex-direction:column">
+<div style="font-size:var(--t5);font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--ink2)">На что смотреть</div>
+<ul style="margin:22px 0 0;padding:0;list-style:none;display:flex;flex-direction:column;gap:24px">
+<li style="display:flex;gap:16px;font-size:var(--t4);line-height:1.3"><span style="flex:none;width:11px;height:11px;margin-top:11px;background:var(--acc)"></span><span>Здесь сломать трудно — логика простая</span></li>
+<li style="display:flex;gap:16px;font-size:var(--t4);line-height:1.3"><span style="flex:none;width:11px;height:11px;margin-top:11px;background:var(--warn)"></span><span>На сложной логике — все проблемы SRP</span></li>
+</ul>
+<sc-if value="{{ showCppNotes }}" hint-placeholder-val="{{ true }}">
+<div style="margin-top:auto;border-top:1px solid var(--line);padding-top:20px;display:flex;gap:14px;color:var(--ink2)">
+<svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="flex:none;margin-top:4px"><path d="M5 12h14"></path><path d="m13 6 6 6-6 6"></path></svg>
+<div style="font-size:var(--t5);line-height:1.34;font-style:italic"><span style="font-weight:700;font-style:normal">Для C++-человека:</span> <span style="font-family:var(--mono);font-style:normal">enum</span> — как <span style="font-family:var(--mono);font-style:normal">enum class</span>, со своей областью имён; <span style="font-family:var(--mono);font-style:normal">operation switch { … =&gt; … }</span> — <span style="font-family:var(--mono);font-style:normal">switch</span>-выражение, возвращает значение, без <span style="font-family:var(--mono);font-style:normal">case</span>/<span style="font-family:var(--mono);font-style:normal">break</span>.</div>
+</div>
+</sc-if>
+</div>
+</div>
+<div style="margin-top:auto;padding-top:24px;display:flex;justify-content:space-between;align-items:flex-end;font-size:var(--t5);color:var(--ink2)">
+<div style="display:flex;gap:11px;font-weight:700;letter-spacing:.06em;color:#6E6E6E"><span>S</span><span style="color:var(--acc)">O</span><span>L</span><span>I</span><span>D</span></div>
+<span>2.5</span>
+</div>
+</section>
+
+<section data-label="Исправление OCP" data-screen-label="22" data-speaker-notes="Операция становится типом. Существующий код и тесты не меняются, добавляются только новые." style="background:#fff;padding:70px 88px 52px;display:flex;flex-direction:column;color:var(--ink);font-family:'Golos Text',sans-serif" data-om-slide-id="af97ca57">
+<h1 style="margin:0;font-size:var(--t1);font-weight:800;line-height:1.06;letter-spacing:-.02em;max-width:1620px">Исправление: операция — это тип</h1>
+<p style="margin:22px 0 0;font-size:var(--t2);font-weight:500;line-height:1.28;color:var(--acc);max-width:1560px">Новая операция — новый класс; существующий код и тесты не меняются.</p>
+<div style="display:flex;margin-top:30px;background:var(--codebg);border:1px solid var(--line);border-radius:20px;padding:24px 30px;flex:1;min-height:0;font-family:var(--mono);font-size:22px;line-height:1.38;color:#1A1A1A">
+<pre style="flex:1;margin:0;white-space:pre-wrap;font:inherit"><div style="margin:0 -30px;padding:0 26px;border-left:4px solid var(--acc);background:var(--accs)"><b>public interface</b> <em>IBinaryOperation</em></div><div>{</div><div>    <b>int</b> Evaluate(<b>int</b> left, <b>int</b> right);</div><div>}</div><div> </div><div><b>public class</b> <em>Summation</em> : <em>IBinaryOperation</em></div><div>{</div><div>    <b>public int</b> Evaluate(<b>int</b> left, <b>int</b> right)</div><div>            =&gt; left + right;</div><div>}</div><div> </div><div><b>public class</b> <em>Subtraction</em> : <em>IBinaryOperation</em></div><div>{</div><div>    <b>public int</b> Evaluate(<b>int</b> left, <b>int</b> right)</div><div>            =&gt; left - right;</div><div>}</div></pre>
+<pre style="flex:1;margin:0;padding-left:44px;border-left:1px solid var(--line);white-space:pre-wrap;font:inherit"><div style="margin:0 -10px;padding:0 6px;border-left:4px solid var(--acc);background:var(--accs)"><b>public sealed class</b> <em>BinaryOperand</em></div><div>{</div><div>    <b>private readonly int</b> _left;</div><div>    <b>private readonly int</b> _right;</div><div> </div><div>    <u>// ...</u></div><div> </div><div>    <b>public int</b> Evaluate(<em>IBinaryOperation</em> operation)</div><div>        =&gt; operation.Evaluate(_left, _right);</div><div>}</div></pre>
+</div>
+<div style="display:flex;gap:44px;margin-top:22px;align-items:flex-start">
+<div style="display:flex;gap:14px;flex:1;font-size:var(--t4);line-height:1.3"><span style="flex:none;width:11px;height:11px;margin-top:11px;background:var(--acc)"></span><span><span style="font-family:var(--mono)">BinaryOperand</span> — <span style="font-family:var(--mono)">sealed</span>: закрыт буквально</span></div>
+<div style="display:flex;gap:14px;flex:1;font-size:var(--t4);line-height:1.3"><span style="flex:none;width:11px;height:11px;margin-top:11px;background:var(--acc)"></span><span>Расширение — через реализации <span style="font-family:var(--mono)">IBinaryOperation</span></span></div>
+<div style="display:flex;gap:14px;flex:1;font-size:var(--t4);line-height:1.3"><span style="flex:none;width:11px;height:11px;margin-top:11px;background:var(--acc)"></span><span>Добавляются только новые тесты</span></div>
+<sc-if value="{{ showCppNotes }}" hint-placeholder-val="{{ true }}">
+<div style="flex:1;display:flex;gap:12px;color:var(--ink2);border-left:1px solid var(--line);padding-left:24px">
+<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="flex:none;margin-top:3px"><path d="M5 12h14"></path><path d="m13 6 6 6-6 6"></path></svg>
+<div style="font-size:var(--t5);line-height:1.3;font-style:italic"><span style="font-weight:700;font-style:normal">Для C++-человека:</span> <span style="font-family:var(--mono);font-style:normal">sealed</span> — как <span style="font-family:var(--mono);font-style:normal">final</span> на классе.</div>
+</div>
+</sc-if>
+</div>
+<div style="margin-top:auto;padding-top:22px;display:flex;justify-content:space-between;align-items:flex-end;font-size:var(--t5);color:var(--ink2)">
+<div style="display:flex;gap:11px;font-weight:700;letter-spacing:.06em;color:#6E6E6E"><span>S</span><span style="color:var(--acc)">O</span><span>L</span><span>I</span><span>D</span></div>
+<span>2.6</span>
+</div>
+</section>
+
+<section data-label="Тест на OCP" data-screen-label="23" data-speaker-notes="Мысленный эксперимент: у потребителя есть только dll." style="background:#fff;padding:70px 88px 52px;display:flex;flex-direction:column;color:var(--ink);font-family:'Golos Text',sans-serif" data-om-slide-id="e909a92d">
+<h1 style="margin:0;font-size:var(--t1);font-weight:800;line-height:1.06;letter-spacing:-.02em;max-width:1620px">Тест на OCP: вы разработчик библиотеки</h1>
+<p style="margin:22px 0 0;font-size:var(--t2);font-weight:500;line-height:1.28;color:var(--acc);max-width:1560px">Ваш код поставляется как dll — исходников у потребителя нет.</p>
+<div style="display:flex;gap:56px;margin-top:40px;flex:1;min-height:0;align-items:flex-start">
+<ul style="flex:none;width:520px;margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:26px">
+<li style="display:flex;gap:16px;font-size:var(--t4);line-height:1.3"><span style="flex:none;width:11px;height:11px;margin-top:11px;background:var(--acc)"></span><span>Есть ли <span style="font-family:var(--mono)">switch</span>/<span style="font-family:var(--mono)">if</span> по типу или <span style="font-family:var(--mono)">enum</span>, куда придётся добавлять ветку?</span></li>
+<li style="display:flex;gap:16px;font-size:var(--t4);line-height:1.3"><span style="flex:none;width:11px;height:11px;margin-top:11px;background:var(--acc)"></span><span>Стабильна ли логика? Если да — не трогать</span></li>
+</ul>
+<div style="flex:1;display:flex;flex-direction:column;gap:30px">
+<div style="display:flex;align-items:center;gap:26px">
+<div style="flex:none;width:300px;border:1px solid var(--line);border-radius:22px;padding:22px 24px;display:flex;align-items:center;gap:16px">
+<svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="flex:none"><rect x="4" y="10" width="16" height="10" rx="3"></rect><path d="M8 10V7a4 4 0 0 1 8 0v3"></path></svg>
+<span style="font-size:var(--t4);font-weight:700;line-height:1.2">ваша dll</span>
+</div>
+<span style="font-size:32px;color:var(--ink2)">←</span>
+<span style="font-size:var(--t4);color:var(--ink2)">«хочу добавить умножение»</span>
+</div>
+<div style="display:flex;align-items:center;gap:24px;border:2px solid var(--warn);background:var(--warns);border-radius:22px;padding:24px 28px">
+<span style="flex:none;font-size:40px;font-weight:800;color:var(--warn);width:42px;text-align:center">✕</span>
+<span style="flex:none;font-family:var(--mono);font-size:var(--t4);font-weight:700">enum</span>
+<span style="font-size:32px;color:var(--warn)">→</span>
+<span style="font-size:var(--t4);line-height:1.25">нужны исходники → OCP нарушен</span>
+</div>
+<div style="display:flex;align-items:center;gap:24px;border:2px solid var(--acc);background:var(--accs);border-radius:22px;padding:24px 28px">
+<span style="flex:none;color:var(--acc);width:42px;display:flex;justify-content:center">
+<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="m8.5 12.5 2.5 2.5 4.5-5"></path></svg>
+</span>
+<span style="flex:none;font-family:var(--mono);font-size:var(--t4);font-weight:700">IBinaryOperation</span>
+<span style="font-size:32px;color:var(--acc)">→</span>
+<span style="font-size:var(--t4);line-height:1.25">добавил свой класс → OCP соблюдён</span>
+</div>
+</div>
+</div>
+<div style="margin-top:auto;padding-top:24px;display:flex;justify-content:space-between;align-items:flex-end;font-size:var(--t5);color:var(--ink2)">
+<div style="display:flex;gap:11px;font-weight:700;letter-spacing:.06em;color:#6E6E6E"><span>S</span><span style="color:var(--acc)">O</span><span>L</span><span>I</span><span>D</span></div>
+<span>2.7</span>
+</div>
+</section>
+
+<section data-label="Разделитель L" data-screen-label="24" data-speaker-notes="Блок L: 18 минут." style="background:#fff;padding:70px 88px 52px;display:flex;flex-direction:column;color:var(--ink);font-family:'Golos Text',sans-serif" data-om-slide-id="863abd31">
+<div style="flex:1;display:flex;flex-direction:column;justify-content:center">
+<div style="display:flex;align-items:center;gap:72px">
+<span style="font-size:330px;font-weight:900;color:var(--acc);line-height:.78;letter-spacing:-.04em">L</span>
+<div>
+<div style="font-size:66px;font-weight:800;line-height:1.05">Liskov substitution</div>
+<div style="font-size:var(--t2);color:var(--ink2);margin-top:18px">Принцип подстановки Лисков</div>
+</div>
+</div>
+<div style="margin-top:56px;border:2px solid var(--acc);border-left:14px solid var(--acc);border-radius:18px;background:var(--accs);padding:32px 42px;max-width:1500px">
+<div style="font-size:var(--t5);font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--acc)">Оригинальная формулировка, Liskov &amp; Wing, 1994</div>
+<div style="margin-top:18px;font-family:var(--mono);font-size:38px;line-height:1.35">∀φ ( ∀x : T . φ(x) ) → ( ∀y : S . φ(y) ),   S &lt;: T</div>
+<div style="margin-top:16px;font-size:var(--t4);line-height:1.32">φ — свойство, доказуемое об объектах типа <span style="font-family:var(--mono)">T</span>; <span style="font-family:var(--mono)">S &lt;: T</span> — <span style="font-family:var(--mono)">S</span> является подтипом <span style="font-family:var(--mono)">T</span></div>
+</div>
+<div style="display:flex;gap:30px;margin-top:48px;font-size:42px;font-weight:800;letter-spacing:.06em;color:#6E6E6E"><span>S</span><span>O</span><span style="color:var(--acc)">L</span><span>I</span><span>D</span></div>
+</div>
+<div style="margin-top:auto;padding-top:28px;display:flex;justify-content:space-between;align-items:flex-end;font-size:var(--t5);color:var(--ink2)">
+<div style="display:flex;gap:11px;font-weight:700;letter-spacing:.06em;color:#6E6E6E"><span>S</span><span>O</span><span style="color:var(--acc)">L</span><span>I</span><span>D</span></div>
+<span>3.1</span>
+</div>
+</section>
+
+<section data-label="Наследование — сильная связь" data-screen-label="25" data-speaker-notes="Напомнить прошлую лекцию: иерархия врастает в код." style="background:#fff;padding:70px 88px 52px;display:flex;flex-direction:column;color:var(--ink);font-family:'Golos Text',sans-serif" data-om-slide-id="e45947f5">
+<h1 style="margin:0;font-size:var(--t1);font-weight:800;line-height:1.06;letter-spacing:-.02em;max-width:1620px">Наследование — сильная связь</h1>
+<p style="margin:24px 0 0;font-size:var(--t2);font-weight:500;line-height:1.28;color:var(--acc);max-width:1560px">Иерархию, вросшую в кодовую базу, трудно разорвать.</p>
+<div style="display:flex;gap:80px;margin-top:48px;flex:1;min-height:0;align-items:flex-start">
+<ul style="margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:34px;max-width:1080px">
+<li style="display:flex;gap:20px;font-size:var(--t3);line-height:1.32"><span style="flex:none;width:13px;height:13px;margin-top:12px;background:var(--warn)"></span><span>Бездумная иерархия → плачевные последствия</span></li>
+<li style="display:flex;gap:20px;font-size:var(--t3);line-height:1.32"><span style="flex:none;width:13px;height:13px;margin-top:12px;background:var(--acc)"></span><span>Отсюда — правила и здравый смысл</span></li>
+<li style="display:flex;gap:20px;font-size:var(--t3);line-height:1.32"><span style="flex:none;width:13px;height:13px;margin-top:12px;background:var(--acc)"></span><span>LSP — простое, но важное дополнение к прошлой лекции</span></li>
+</ul>
+<div style="flex:none;width:300px;display:flex;flex-direction:column;align-items:center;gap:0">
+<div style="width:220px;border:2px solid var(--acc);border-radius:18px;padding:18px;text-align:center;font-size:var(--t4);font-weight:700;background:var(--accs);color:var(--acc)">Bird</div>
+<div style="width:2px;height:36px;background:var(--acc)"></div>
+<div style="display:flex;gap:18px">
+<div style="border:1px solid var(--line);border-radius:16px;padding:16px 20px;font-size:var(--t5);font-family:var(--mono)">Colibri</div>
+<div style="border:1px solid var(--line);border-radius:16px;padding:16px 20px;font-size:var(--t5);font-family:var(--mono)">Penguin</div>
+</div>
+</div>
+</div>
+<div style="margin-top:auto;padding-top:28px;display:flex;justify-content:space-between;align-items:flex-end;font-size:var(--t5);color:var(--ink2)">
+<div style="display:flex;gap:11px;font-weight:700;letter-spacing:.06em;color:#6E6E6E"><span>S</span><span>O</span><span style="color:var(--acc)">L</span><span>I</span><span>D</span></div>
+<span>3.2</span>
+</div>
+</section>
+
+<section data-label="Кто такая Лисков" data-screen-label="26" data-speaker-notes="Вставить реальную фотографию из Wikimedia Commons с подписью источника." style="background:#fff;padding:70px 88px 52px;display:flex;flex-direction:column;color:var(--ink);font-family:'Golos Text',sans-serif" data-om-slide-id="06b24d10">
+<h1 style="margin:0;font-size:var(--t1);font-weight:800;line-height:1.06;letter-spacing:-.02em;max-width:1620px">Кто такая Лисков</h1>
+<p style="margin:22px 0 0;font-size:var(--t2);font-weight:500;line-height:1.28;color:var(--acc);max-width:1560px">Единственный принцип из пяти, названный по имени, — пусть буква L о чём-то говорит.</p>
+<div style="display:flex;gap:64px;margin-top:36px;flex:1;min-height:0;align-items:flex-start">
+<div style="flex:1;display:flex;flex-direction:column;gap:20px;max-width:1080px">
+<div style="font-size:var(--t4);line-height:1.3">Барбара Лисков, род. 1939, MIT</div>
+<div style="font-size:var(--t4);line-height:1.3">PhD Стэнфорд, 1968 — одна из первых женщин в CS в США; руководитель — Джон Маккарти</div>
+<div style="font-size:var(--t4);line-height:1.3">1970-е: язык CLU — абстрактные типы данных, итераторы, исключения впервые как конструкции языка</div>
+<div style="font-size:var(--t4);line-height:1.3">1987: доклад «Data Abstraction and Hierarchy»; 1994, с Джаннет Уинг: строгая формулировка подстановки</div>
+<div style="font-size:var(--t4);line-height:1.3">Премия Тьюринга 2008</div>
+<div style="margin-top:12px;border-left:4px solid var(--acc);padding-left:24px;font-size:var(--t3);line-height:1.32;color:var(--acc);font-weight:600">Человек, который придумал абстрактные типы данных, объяснила, как их правильно наследовать.</div>
+</div>
+<div style="flex:none;width:480px">
+<img src="https://commons.wikimedia.org/wiki/Special:FilePath/Barbara_Liskov_MIT_computer_scientist_2010.jpg?width=700" alt="Барбара Лисков, 2010" style="width:480px;height:560px;object-fit:cover;object-position:50% 20%;border-radius:26px;border:1px solid var(--line);display:block">
+<div style="margin-top:14px;font-size:var(--t5);color:var(--ink2);line-height:1.3">фото: Kenneth C. Zirkel / Wikimedia Commons, CC BY-SA 3.0</div>
+</div>
+</div>
+<div style="margin-top:auto;padding-top:22px;display:flex;justify-content:space-between;align-items:flex-end;font-size:var(--t5);color:var(--ink2)">
+<div style="display:flex;gap:11px;font-weight:700;letter-spacing:.06em;color:#6E6E6E"><span>S</span><span>O</span><span style="color:var(--acc)">L</span><span>I</span><span>D</span></div>
+<span>3.3</span>
+</div>
+</section>
+
+<section data-label="LSP — формулировка" data-screen-label="27" data-speaker-notes="Строгая формулировка есть, но работаем с простой. Вторая плашка — рабочий критерий." style="background:#fff;padding:70px 88px 52px;display:flex;flex-direction:column;color:var(--ink);font-family:'Golos Text',sans-serif" data-om-slide-id="d30465bf">
+<h1 style="margin:0;font-size:var(--t1);font-weight:800;line-height:1.06;letter-spacing:-.02em;max-width:1620px">Формулировка</h1>
+<p style="margin:18px 0 0;font-size:var(--t4);font-style:italic;line-height:1.3;color:var(--ink2)">есть определение через теорию категорий; скажем по-простому</p>
+<div style="display:flex;flex-direction:column;gap:28px;margin-top:32px;max-width:1620px">
+<div style="width:100%;border:2px solid var(--acc);border-left:14px solid var(--acc);border-radius:18px;background:var(--accs);padding:32px 44px;font-size:33px;font-weight:500;line-height:1.34">Суть принципа подстановки Лисков заключается в том, что реализация дочернего типа, не должна нарушать инвариант своего родителя, соответственно, все дочерние реализации, должны быть применимы везде, где ожидается родительская.</div>
+<div style="width:100%;border:2px solid var(--acc);border-left:14px solid var(--acc);border-radius:18px;background:var(--accs);padding:32px 44px;font-size:33px;font-weight:500;line-height:1.34">Определить это достаточно просто, если результат операции, переопределённой дочерним типом, разнится с тем, что явно ожидается от результата вызова реализации родительского типа, то данный принцип не соблюдается.</div>
+</div>
+<div style="margin-top:auto;padding-top:24px;display:flex;justify-content:space-between;align-items:flex-end;font-size:var(--t5);color:var(--ink2)">
+<div style="display:flex;gap:11px;font-weight:700;letter-spacing:.06em;color:#6E6E6E"><span>S</span><span>O</span><span style="color:var(--acc)">L</span><span>I</span><span>D</span></div>
+<span>3.4</span>
+</div>
+</section>
+
+<section data-label="Шаг 1. Пингвин" data-screen-label="28" data-speaker-notes="Результат FlyTo у наследника противоречит ожиданию от родителя." style="background:#fff;padding:70px 88px 52px;display:flex;flex-direction:column;color:var(--ink);font-family:'Golos Text',sans-serif" data-om-slide-id="bb6b8237">
+<h1 style="margin:0;font-size:var(--t1);font-weight:800;line-height:1.06;letter-spacing:-.02em;max-width:1620px">Шаг 1. Пингвин умирает при попытке взлететь</h1>
+<p style="margin:22px 0 0;font-size:var(--t2);font-weight:500;line-height:1.28;color:var(--acc);max-width:1560px">У <span style="font-family:var(--mono);font-size:31px">Bird</span> результат <span style="font-family:var(--mono);font-size:31px">FlyTo</span> — полёт, у <span style="font-family:var(--mono);font-size:31px">Penguin</span> — смерть. Результат разнится — LSP нарушен.</p>
+<div style="display:flex;gap:52px;margin-top:32px;flex:1;min-height:0">
+<pre style="flex:none;width:1040px;margin:0;background:var(--codebg);border:1px solid var(--line);border-radius:20px;padding:24px 30px;font-family:var(--mono);font-size:22px;line-height:1.38;white-space:pre-wrap;color:#1A1A1A"><div><b>public class</b> <em>Creature</em></div><div>{</div><div>    <b>public void</b> Die()</div><div>    {</div><div>        <em>Console</em>.WriteLine(<s>"I am dead now"</s>);</div><div>    }</div><div>}</div><div> </div><div><b>public class</b> <em>Bird</em> : <em>Creature</em></div><div>{</div><div>    <b>public virtual void</b> FlyTo(<em>Coordinate</em> coordinate)</div><div>    {</div><div>        <em>Console</em>.WriteLine(<s>"I am flying"</s>);</div><div>    }</div><div>}</div><div> </div><div><b>public class</b> <em>Penguin</em> : <em>Bird</em></div><div>{</div><div>    <b>public override void</b> FlyTo(<em>Coordinate</em> coordinate)</div><div>    {</div><div style="margin:0 -30px;padding:0 26px;border-left:4px solid var(--warn);background:var(--warns)">        Die();</div><div>    }</div><div>}</div></pre>
+<div style="flex:1;display:flex;flex-direction:column">
+<div style="font-size:var(--t5);font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--ink2)">На что смотреть</div>
+<ul style="margin:22px 0 0;padding:0;list-style:none;display:flex;flex-direction:column;gap:24px">
+<li style="display:flex;gap:16px;font-size:var(--t4);line-height:1.3"><span style="flex:none;width:11px;height:11px;margin-top:11px;background:var(--warn)"></span><span>Пингвины не летают — и разработчик не придумал ничего лучше</span></li>
+<li style="display:flex;gap:16px;font-size:var(--t4);line-height:1.3"><span style="flex:none;width:11px;height:11px;margin-top:11px;background:var(--warn)"></span><span>Мы не хотим пингвиньих смертей</span></li>
+</ul>
+<div style="margin-top:auto;display:flex;justify-content:center;color:var(--warn)">
+<svg width="120" height="120" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+</div>
+</div>
+</div>
+<div style="margin-top:auto;padding-top:24px;display:flex;justify-content:space-between;align-items:flex-end;font-size:var(--t5);color:var(--ink2)">
+<div style="display:flex;gap:11px;font-weight:700;letter-spacing:.06em;color:#6E6E6E"><span>S</span><span>O</span><span style="color:var(--acc)">L</span><span>I</span><span>D</span></div>
+<span>3.5</span>
+</div>
+</section>
+
+<section data-label="Шаг 2. Компилятор пропустит" data-screen-label="29" data-speaker-notes="Компилятор прав: пингвин — птица. Ошибка уходит в рантайм." style="background:#fff;padding:70px 88px 52px;display:flex;flex-direction:column;color:var(--ink);font-family:'Golos Text',sans-serif" data-om-slide-id="dc87875c">
+<h1 style="margin:0;font-size:var(--t1);font-weight:800;line-height:1.06;letter-spacing:-.02em;max-width:1620px">Шаг 2. Компилятор с радостью пропустит</h1>
+<p style="margin:22px 0 0;font-size:var(--t2);font-weight:500;line-height:1.28;color:var(--acc);max-width:1560px">Пингвин — птица; компилятор прав; миграция убивает пингвина.</p>
+<div style="display:flex;gap:52px;margin-top:32px;flex:1;min-height:0">
+<pre style="flex:none;width:1040px;margin:0;background:var(--codebg);border:1px solid var(--line);border-radius:20px;padding:26px 30px;font-family:var(--mono);font-size:24px;line-height:1.4;white-space:pre-wrap;color:#1A1A1A"><div><b>void</b> StartMigration(<em>IEnumerable</em>&lt;<em>Bird</em>&gt; birds, <em>Coordinate</em> coordinate)</div><div>{</div><div>    <b>foreach</b> (<b>var</b> bird <b>in</b> birds)</div><div>    {</div><div>        bird.FlyTo(coordinate);</div><div>    }</div><div>}</div><div> </div><div style="margin:0 -30px;padding:0 26px;border-left:4px solid var(--warn);background:var(--warns)"><b>var</b> birds = <b>new</b>[] { <b>new</b> <em>Penguin</em>() };</div><div> </div><div>StartMigration(birds, <b>new</b> <em>Coordinate</em>(420, 69));</div></pre>
+<div style="flex:1;display:flex;flex-direction:column">
+<div style="font-size:var(--t5);font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--ink2)">На что смотреть</div>
+<ul style="margin:22px 0 0;padding:0;list-style:none;display:flex;flex-direction:column;gap:24px">
+<li style="display:flex;gap:16px;font-size:var(--t4);line-height:1.3"><span style="flex:none;width:11px;height:11px;margin-top:11px;background:var(--warn)"></span><span>Это и есть лишнее пространство для ошибок</span></li>
+</ul>
+<sc-if value="{{ showCppNotes }}" hint-placeholder-val="{{ true }}">
+<div style="margin-top:auto;border-top:1px solid var(--line);padding-top:20px;display:flex;gap:14px;color:var(--ink2)">
+<svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="flex:none;margin-top:4px"><path d="M5 12h14"></path><path d="m13 6 6 6-6 6"></path></svg>
+<div style="font-size:var(--t5);line-height:1.34;font-style:italic"><span style="font-weight:700;font-style:normal">Для C++-человека:</span> <span style="font-family:var(--mono);font-style:normal">IEnumerable&lt;T&gt;</span> — «то, по чему можно пройти <span style="font-family:var(--mono);font-style:normal">foreach</span>»; <span style="font-family:var(--mono);font-style:normal">new[] { … }</span> — массив с выводом типа.</div>
+</div>
+</sc-if>
+</div>
+</div>
+<div style="margin-top:auto;padding-top:24px;display:flex;justify-content:space-between;align-items:flex-end;font-size:var(--t5);color:var(--ink2)">
+<div style="display:flex;gap:11px;font-weight:700;letter-spacing:.06em;color:#6E6E6E"><span>S</span><span>O</span><span style="color:var(--acc)">L</span><span>I</span><span>D</span></div>
+<span>3.6</span>
+</div>
+</section>
+
+<section data-label="Шаг 3. Проверка типов" data-screen-label="30" data-speaker-notes="Каждый новый летающий вид — новый if. Нарушение OCP, и пингвин всё ещё умирает." style="background:#fff;padding:70px 88px 52px;display:flex;flex-direction:column;color:var(--ink);font-family:'Golos Text',sans-serif" data-om-slide-id="ece1f617">
+<h1 style="margin:0;font-size:var(--t1);font-weight:800;line-height:1.06;letter-spacing:-.02em;max-width:1620px">Шаг 3. Проверка типов — не выход</h1>
+<p style="margin:20px 0 0;font-size:var(--t2);font-weight:500;line-height:1.28;color:var(--acc);max-width:1620px">Каждый новый летающий вид — новый <span style="font-family:var(--mono);font-size:31px">if</span>. Это нарушение OCP, и пингвин всё ещё умирает.</p>
+<div style="display:flex;margin-top:28px;background:var(--codebg);border:1px solid var(--line);border-radius:20px;padding:24px 30px;flex:1;min-height:0;font-family:var(--mono);font-size:21px;line-height:1.38;color:#1A1A1A">
+<pre style="flex:1.15;margin:0;white-space:pre-wrap;font:inherit"><div><b>public class</b> <em>Bat</em> : <em>Creature</em></div><div>{</div><div>    <b>public void</b> FlyTo(<em>Coordinate</em> coordinate)</div><div>    {</div><div>        <em>Console</em>.WriteLine(<s>"I bat and am flying"</s>);</div><div>    }</div><div>}</div><div> </div><div><b>void</b> StartMigration(<em>IEnumerable</em>&lt;<em>Creature</em>&gt; creatures, <em>Coordinate</em> coordinate)</div><div>{</div><div>    <b>foreach</b> (<b>var</b> creature <b>in</b> creatures)</div><div>    {</div><div style="margin:0 -30px;padding:0 26px;border-left:4px solid var(--warn);background:var(--warns)">        <b>if</b> (creature <b>is</b> <em>Bird</em> bird)</div><div>        {</div><div>            bird.FlyTo(coordinate);</div><div>        }</div></pre>
+<pre style="flex:1;margin:0;padding-left:40px;border-left:1px solid var(--line);white-space:pre-wrap;font:inherit"><div> </div><div style="margin:0 -10px;padding:0 6px;border-left:4px solid var(--warn);background:var(--warns)">        <b>if</b> (creature <b>is</b> <em>Bat</em> bat)</div><div>        {</div><div>            bat.FlyTo(coordinate);</div><div>        }</div><div>    }</div><div>}</div><div> </div><div><b>var</b> creatures = <b>new</b> <em>Creature</em>[] { <b>new</b> <em>Penguin</em>(), <b>new</b> <em>Bat</em>() };</div><div> </div><div>StartMigration(creatures, <b>new</b> <em>Coordinate</em>(420, 69));</div></pre>
+</div>
+<div style="display:flex;gap:36px;margin-top:20px;align-items:flex-start">
+<div style="display:flex;gap:14px;flex:1;font-size:var(--t4);line-height:1.3"><span style="flex:none;width:11px;height:11px;margin-top:11px;background:var(--warn)"></span><span>Не все птицы летают</span></div>
+<div style="display:flex;gap:14px;flex:1;font-size:var(--t4);line-height:1.3"><span style="flex:none;width:11px;height:11px;margin-top:11px;background:var(--warn)"></span><span>Не все, кто летает, — птицы</span></div>
+<div style="display:flex;gap:14px;flex:1;font-size:var(--t4);line-height:1.3"><span style="flex:none;width:11px;height:11px;margin-top:11px;background:var(--warn)"></span><span><span style="font-weight:700;color:var(--warn)">Don't 7:</span> минимизировать down casting</span></div>
+<sc-if value="{{ showCppNotes }}" hint-placeholder-val="{{ true }}">
+<div style="flex:1.2;display:flex;gap:12px;color:var(--ink2);border-left:1px solid var(--line);padding-left:24px">
+<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="flex:none;margin-top:3px"><path d="M5 12h14"></path><path d="m13 6 6 6-6 6"></path></svg>
+<div style="font-size:var(--t5);line-height:1.3;font-style:italic"><span style="font-weight:700;font-style:normal">Для C++-человека:</span> <span style="font-family:var(--mono);font-style:normal">creature is Bird bird</span> — проверка типа с приведением, как <span style="font-family:var(--mono);font-style:normal">dynamic_cast</span> внутри <span style="font-family:var(--mono);font-style:normal">if</span>.</div>
+</div>
+</sc-if>
+</div>
+<div style="margin-top:auto;padding-top:20px;display:flex;justify-content:space-between;align-items:flex-end;font-size:var(--t5);color:var(--ink2)">
+<div style="display:flex;gap:11px;font-weight:700;letter-spacing:.06em;color:#6E6E6E"><span>S</span><span>O</span><span style="color:var(--acc)">L</span><span>I</span><span>D</span></div>
+<span>3.7</span>
+</div>
+</section>
+
+<section data-label="Шаг 4. Абстракция" data-screen-label="31" data-speaker-notes="Отдельная абстракция летающего существа. У пингвина больше нет FlyTo." style="background:#fff;padding:70px 88px 52px;display:flex;flex-direction:column;color:var(--ink);font-family:'Golos Text',sans-serif" data-om-slide-id="7fe9d539">
+<h1 style="margin:0;font-size:var(--t1);font-weight:800;line-height:1.06;letter-spacing:-.02em;max-width:1620px">Шаг 4. Абстракция летающего существа</h1>
+<p style="margin:20px 0 0;font-size:var(--t2);font-weight:500;line-height:1.28;color:var(--acc);max-width:1620px">У пингвина больше нет <span style="font-family:var(--mono);font-size:31px">FlyTo</span> — летать его никто не попросит.</p>
+<div style="display:flex;margin-top:28px;background:var(--codebg);border:1px solid var(--line);border-radius:20px;padding:22px 30px;flex:1;min-height:0;font-family:var(--mono);font-size:21px;line-height:1.36;color:#1A1A1A">
+<pre style="flex:1;margin:0;white-space:pre-wrap;font:inherit"><div><b>public interface</b> <em>ICreature</em></div><div>{</div><div>    <b>void</b> Die();</div><div>}</div><div> </div><div style="margin:0 -30px;padding:0 26px;border-left:4px solid var(--acc);background:var(--accs)"><b>public interface</b> <em>IFlyingCreature</em> : <em>ICreature</em></div><div>{</div><div>    <b>void</b> FlyTo(<em>Coordinate</em> coordinate);</div><div>}</div><div> </div><div><b>public class</b> <em>CreatureBase</em> : <em>ICreature</em></div><div>{</div><div>    <b>public void</b> Die()</div><div>    {</div><div>        <em>Console</em>.WriteLine(<s>"I am dead now"</s>);</div><div>    }</div><div>}</div><div> </div><div><b>public class</b> <em>Bird</em> : <em>CreatureBase</em> { }</div></pre>
+<pre style="flex:1;margin:0;padding-left:40px;border-left:1px solid var(--line);white-space:pre-wrap;font:inherit"><div><b>public class</b> <em>Colibri</em> : <em>Bird</em>, <em>IFlyingCreature</em></div><div>{</div><div>    <b>public void</b> FlyTo(<em>Coordinate</em> coordinate)</div><div>    {</div><div>        <em>Console</em>.WriteLine(<s>"I am colibri and I'm flying"</s>);</div><div>    }</div><div>}</div><div> </div><div><b>public class</b> <em>Penguin</em> : <em>Bird</em> { }</div><div> </div><div><b>public class</b> <em>Bat</em> : <em>CreatureBase</em>, <em>IFlyingCreature</em></div><div>{</div><div>    <b>public void</b> FlyTo(<em>Coordinate</em> coordinate)</div><div>    {</div><div>        <em>Console</em>.WriteLine(<s>"I am bat and I'm flying"</s>);</div><div>    }</div><div>}</div></pre>
+</div>
+<div style="display:flex;gap:36px;margin-top:20px;align-items:flex-start">
+<div style="display:flex;gap:14px;flex:1;font-size:var(--t4);line-height:1.3"><span style="flex:none;width:11px;height:11px;margin-top:11px;background:var(--acc)"></span><span>Наследование интерфейсов связывает абстракции — в общем случае не лучшая практика</span></div>
+<div style="display:flex;gap:14px;flex:1;font-size:var(--t4);line-height:1.3"><span style="flex:none;width:11px;height:11px;margin-top:11px;background:var(--acc)"></span><span>Здесь приемлемо: между ними <em style="font-style:italic">is a</em></span></div>
+<sc-if value="{{ showCppNotes }}" hint-placeholder-val="{{ true }}">
+<div style="flex:1.3;display:flex;gap:12px;color:var(--ink2);border-left:1px solid var(--line);padding-left:24px">
+<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="flex:none;margin-top:3px"><path d="M5 12h14"></path><path d="m13 6 6 6-6 6"></path></svg>
+<div style="font-size:var(--t5);line-height:1.3;font-style:italic"><span style="font-weight:700;font-style:normal">Для C++-человека:</span> <span style="font-family:var(--mono);font-style:normal">IFlyingCreature : ICreature</span> — интерфейс наследует интерфейс; <span style="font-family:var(--mono);font-style:normal">Colibri : Bird, IFlyingCreature</span> — один базовый класс плюс интерфейсы через запятую.</div>
+</div>
+</sc-if>
+</div>
+<div style="margin-top:auto;padding-top:18px;display:flex;justify-content:space-between;align-items:flex-end;font-size:var(--t5);color:var(--ink2)">
+<div style="display:flex;gap:11px;font-weight:700;letter-spacing:.06em;color:#6E6E6E"><span>S</span><span>O</span><span style="color:var(--acc)">L</span><span>I</span><span>D</span></div>
+<span>3.8</span>
+</div>
+</section>
+
+<section data-label="Миграция без смертей" data-screen-label="32" data-speaker-notes="Ошибка переехала с рантайма на компиляцию." style="background:#fff;padding:70px 88px 52px;display:flex;flex-direction:column;color:var(--ink);font-family:'Golos Text',sans-serif" data-om-slide-id="11cda4db">
+<h1 style="margin:0;font-size:var(--t1);font-weight:800;line-height:1.06;letter-spacing:-.02em;max-width:1620px">Миграция без случайных смертей</h1>
+<p style="margin:20px 0 0;font-size:var(--t2);font-weight:500;line-height:1.28;color:var(--acc);max-width:1620px">Пингвина в этот массив не положить — компилятор не даст. Ошибка ушла с рантайма на компиляцию.</p>
+<div style="display:flex;gap:52px;margin-top:30px;flex:1;min-height:0">
+<pre style="flex:none;width:1160px;margin:0;background:var(--codebg);border:1px solid var(--line);border-radius:20px;padding:26px 30px;font-family:var(--mono);font-size:22px;line-height:1.4;white-space:pre-wrap;color:#1A1A1A"><div><b>void</b> StartMigration(<em>IEnumerable</em>&lt;<em>IFlyingCreature</em>&gt; creatures, <em>Coordinate</em> coordinate)</div><div>{</div><div>    <b>foreach</b> (<b>var</b> creature <b>in</b> creatures)</div><div>    {</div><div>        <b>if</b> (<em>Random</em>.Shared.NextDouble() &lt; 0.8)</div><div>        {</div><div>            creature.FlyTo(coordinate);</div><div>        }</div><div>        <b>else</b></div><div>        {</div><div>            creature.Die();</div><div>        }</div><div>    }</div><div>}</div><div> </div><div style="margin:0 -30px;padding:0 26px;border-left:4px solid var(--acc);background:var(--accs)"><b>var</b> creatures = <b>new</b> <em>IFlyingCreature</em>[] { <b>new</b> <em>Colibri</em>(), <b>new</b> <em>Bat</em>() };</div><div> </div><div>StartMigration(creatures, <b>new</b> <em>Coordinate</em>(420, 69));</div></pre>
+<div style="flex:1;display:flex;flex-direction:column">
+<div style="font-size:var(--t5);font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--ink2)">На что смотреть</div>
+<div style="margin-top:22px;font-size:var(--t4);line-height:1.3;font-style:italic;color:var(--ink2)">ради реализма долетят только 80%</div>
+<sc-if value="{{ showCppNotes }}" hint-placeholder-val="{{ true }}">
+<div style="margin-top:auto;border-top:1px solid var(--line);padding-top:20px;display:flex;gap:14px;color:var(--ink2)">
+<svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="flex:none;margin-top:4px"><path d="M5 12h14"></path><path d="m13 6 6 6-6 6"></path></svg>
+<div style="font-size:var(--t5);line-height:1.34;font-style:italic"><span style="font-weight:700;font-style:normal">Для C++-человека:</span> <span style="font-family:var(--mono);font-style:normal">Random.Shared</span> — готовый общий генератор, без <span style="font-family:var(--mono);font-style:normal">srand</span>.</div>
+</div>
+</sc-if>
+</div>
+</div>
+<div style="margin-top:auto;padding-top:24px;display:flex;justify-content:space-between;align-items:flex-end;font-size:var(--t5);color:var(--ink2)">
+<div style="display:flex;gap:11px;font-weight:700;letter-spacing:.06em;color:#6E6E6E"><span>S</span><span>O</span><span style="color:var(--acc)">L</span><span>I</span><span>D</span></div>
+<span>3.9</span>
+</div>
+</section>
+
+<section data-label="LSP: как найти у себя" data-screen-label="33" data-speaker-notes="Don't 11 — единственный пункт Do/Don't, который прямо ссылается на LSP." style="background:#fff;padding:70px 88px 52px;display:flex;flex-direction:column;color:var(--ink);font-family:'Golos Text',sans-serif" data-om-slide-id="06c44b8d">
+<h1 style="margin:0;font-size:var(--t1);font-weight:800;line-height:1.06;letter-spacing:-.02em;max-width:1620px">Как найти у себя</h1>
+<p style="margin:24px 0 0;font-size:var(--t2);font-weight:500;line-height:1.28;color:var(--acc);max-width:1560px"><span style="font-weight:700">Don't 11</span> — единственный пункт Do/Don't, который прямо ссылается на LSP.</p>
+<div style="display:flex;gap:70px;margin-top:48px;flex:1;min-height:0;align-items:flex-start">
+<ul style="margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:32px;max-width:1120px">
+<li style="display:flex;gap:20px;font-size:var(--t3);line-height:1.32"><span style="flex:none;width:13px;height:13px;margin-top:12px;background:var(--acc)"></span><span>Есть ли <span style="font-family:var(--mono);font-size:27px">override</span>, который бросает исключение, ничего не делает или делает «не то»?</span></li>
+<li style="display:flex;gap:20px;font-size:var(--t3);line-height:1.32"><span style="flex:none;width:13px;height:13px;margin-top:12px;background:var(--acc)"></span><span>Есть ли <span style="font-family:var(--mono);font-size:27px">is</span>/<span style="font-family:var(--mono);font-size:27px">as</span> на конкретный наследник в коде про родителя?</span></li>
+<li style="display:flex;gap:20px;font-size:var(--t3);line-height:1.32"><span style="flex:none;width:13px;height:13px;margin-top:12px;background:var(--acc)"></span><span>Подставлю любого наследника вместо родителя — получу <em style="font-style:italic">ожидаемый</em> результат?</span></li>
+</ul>
+<div style="flex:none;width:200px;height:200px;border-radius:60px;border:2px solid var(--line);display:flex;align-items:center;justify-content:center;color:var(--acc)">
+<svg width="96" height="96" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="m8.5 12.5 2.5 2.5 4.5-5"></path></svg>
+</div>
+</div>
+<div style="margin-top:auto;padding-top:28px;display:flex;justify-content:space-between;align-items:flex-end;font-size:var(--t5);color:var(--ink2)">
+<div style="display:flex;gap:11px;font-weight:700;letter-spacing:.06em;color:#6E6E6E"><span>S</span><span>O</span><span style="color:var(--acc)">L</span><span>I</span><span>D</span></div>
+<span>3.10</span>
+</div>
+</section>
+
+<section data-label="Разделитель I" data-screen-label="34" data-speaker-notes="Блок I: 8 минут. Связать со слайдом 31." style="background:#fff;padding:70px 88px 52px;display:flex;flex-direction:column;color:var(--ink);font-family:'Golos Text',sans-serif" data-om-slide-id="73f04540">
+<div style="flex:1;display:flex;flex-direction:column;justify-content:center">
+<div style="display:flex;align-items:center;gap:72px">
+<span style="font-size:330px;font-weight:900;color:var(--acc);line-height:.78;letter-spacing:-.04em">I</span>
+<div>
+<div style="font-size:66px;font-weight:800;line-height:1.05">Interface segregation</div>
+<div style="font-size:var(--t2);color:var(--ink2);margin-top:18px">Принцип, к нарушению которого мы были близки на слайде 31</div>
+</div>
+</div>
+<div style="display:flex;gap:30px;margin-top:80px;font-size:42px;font-weight:800;letter-spacing:.06em;color:#6E6E6E"><span>S</span><span>O</span><span>L</span><span style="color:var(--acc)">I</span><span>D</span></div>
+</div>
+<div style="margin-top:auto;padding-top:28px;display:flex;justify-content:space-between;align-items:flex-end;font-size:var(--t5);color:var(--ink2)">
+<div style="display:flex;gap:11px;font-weight:700;letter-spacing:.06em;color:#6E6E6E"><span>S</span><span>O</span><span>L</span><span style="color:var(--acc)">I</span><span>D</span></div>
+<span>4.1</span>
+</div>
+</section>
+
+<section data-label="ISP — формулировка" data-screen-label="35" data-speaker-notes="Дословно. Обратить внимание на «не связанные друг с другом»." style="background:#fff;padding:70px 88px 52px;display:flex;flex-direction:column;color:var(--ink);font-family:'Golos Text',sans-serif" data-om-slide-id="4fbfc0ac">
+<h1 style="margin:0;font-size:var(--t1);font-weight:800;line-height:1.06;letter-spacing:-.02em;max-width:1620px">Формулировка</h1>
+<div style="width:100%;max-width:1620px;margin-top:44px;border:2px solid var(--acc);border-left:14px solid var(--acc);border-radius:18px;background:var(--accs);padding:40px 48px;font-size:38px;font-weight:500;line-height:1.36">Он гласит о том, что нужно проектировать обособленные абстракции, не связанные друг с другом, лучше использовать несколько маленьких, специализированных абстракций, вместо одной всеобъемлющей.</div>
+<div style="margin-top:auto;padding-top:28px;display:flex;justify-content:space-between;align-items:flex-end;font-size:var(--t5);color:var(--ink2)">
+<div style="display:flex;gap:11px;font-weight:700;letter-spacing:.06em;color:#6E6E6E"><span>S</span><span>O</span><span>L</span><span style="color:var(--acc)">I</span><span>D</span></div>
+<span>4.2</span>
+</div>
+</section>
+
+<section data-label="Нарушение ISP" data-screen-label="36" data-speaker-notes="Печать, музыка и хлеб в одной абстракции. Спросить, откуда такое берётся." style="background:#fff;padding:70px 88px 52px;display:flex;flex-direction:column;color:var(--ink);font-family:'Golos Text',sans-serif" data-om-slide-id="bfd4dbdc">
+<h1 style="margin:0;font-size:var(--t1);font-weight:800;line-height:1.06;letter-spacing:-.02em;max-width:1620px">Нарушение: устройство, которое умеет всё</h1>
+<p style="margin:22px 0 0;font-size:var(--t2);font-weight:500;line-height:1.28;color:var(--acc);max-width:1560px">Три несвязанные бизнес-функции в одной абстракции.</p>
+<div style="display:flex;gap:52px;margin-top:44px;flex:1;min-height:0">
+<pre style="flex:none;width:1040px;margin:0;background:var(--codebg);border:1px solid var(--line);border-radius:20px;padding:30px;font-family:var(--mono);font-size:28px;line-height:1.45;white-space:pre-wrap;color:#1A1A1A;align-self:flex-start"><div><b>public interface</b> <em>ICanAllDevice</em></div><div>{</div><div style="margin:0 -30px;padding:0 26px;border-left:4px solid var(--warn);background:var(--warns)">    <b>void</b> Print();</div><div> </div><div style="margin:0 -30px;padding:0 26px;border-left:4px solid var(--warn);background:var(--warns)">    <b>void</b> PlayMusic();</div><div> </div><div style="margin:0 -30px;padding:0 26px;border-left:4px solid var(--warn);background:var(--warns)">    <b>void</b> BakeBread();</div><div>}</div></pre>
+<div style="flex:1;display:flex;flex-direction:column">
+<div style="font-size:var(--t5);font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--ink2)">На что смотреть</div>
+<ul style="margin:22px 0 0;padding:0;list-style:none;display:flex;flex-direction:column;gap:24px">
+<li style="display:flex;gap:16px;font-size:var(--t4);line-height:1.3"><span style="flex:none;width:11px;height:11px;margin-top:11px;background:var(--warn)"></span><span>Откуда берётся: была реализация, умевшая всё, и для неё выделили интерфейс</span></li>
+<li style="display:flex;gap:16px;font-size:var(--t4);line-height:1.3"><span style="flex:none;width:11px;height:11px;margin-top:11px;background:var(--warn)"></span><span>Причин не узнаем — нарушение факт</span></li>
+</ul>
+<div style="margin-top:auto;display:flex;justify-content:center;color:var(--warn)">
+<svg width="120" height="120" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+</div>
+</div>
+</div>
+<div style="margin-top:auto;padding-top:24px;display:flex;justify-content:space-between;align-items:flex-end;font-size:var(--t5);color:var(--ink2)">
+<div style="display:flex;gap:11px;font-weight:700;letter-spacing:.06em;color:#6E6E6E"><span>S</span><span>O</span><span>L</span><span style="color:var(--acc)">I</span><span>D</span></div>
+<span>4.3</span>
+</div>
+</section>
+
+<section data-label="ISP: почему плохо" data-screen-label="37" data-speaker-notes="ISP — это SRP для абстракций, поэтому все последствия блока S возвращаются." style="background:#fff;padding:70px 88px 52px;display:flex;flex-direction:column;color:var(--ink);font-family:'Golos Text',sans-serif" data-om-slide-id="10f1c82e">
+<h1 style="margin:0;font-size:var(--t1);font-weight:800;line-height:1.06;letter-spacing:-.02em;max-width:1620px">Почему плохо</h1>
+<div style="width:100%;max-width:1620px;margin-top:44px;border:2px solid var(--acc);border-left:14px solid var(--acc);border-radius:18px;background:var(--accs);padding:40px 48px;font-size:38px;font-weight:500;line-height:1.36">На самом деле, принцип разделения интерфейсов, это своего рода принцип единственной ответственности для абстракций.</div>
+<div style="margin-top:40px;font-size:var(--t3);line-height:1.34;font-weight:600">Нарушение ISP → нарушение SRP у реализаций → всё из блока S</div>
+<div style="margin-top:auto;padding-top:28px;display:flex;justify-content:space-between;align-items:flex-end;font-size:var(--t5);color:var(--ink2)">
+<div style="display:flex;gap:11px;font-weight:700;letter-spacing:.06em;color:#6E6E6E"><span>S</span><span>O</span><span>L</span><span style="color:var(--acc)">I</span><span>D</span></div>
+<span>4.4</span>
+</div>
+</section>
+
+<section data-label="Исправление ISP" data-screen-label="38" data-speaker-notes="Три маленьких интерфейса. Заодно нейминг: Play вместо PlayMusic." style="background:#fff;padding:70px 88px 52px;display:flex;flex-direction:column;color:var(--ink);font-family:'Golos Text',sans-serif" data-om-slide-id="05f9f5ee">
+<h1 style="margin:0;font-size:var(--t1);font-weight:800;line-height:1.06;letter-spacing:-.02em;max-width:1620px">Исправление и «как найти у себя»</h1>
+<p style="margin:22px 0 0;font-size:var(--t2);font-weight:500;line-height:1.28;color:var(--acc);max-width:1560px">Несколько маленьких — и использовать только нужные.</p>
+<div style="display:flex;gap:52px;margin-top:40px;flex:1;min-height:0">
+<pre style="flex:none;width:1040px;margin:0;background:var(--codebg);border:1px solid var(--line);border-radius:20px;padding:28px 30px;font-family:var(--mono);font-size:26px;line-height:1.42;white-space:pre-wrap;color:#1A1A1A;align-self:flex-start"><div><b>public interface</b> <em>IPrinter</em></div><div>{</div><div>    <b>void</b> Print();</div><div>}</div><div> </div><div><b>public interface</b> <em>IMusicPlayer</em></div><div>{</div><div style="margin:0 -30px;padding:0 26px;border-left:4px solid var(--acc);background:var(--accs)">    <b>void</b> Play();</div><div>}</div><div> </div><div><b>public interface</b> <em>IBakery</em></div><div>{</div><div>    <b>void</b> BakeBread();</div><div>}</div></pre>
+<div style="flex:1;display:flex;flex-direction:column">
+<div style="font-size:var(--t5);font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--ink2)">На что смотреть</div>
+<ul style="margin:22px 0 0;padding:0;list-style:none;display:flex;flex-direction:column;gap:24px">
+<li style="display:flex;gap:16px;font-size:var(--t4);line-height:1.3"><span style="flex:none;width:11px;height:11px;margin-top:11px;background:var(--acc)"></span><span><span style="font-family:var(--mono)">PlayMusic</span> → <span style="font-family:var(--mono)">Play</span>: в <span style="font-family:var(--mono)">IMusicPlayer</span> слово Music избыточно (Нейминг 1)</span></li>
+<li style="display:flex;gap:16px;font-size:var(--t4);line-height:1.3"><span style="flex:none;width:11px;height:11px;margin-top:11px;background:var(--acc)"></span><span>Есть ли реализация с пустым методом или <span style="font-family:var(--mono)">NotImplementedException</span>?</span></li>
+<li style="display:flex;gap:16px;font-size:var(--t4);line-height:1.3"><span style="flex:none;width:11px;height:11px;margin-top:11px;background:var(--acc)"></span><span>Нужны ли каждому потребителю все методы?</span></li>
+</ul>
+</div>
+</div>
+<div style="margin-top:auto;padding-top:24px;display:flex;justify-content:space-between;align-items:flex-end;font-size:var(--t5);color:var(--ink2)">
+<div style="display:flex;gap:11px;font-weight:700;letter-spacing:.06em;color:#6E6E6E"><span>S</span><span>O</span><span>L</span><span style="color:var(--acc)">I</span><span>D</span></div>
+<span>4.5</span>
+</div>
+</section>
+
+<section data-label="Разделитель D" data-screen-label="39" data-speaker-notes="Блок D: 13 минут. Задел на ЛР5." style="background:#fff;padding:70px 88px 52px;display:flex;flex-direction:column;color:var(--ink);font-family:'Golos Text',sans-serif" data-om-slide-id="8a0bae0e">
+<div style="flex:1;display:flex;flex-direction:column;justify-content:center">
+<div style="display:flex;align-items:center;gap:72px">
+<span style="font-size:330px;font-weight:900;color:var(--acc);line-height:.78;letter-spacing:-.04em">D</span>
+<div>
+<div style="font-size:66px;font-weight:800;line-height:1.05">Dependency inversion</div>
+<div style="font-size:var(--t2);color:var(--ink2);margin-top:18px">Принцип инверсии зависимостей</div>
+</div>
+</div>
+<div style="display:flex;gap:30px;margin-top:80px;font-size:42px;font-weight:800;letter-spacing:.06em;color:#6E6E6E"><span>S</span><span>O</span><span>L</span><span>I</span><span style="color:var(--acc)">D</span></div>
+</div>
+<div style="margin-top:auto;padding-top:28px;display:flex;justify-content:space-between;align-items:flex-end;font-size:var(--t5);color:var(--ink2)">
+<div style="display:flex;gap:11px;font-weight:700;letter-spacing:.06em;color:#6E6E6E"><span>S</span><span>O</span><span>L</span><span>I</span><span style="color:var(--acc)">D</span></div>
+<span>5.1</span>
+</div>
+</section>
+
+<section data-label="DIP — формулировка" data-screen-label="40" data-speaker-notes="Дословно. Ключевое: одни реализации не зависят от других." style="background:#fff;padding:70px 88px 52px;display:flex;flex-direction:column;color:var(--ink);font-family:'Golos Text',sans-serif" data-om-slide-id="eed94f77">
+<h1 style="margin:0;font-size:var(--t1);font-weight:800;line-height:1.06;letter-spacing:-.02em;max-width:1620px">Формулировка</h1>
+<div style="width:100%;max-width:1620px;margin-top:44px;border:2px solid var(--acc);border-left:14px solid var(--acc);border-radius:18px;background:var(--accs);padding:40px 48px;font-size:38px;font-weight:500;line-height:1.36">Принцип инверсии зависимостей направлен на снижение связанности между модулями. Основная его идея заключается в том, что одни реализации не должны зависеть от других.</div>
+<div style="margin-top:auto;padding-top:28px;display:flex;justify-content:space-between;align-items:flex-end;font-size:var(--t5);color:var(--ink2)">
+<div style="display:flex;gap:11px;font-weight:700;letter-spacing:.06em;color:#6E6E6E"><span>S</span><span>O</span><span>L</span><span>I</span><span style="color:var(--acc)">D</span></div>
+<span>5.2</span>
+</div>
+</section>
+
+<section data-label="Уровни доменной значимости" data-screen-label="41" data-speaker-notes="Инфраструктура меняется чаще, чем бизнес-логика." style="background:#fff;padding:70px 88px 52px;display:flex;flex-direction:column;color:var(--ink);font-family:'Golos Text',sans-serif" data-om-slide-id="9fa7e01e">
+<h1 style="margin:0;font-size:var(--t1);font-weight:800;line-height:1.06;letter-spacing:-.02em;max-width:1620px">Уровни доменной значимости</h1>
+<p style="margin:22px 0 0;font-size:var(--t2);font-weight:500;line-height:1.28;color:var(--acc);max-width:1560px">Бизнес-логика не должна зависеть от реализации логгирования.</p>
+<div style="display:flex;gap:56px;margin-top:44px;flex:1;min-height:0;align-items:flex-start">
+<div style="flex:none;width:420px;font-size:var(--t4);line-height:1.4;border-left:4px solid var(--acc);padding-left:24px">Меньший уровень доменной значимости — чаще меняется: сменится хранилище логов, появится несколько точек записи</div>
+<div style="flex:1;display:flex;flex-direction:column;align-items:stretch;gap:0;max-width:1000px">
+<div style="border:2px solid var(--acc);background:var(--accs);border-radius:24px;padding:30px 34px">
+<div style="font-size:var(--t5);font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--acc)">Бизнес-логика</div>
+<div style="margin-top:12px;font-family:var(--mono);font-size:34px;font-weight:700">OrderService</div>
+</div>
+<div style="align-self:center;font-size:52px;line-height:1.1;color:var(--ink2);padding:8px 0">↓</div>
+<div style="border:1px solid var(--line);border-radius:24px;padding:30px 34px">
+<div style="font-size:var(--t5);font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--ink2)">Инфраструктура</div>
+<div style="margin-top:12px;font-size:34px;font-weight:700">логгер, файлы, консоль</div>
+</div>
+</div>
+</div>
+<div style="margin-top:auto;padding-top:24px;display:flex;justify-content:space-between;align-items:flex-end;font-size:var(--t5);color:var(--ink2)">
+<div style="display:flex;gap:11px;font-weight:700;letter-spacing:.06em;color:#6E6E6E"><span>S</span><span>O</span><span>L</span><span>I</span><span style="color:var(--acc)">D</span></div>
+<span>5.3</span>
+</div>
+</section>
+
+<section data-label="Откуда слово инверсия" data-screen-label="42" data-speaker-notes="Инвертируется именно стрелка со стороны инфраструктуры." style="background:#fff;padding:70px 88px 52px;display:flex;flex-direction:column;color:var(--ink);font-family:'Golos Text',sans-serif" data-om-slide-id="8d53c554">
+<h1 style="margin:0;font-size:var(--t1);font-weight:800;line-height:1.06;letter-spacing:-.02em;max-width:1620px">Откуда слово «инверсия»</h1>
+<p style="margin:22px 0 0;font-size:var(--t2);font-weight:500;line-height:1.28;color:var(--acc);max-width:1560px">Стрелка со стороны инфраструктуры развернулась.</p>
+<div style="display:flex;gap:48px;margin-top:36px;flex:1;min-height:0;align-items:flex-start">
+<div style="flex:none;width:340px;font-size:var(--t4);line-height:1.4;border-left:4px solid var(--acc);padding-left:24px">Обе стороны зависят от абстракции</div>
+<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:14px">
+<div style="font-size:var(--t4);font-weight:700;color:var(--warn)">Нарушение</div>
+<div style="width:100%;border:2px solid var(--line);border-radius:20px;padding:20px 26px"><div style="font-family:var(--mono);font-size:30px;font-weight:700">OrderService</div><div style="font-size:var(--t5);color:var(--ink2);margin-top:6px">бизнес-логика</div></div>
+<div style="font-size:54px;line-height:1;color:var(--warn)">↓</div>
+<div style="width:100%;border:2px solid var(--line);border-radius:20px;padding:20px 26px"><div style="font-family:var(--mono);font-size:30px;font-weight:700">FileLogger</div><div style="font-size:var(--t5);color:var(--ink2);margin-top:6px">инфраструктура</div></div>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:14px">
+<div style="font-size:var(--t4);font-weight:700;color:var(--acc)">Соблюдение</div>
+<div style="width:100%;border:2px solid var(--line);border-radius:20px;padding:20px 26px"><div style="font-family:var(--mono);font-size:30px;font-weight:700">OrderService</div><div style="font-size:var(--t5);color:var(--ink2);margin-top:6px">бизнес-логика</div></div>
+<div style="font-size:54px;line-height:1;color:var(--acc)">↓</div>
+<div style="width:100%;border:2px dashed var(--acc);background:var(--accs);border-radius:20px;padding:20px 26px"><div style="font-family:var(--mono);font-size:30px;font-weight:700;color:var(--acc)">«interface» ILogger</div></div>
+<div style="display:flex;align-items:center;gap:16px"><span style="font-size:54px;line-height:1;color:var(--acc);font-weight:700">↑</span><span style="font-size:var(--t5);color:var(--acc);font-weight:600">реализация — инвертированная стрелка</span></div>
+<div style="width:100%;border:2px solid var(--line);border-radius:20px;padding:20px 26px"><div style="font-family:var(--mono);font-size:30px;font-weight:700">FileLogger</div><div style="font-size:var(--t5);color:var(--ink2);margin-top:6px">инфраструктура</div></div>
+</div>
+</div>
+<div style="margin-top:auto;padding-top:22px;display:flex;justify-content:space-between;align-items:flex-end;font-size:var(--t5);color:var(--ink2)">
+<div style="display:flex;gap:11px;font-weight:700;letter-spacing:.06em;color:#6E6E6E"><span>S</span><span>O</span><span>L</span><span>I</span><span style="color:var(--acc)">D</span></div>
+<span>5.4</span>
+</div>
+</section>
+
+<section data-label="Нарушение DIP" data-screen-label="43" data-speaker-notes="Сервис сам создаёт конкретный логгер и знает про файл." style="background:#fff;padding:70px 88px 52px;display:flex;flex-direction:column;color:var(--ink);font-family:'Golos Text',sans-serif" data-om-slide-id="94e8c0d4">
+<h1 style="margin:0;font-size:var(--t1);font-weight:800;line-height:1.06;letter-spacing:-.02em;max-width:1620px">Нарушение кодом</h1>
+<p style="margin:22px 0 0;font-size:var(--t2);font-weight:500;line-height:1.28;color:var(--acc);max-width:1560px">Сервис сам создаёт конкретный логгер — и знает, что такое файл.</p>
+<div style="display:flex;gap:52px;margin-top:40px;flex:1;min-height:0">
+<pre style="flex:none;width:1160px;margin:0;background:var(--codebg);border:1px solid var(--line);border-radius:20px;padding:28px 30px;font-family:var(--mono);font-size:24px;line-height:1.42;white-space:pre-wrap;color:#1A1A1A;align-self:flex-start"><div><u>// Нарушение: сервис создаёт и использует конкретный логгер</u></div><div><b>public class</b> <em>OrderService</em></div><div>{</div><div style="margin:0 -30px;padding:0 26px;border-left:4px solid var(--warn);background:var(--warns)">    <b>private readonly</b> <em>FileLogger</em> _logger = <b>new</b> <em>FileLogger</em>(<s>"orders.log"</s>);</div><div> </div><div>    <b>public void</b> Place(<em>Order</em> order)</div><div>    {</div><div>        _logger.Write($<s>"Placing order {order.Id}"</s>);</div><div>        <u>// ...</u></div><div>    }</div><div>}</div></pre>
+<div style="flex:1;display:flex;flex-direction:column">
+<div style="font-size:var(--t5);font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--ink2)">На что смотреть</div>
+<ul style="margin:22px 0 0;padding:0;list-style:none;display:flex;flex-direction:column;gap:24px">
+<li style="display:flex;gap:16px;font-size:var(--t4);line-height:1.3"><span style="flex:none;width:11px;height:11px;margin-top:11px;background:var(--warn)"></span><span>Логгер нельзя заменить, не меняя сервис</span></li>
+<li style="display:flex;gap:16px;font-size:var(--t4);line-height:1.3"><span style="flex:none;width:11px;height:11px;margin-top:11px;background:var(--warn)"></span><span>В тестах появятся настоящие файлы</span></li>
+</ul>
+</div>
+</div>
+<div style="margin-top:auto;padding-top:24px;display:flex;justify-content:space-between;align-items:flex-end;font-size:var(--t5);color:var(--ink2)">
+<div style="display:flex;gap:11px;font-weight:700;letter-spacing:.06em;color:#6E6E6E"><span>S</span><span>O</span><span>L</span><span>I</span><span style="color:var(--acc)">D</span></div>
+<span>5.5</span>
+</div>
+</section>
+
+<section data-label="Соблюдение DIP" data-screen-label="44" data-speaker-notes="Зависимость приходит через конструктор. Кто её создаёт — тема ЛР5." style="background:#fff;padding:70px 88px 52px;display:flex;flex-direction:column;color:var(--ink);font-family:'Golos Text',sans-serif" data-om-slide-id="7e589bee">
+<h1 style="margin:0;font-size:var(--t1);font-weight:800;line-height:1.06;letter-spacing:-.02em;max-width:1620px">Соблюдение кодом</h1>
+<p style="margin:20px 0 0;font-size:var(--t2);font-weight:500;line-height:1.28;color:var(--acc);max-width:1620px">Зависимость приходит через конструктор, а не создаётся внутри.</p>
+<div style="display:flex;gap:52px;margin-top:30px;flex:1;min-height:0">
+<pre style="flex:none;width:1160px;margin:0;background:var(--codebg);border:1px solid var(--line);border-radius:20px;padding:24px 30px;font-family:var(--mono);font-size:22px;line-height:1.38;white-space:pre-wrap;color:#1A1A1A"><div><u>// Соблюдение: сервис зависит от абстракции, реализацию передают снаружи</u></div><div><b>public interface</b> <em>ILogger</em></div><div>{</div><div>    <b>void</b> Write(<b>string</b> message);</div><div>}</div><div> </div><div><b>public class</b> <em>FileLogger</em> : <em>ILogger</em></div><div>{</div><div>    <b>public</b> FileLogger(<b>string</b> path) { _path = path; }</div><div>    <b>private readonly string</b> _path;</div><div>    <b>public void</b> Write(<b>string</b> message) { <u>/* ... */</u> }</div><div>}</div><div> </div><div><b>public class</b> <em>OrderService</em></div><div>{</div><div style="margin:0 -30px;padding:0 26px;border-left:4px solid var(--acc);background:var(--accs)">    <b>public</b> OrderService(<em>ILogger</em> logger) { _logger = logger; }</div><div>    <b>private readonly</b> <em>ILogger</em> _logger;</div><div> </div><div>    <b>public void</b> Place(<em>Order</em> order)</div><div>    {</div><div>        _logger.Write($<s>"Placing order {order.Id}"</s>);</div><div>        <u>// ...</u></div><div>    }</div><div>}</div></pre>
+<div style="flex:1;display:flex;flex-direction:column">
+<div style="font-size:var(--t5);font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--ink2)">На что смотреть</div>
+<ul style="margin:22px 0 0;padding:0;list-style:none;display:flex;flex-direction:column;gap:22px">
+<li style="display:flex;gap:16px;font-size:var(--t4);line-height:1.3"><span style="flex:none;width:11px;height:11px;margin-top:11px;background:var(--acc)"></span><span><span style="font-family:var(--mono)">OrderService</span> не знает, что такое файл</span></li>
+<li style="display:flex;gap:16px;font-size:var(--t4);line-height:1.3"><span style="flex:none;width:11px;height:11px;margin-top:11px;background:var(--acc)"></span><span>Кто создаёт <span style="font-family:var(--mono)">FileLogger</span> — вопрос ЛР5</span></li>
+<li style="display:flex;gap:16px;font-size:var(--t4);line-height:1.3"><span style="flex:none;width:11px;height:11px;margin-top:11px;background:var(--acc)"></span><span><span style="font-weight:700;color:var(--acc)">Do 13:</span> зависимости — аргументами</span></li>
+</ul>
+</div>
+</div>
+<div style="margin-top:auto;padding-top:22px;display:flex;justify-content:space-between;align-items:flex-end;font-size:var(--t5);color:var(--ink2)">
+<div style="display:flex;gap:11px;font-weight:700;letter-spacing:.06em;color:#6E6E6E"><span>S</span><span>O</span><span>L</span><span>I</span><span style="color:var(--acc)">D</span></div>
+<span>5.6</span>
+</div>
+</section>
+
+<section data-label="DIP: эффекты и как найти" data-screen-label="45" data-speaker-notes="Главный практический аргумент — тестируемость." style="background:#fff;padding:70px 88px 52px;display:flex;flex-direction:column;color:var(--ink);font-family:'Golos Text',sans-serif" data-om-slide-id="8d6fd183">
+<h1 style="margin:0;font-size:var(--t1);font-weight:800;line-height:1.06;letter-spacing:-.02em;max-width:1620px">Негативные эффекты и «как найти у себя»</h1>
+<p style="margin:22px 0 0;font-size:var(--t2);font-weight:500;line-height:1.28;color:var(--acc);max-width:1560px">Без абстракции нет настоящего модульного тестирования — заглушку не подставить.</p>
+<div style="display:flex;gap:70px;margin-top:44px;flex:1;min-height:0;align-items:flex-start">
+<ul style="margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:30px;max-width:1120px">
+<li style="display:flex;gap:20px;font-size:var(--t3);line-height:1.32"><span style="flex:none;width:13px;height:13px;margin-top:12px;background:var(--warn)"></span><span><strong style="font-weight:700">Замена реализации</strong> — менять и зависимого</span></li>
+<li style="display:flex;gap:20px;font-size:var(--t3);line-height:1.32"><span style="flex:none;width:13px;height:13px;margin-top:12px;background:var(--warn)"></span><span><strong style="font-weight:700">Чужой код</strong> — тип из библиотеки не расширить</span></li>
+<li style="display:flex;gap:20px;font-size:var(--t3);line-height:1.32"><span style="flex:none;width:13px;height:13px;margin-top:12px;background:var(--warn)"></span><span><strong style="font-weight:700">Тесты</strong> — проверяем модуль вместе со всеми его зависимостями</span></li>
+</ul>
+<div style="flex:none;width:200px;height:200px;border-radius:60px;border:2px solid var(--line);display:flex;align-items:center;justify-content:center;color:var(--acc)">
+<svg width="96" height="96" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+</div>
+</div>
+<div style="border-top:1px solid var(--line);padding-top:22px;font-size:var(--t4);line-height:1.35">У себя: есть ли <span style="font-family:var(--mono)">new</span> конкретного типа внутри бизнес-логики — логгер, файл, консоль, <span style="font-family:var(--mono)">Random</span>, часы? Смогу ли протестировать, не создавая файлы?<div style="margin-top:10px;font-size:var(--t5);color:var(--ink2)"><span style="font-weight:700;color:var(--acc)">Do 19:</span> абстракции вместо конкретных коллекций — то же на уровне параметров</div></div>
+<div style="margin-top:auto;padding-top:22px;display:flex;justify-content:space-between;align-items:flex-end;font-size:var(--t5);color:var(--ink2)">
+<div style="display:flex;gap:11px;font-weight:700;letter-spacing:.06em;color:#6E6E6E"><span>S</span><span>O</span><span>L</span><span>I</span><span style="color:var(--acc)">D</span></div>
+<span>5.7</span>
+</div>
+</section>
+
+<section data-label="SOLID одним экраном" data-screen-label="46" data-speaker-notes="Свести всё в таблицу: буква — фраза — как выглядит нарушение." style="background:#fff;padding:70px 88px 52px;display:flex;flex-direction:column;color:var(--ink);font-family:'Golos Text',sans-serif" data-om-slide-id="96a26f36">
+<h1 style="margin:0;font-size:var(--t1);font-weight:800;line-height:1.06;letter-spacing:-.02em;max-width:1620px">SOLID одним экраном</h1>
+<p style="margin:20px 0 0;font-size:var(--t2);font-weight:500;line-height:1.28;color:var(--acc);max-width:1620px">Буква — одна фраза — как выглядит нарушение в коде.</p>
+<div style="margin-top:34px;display:flex;flex-direction:column">
+<div style="display:flex;gap:32px;padding:0 0 14px;border-bottom:2px solid var(--ink);font-size:var(--t5);font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--ink2)">
+<div style="flex:none;width:80px"></div>
+<div style="flex:1">Принцип</div>
+<div style="flex:1.1">Нарушение в коде</div>
+</div>
+<div style="display:flex;gap:32px;padding:22px 0;border-bottom:1px solid var(--line);align-items:baseline">
+<div style="flex:none;width:80px;font-size:46px;font-weight:900;color:var(--acc);line-height:1">S</div>
+<div style="flex:1;font-size:var(--t4);line-height:1.28">одна причина для изменения</div>
+<div style="flex:1.1;font-size:var(--t4);line-height:1.28;color:var(--warn)">класс с методами про два разных требования</div>
+</div>
+<div style="display:flex;gap:32px;padding:22px 0;border-bottom:1px solid var(--line);align-items:baseline">
+<div style="flex:none;width:80px;font-size:46px;font-weight:900;color:var(--acc);line-height:1">O</div>
+<div style="flex:1;font-size:var(--t4);line-height:1.28">открыт для расширения, закрыт для изменения</div>
+<div style="flex:1.1;font-size:var(--t4);line-height:1.28;color:var(--warn)"><span style="font-family:var(--mono)">switch</span> по <span style="font-family:var(--mono)">enum</span>, растущий с каждым требованием</div>
+</div>
+<div style="display:flex;gap:32px;padding:22px 0;border-bottom:1px solid var(--line);align-items:baseline">
+<div style="flex:none;width:80px;font-size:46px;font-weight:900;color:var(--acc);line-height:1">L</div>
+<div style="flex:1;font-size:var(--t4);line-height:1.28">наследник применим везде, где ожидается родитель</div>
+<div style="flex:1.1;font-size:var(--t4);line-height:1.28;color:var(--warn)"><span style="font-family:var(--mono)">override</span>, который «делает не то»</div>
+</div>
+<div style="display:flex;gap:32px;padding:22px 0;border-bottom:1px solid var(--line);align-items:baseline">
+<div style="flex:none;width:80px;font-size:46px;font-weight:900;color:var(--acc);line-height:1">I</div>
+<div style="flex:1;font-size:var(--t4);line-height:1.28">маленькие специализированные абстракции</div>
+<div style="flex:1.1;font-size:var(--t4);line-height:1.28;color:var(--warn)">интерфейс с методами-пустышками в реализациях</div>
+</div>
+<div style="display:flex;gap:32px;padding:22px 0;align-items:baseline">
+<div style="flex:none;width:80px;font-size:46px;font-weight:900;color:var(--acc);line-height:1">D</div>
+<div style="flex:1;font-size:var(--t4);line-height:1.28">зависеть от абстракций, а не от реализаций</div>
+<div style="flex:1.1;font-size:var(--t4);line-height:1.28;color:var(--warn)"><span style="font-family:var(--mono)">new FileLogger()</span> внутри сервиса</div>
+</div>
+</div>
+<div style="margin-top:auto;padding-top:22px;display:flex;justify-content:space-between;align-items:flex-end;font-size:var(--t5);color:var(--ink2)">
+<div style="display:flex;gap:11px;font-weight:700;letter-spacing:.06em;color:var(--acc)"><span>S</span><span>O</span><span>L</span><span>I</span><span>D</span></div>
+<span>6.1</span>
+</div>
+</section>
+
+<section data-label="Как принципы связаны" data-screen-label="47" data-speaker-notes="Не пять правил, а один подход. Показать три связки." style="background:#fff;padding:70px 88px 52px;display:flex;flex-direction:column;color:var(--ink);font-family:'Golos Text',sans-serif" data-om-slide-id="0294d7b0">
+<h1 style="margin:0;font-size:var(--t1);font-weight:800;line-height:1.06;letter-spacing:-.02em;max-width:1620px">Как принципы связаны</h1>
+<p style="margin:20px 0 0;font-size:var(--t2);font-weight:500;line-height:1.28;color:var(--acc);max-width:1620px">Не пять правил, а один подход: изменения локализуются, зависимости идут к абстракциям.</p>
+<div style="display:flex;justify-content:center;align-items:flex-start;gap:60px;margin-top:40px">
+<div style="margin-top:80px;width:156px;height:156px;border-radius:50%;border:3px solid var(--acc);display:flex;align-items:center;justify-content:center;font-size:68px;font-weight:900;color:var(--acc)">S</div>
+<div style="margin-top:30px;width:156px;height:156px;border-radius:50%;border:3px solid var(--acc);display:flex;align-items:center;justify-content:center;font-size:68px;font-weight:900;color:var(--acc)">O</div>
+<div style="margin-top:0;width:156px;height:156px;border-radius:50%;border:3px solid var(--acc);display:flex;align-items:center;justify-content:center;font-size:68px;font-weight:900;color:var(--acc)">L</div>
+<div style="margin-top:30px;width:156px;height:156px;border-radius:50%;border:3px solid var(--acc);display:flex;align-items:center;justify-content:center;font-size:68px;font-weight:900;color:var(--acc)">I</div>
+<div style="margin-top:80px;width:156px;height:156px;border-radius:50%;border:3px solid var(--acc);display:flex;align-items:center;justify-content:center;font-size:68px;font-weight:900;color:var(--acc)">D</div>
+</div>
+<div style="display:flex;gap:32px;margin-top:52px">
+<div style="flex:1;border:1px solid var(--line);border-radius:24px;padding:38px 36px">
+<div style="font-size:34px;font-weight:800;color:var(--acc)">I → S</div>
+<div style="margin-top:12px;font-size:var(--t4);line-height:1.3">SRP для абстракций</div>
+</div>
+<div style="flex:1;border:1px solid var(--line);border-radius:24px;padding:38px 36px">
+<div style="font-size:34px;font-weight:800;color:var(--acc)">L → O</div>
+<div style="margin-top:12px;font-size:var(--t4);line-height:1.3"><span style="font-family:var(--mono)">is</span>-проверки чинятся абстракцией</div>
+</div>
+<div style="flex:1;border:1px solid var(--line);border-radius:24px;padding:38px 36px">
+<div style="font-size:34px;font-weight:800;color:var(--acc)">O ↔ D</div>
+<div style="margin-top:12px;font-size:var(--t4);line-height:1.3">оба — зависеть от интерфейса</div>
+</div>
+</div>
+<div style="margin-top:auto;padding-top:22px;display:flex;justify-content:space-between;align-items:flex-end;font-size:var(--t5);color:var(--ink2)">
+<div style="display:flex;gap:11px;font-weight:700;letter-spacing:.06em;color:var(--acc)"><span>S</span><span>O</span><span>L</span><span>I</span><span>D</span></div>
+<span>6.2</span>
+</div>
+</section>
+
+
+
+<section data-label="Что дальше и вопросы" data-screen-label="49" data-speaker-notes="Переход к ЛР2 и структурным паттернам. Оставить время на вопросы." style="background:#fff;padding:70px 88px 52px;display:flex;flex-direction:column;color:var(--ink);font-family:'Golos Text',sans-serif" data-om-slide-id="a4459f07">
+<h1 style="margin:0;font-size:var(--t1);font-weight:800;line-height:1.06;letter-spacing:-.02em;max-width:1620px">В завершение...</h1>
+<p style="margin:24px 0 0;font-size:var(--t2);font-weight:500;line-height:1.28;color:var(--acc);max-width:1620px"><br></p>
+<div style="flex:none;width:200px;height:200px;border-radius:60px;border:2px solid var(--line);display:flex;align-items:center;justify-content:center;color:var(--acc)">
+<svg width="96" height="96" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="m8.5 12.5 2.5 2.5 4.5-5"></path></svg>
+</div><div style="display:flex;gap:70px;margin-top:48px;align-items:flex-start">
+<ul style="margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:30px;max-width:1000px">
+<li style="display:flex;gap:20px;font-size:var(--t3);line-height:1.32"><span style="flex:none;width:13px;height:13px;margin-top:12px;background:var(--acc)"></span><span>Не запоминать паттерны как рецепты</span></li>
+<li style="display:flex;gap:20px;font-size:var(--t3);line-height:1.32"><span style="flex:none;width:13px;height:13px;margin-top:12px;background:var(--acc)"></span><span>Теперь вы понимаете какие проблемы предотвращает SOLID</span></li>
+</ul>
+
+</div>
+<div style="flex:1;display:flex;align-items:center;margin-top:20px"><span style="font-size:120px;font-weight:900;letter-spacing:-.03em;color:var(--acc)">Вопросы?</span></div>
+<div style="margin-top:auto;padding-top:22px;display:flex;justify-content:space-between;align-items:flex-end;font-size:var(--t5);color:var(--ink2)">
+<div style="display:flex;gap:11px;font-weight:700;letter-spacing:.06em;color:var(--acc)"><span>S</span><span>O</span><span>L</span><span>I</span><span>D</span></div>
+<span>6.4</span>
+</div>
+</section>
+
+</x-import>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;showCppNotes&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Лекция&quot;}}">
+class Component extends DCLogic {
+  renderVals() {
+    return { showCppNotes: this.props.showCppNotes ?? true };
+  }
+}
+</script>
+</body>
+</html>
