@@ -3778,10 +3778,20 @@ public sealed class MotionSensor
       document.addEventListener('keydown', onKey, true);
       if (prev) prev.addEventListener('click', function () { go(idx - 1); });
       if (next) next.addEventListener('click', function () { go(idx + 1); });
+      // A drag that ends on the same element still fires click, so a
+      // text-selection drag would navigate. Ignore clicks that leave a
+      // selection behind or where the mouse moved since mousedown.
+      var downX = null, downY = null;
+      document.addEventListener('mousedown', function (e) {
+        downX = e.clientX; downY = e.clientY;
+      }, true);
       document.addEventListener('click', function (e) {
         if (e.defaultPrevented) return;
         if (e.button !== undefined && e.button !== 0) return;
         if (e.metaKey || e.ctrlKey || e.altKey || e.shiftKey) return;
+        var sel = window.getSelection ? window.getSelection() : null;
+        if (sel && !sel.isCollapsed) return;
+        if (downX !== null && (Math.abs(e.clientX - downX) > 4 || Math.abs(e.clientY - downY) > 4)) return;
         var t = e.target;
         while (t && t !== document.body && t !== document.documentElement) {
           var tag = String(t.tagName || '').toUpperCase();
